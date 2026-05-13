@@ -17,9 +17,12 @@
 * General structure of draws objects / DataTree
 ### Part 2: Covergence diagnostics and uncertainty quantification
 * Checking convergence
+  - rank-normalized R-hat
+  - pareto-k
+  - nested R-hat
 * Posterior summaries and uncertainty quantification
+  - mean, median, quantiles with MCSE
 ### Part 3: Model evaluation and critique
 * model performance (R2, loo)
 * posterior predictive checks (PIT-ECDF, calibration)
 * prior and likelihood sensitivity (power-scaling)
-
