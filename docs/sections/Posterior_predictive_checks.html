@@ -86,6 +86,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../sections/References.html" rel="next">
 <link href="../index.html" rel="prev">
 <link href="../favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
@@ -385,13 +386,19 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">“Bayesian model diagnostics: Workflows and software tools”</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bayesian model diagnostics: Workflows and software tools</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sections/Posterior_predictive_checks.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../sections/References.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
   </div>
 </li>
     </ul>
@@ -501,7 +508,7 @@ p(y) = \int p(y \mid \theta)\, p(\theta)\, d\theta.
 </ol>
 <p>Notice that in step 4 we use domain knowledge, <strong>not observed data</strong>.</p>
 <p>To exemplify a prior predictive check, let’s try with a super simple example. Let’s say we want to model the height of humans. We know that the heights are positive numbers, so we should use a distribution allocating zero mass to negative values. But we also know that at least for adults using a normal distribution could be a good approximation. So we create the following model, without too much thought, and then draw 500 samples from the prior predictive distribution.</p>
-<div id="db56f39e" class="cell" data-execution_count="2">
+<div id="d91dd068" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>stan_code <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="st">data {</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="st">    int&lt;lower=0&gt; N;</span></span>
@@ -563,7 +570,7 @@ Figure&nbsp;2.1: The prior predictive check for the model of heights. We can see
 <p>We can see that our model is bananas the bulk of the prior predictive distribution is outside of our reference values and the model is predicting values below 0. This is a clear indication that the model is not a good representation of our prior knowledge.</p>
 <p>In many cases, data will be informative enough to overcome poorly selected priors, but this isn’t guaranteed. To address this, we can tighten our priors. While there’s no universal rule for doing so, a good guideline is to choose priors that concentrate most of the prior predictive distribution’s mass within a plausible range—such as between our reference values.</p>
 <p>Such priors are often called weakly informative priors. Though not strictly defined, these priors produce a prior predictive distribution with little to no probability mass in unrealistic or impossible regions. For example, a normal distribution with a mean of 160 and a standard deviation of 10 assigns negligible weight to negative values while still accommodating a wide range of plausible heights.</p>
-<div id="ae06751d" class="cell" data-execution_count="5">
+<div id="6013751b" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>stan_code <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="st">data {</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="st">    int&lt;lower=0&gt; N;</span></span>
@@ -622,7 +629,6 @@ Figure&nbsp;2.2: The prior predictive check for the model of heights with a more
 </div>
 </div>
 </div>
-<p>:::</p>
 <p>You are free to pick other priors and other reference values and make new prior predictive checks. Maybe you can use the historical record for the taller and shorter persons in the world as reference values.</p>
 <p>When plotting many distributions, where each one spans a narrow range of values compared to the range spanned but the entire collection of distributions, it is usually a good idea to plot the cumulative distribution instead of KDEs, histograms, or quantile dot plots.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
@@ -656,7 +662,6 @@ Figure&nbsp;2.3: The prior predictive check for the model of heights. Same as <a
 </div>
 </div>
 </div>
-<p>:::</p>
 <section id="a-final-note-about-priors" class="level3" data-number="2.1.1">
 <h3 data-number="2.1.1" class="anchored" data-anchor-id="a-final-note-about-priors"><span class="header-section-number">2.1.1</span> A final note about priors</h3>
 <p>Before moving on to the next section, we would like to share one last thought on priors. If you have access to reliable prior knowledge, you should use it, there’s no good reason to discard valid information. But in many real-world scenarios, turning that knowledge into informative priors often require considerable effort and time. And in some cases, they may lead to results that are nearly indistinguishable from those produced using less carefully chosen priors.</p>
@@ -666,7 +671,7 @@ Figure&nbsp;2.3: The prior predictive check for the model of heights. Same as <a
 </section>
 <section id="posterior-predictive-checks" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="posterior-predictive-checks"><span class="header-section-number">2.2</span> Posterior predictive checks</h2>
-<p>The idea behind posterior predictive checks is simple: if a Bayesian model is reasonable, it should be capable of generating data resembling the observed data <span class="citation" data-cites="Gelman_2013">(<a href="#ref-Gelman_2013" role="doc-biblioref">Gelman et al. 2013</a>)</span>. These are called <em>posterior predictive</em> checks because the synthetic data is generated after observing actual data.</p>
+<p>The idea behind posterior predictive checks is simple: if a Bayesian model is reasonable, it should be capable of generating data resembling the observed data <span class="citation" data-cites="Gelman_2013">(<a href="References.html#ref-Gelman_2013" role="doc-biblioref">Gelman et al. 2013</a>)</span>. These are called <em>posterior predictive</em> checks because the synthetic data is generated after observing actual data.</p>
 <p>The posterior predictive distribution is obtained by combining the data model</p>
 <p><span class="math display">\[
 p(\tilde y \mid \theta)
@@ -690,7 +695,7 @@ p(\tilde y \mid y) = \int p(\tilde y \mid \theta)\, p(\theta \mid y)\, d\theta.
 </ol>
 <p>Notice that, unlike prior predictive checks, posterior predictive checks compare simulated data with the observed data. Domain knowledge remains useful, but the observed data provide a much more stringent assessment of model adequacy.</p>
 <p>Continuing with our height example, we can generate synthetic data from the posterior predictive distribution.</p>
-<div id="3c95c3c1" class="cell" data-execution_count="9">
+<div id="dc5e79bc" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>stan_code <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb12-2"><a href="#cb12-2"></a><span class="st">data {</span></span>
 <span id="cb12-3"><a href="#cb12-3"></a><span class="st">    int&lt;lower=0&gt; N;</span></span>
@@ -728,9 +733,9 @@ p(\tilde y \mid y) = \int p(\tilde y \mid \theta)\, p(\theta \mid y)\, d\theta.
 <span id="cb12-35"><a href="#cb12-35"></a><span class="st">}</span></span>
 <span id="cb12-36"><a href="#cb12-36"></a><span class="st">"""</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>And then we use ArviZ to render the comparison. We can see that the model is doing a good job at predicting the data. The observed data (black line) is within the bulk of the posterior predictive distribution (blue lines).</p>
+<p>And then visualize the comparison. We can see that the model is doing a good job at predicting the data. The observed data (black line) is within the bulk of the posterior predictive distribution (blue lines).</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <div id="cell-fig-post_pred" class="cell" data-execution_count="11">
@@ -748,18 +753,22 @@ Figure&nbsp;2.4: Posterior predictive check for the model of heights.
 </div>
 </div>
 </div>
-<pre><code>## R
-```{.R}</code></pre>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
-<p>:::</p>
 <p>Other common visualizations to compare observed and predictive values are empirical CDFs, histograms and less often quantile dotplots. Like with other types of visualizations, you may want to try different options, to be sure visualizations are not misleading and you may also want to adapt the visualization to your audience.</p>
 <section id="using-summary-statistics" class="level3" data-number="2.2.1">
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="using-summary-statistics"><span class="header-section-number">2.2.1</span> Using summary statistics</h3>
-<p>Besides directly comparing observations and predictions in terms of their densities, we can do comparisons in terms of summary statistics, like the median, the interquartile range, the standard deviation etc. Which ones we decide to use can vary from one data-analysis problem to another, and ideally they should be informed by the data-analysis goals. As in posterior predictive checks we use the data twice, first for fitting the model and then for checking it. It is advisable to select test statistics that are orthogonal to the model parameters <span class="citation" data-cites="Gabry_2019">(<a href="#ref-Gabry_2019" role="doc-biblioref">Gabry et al. 2019</a>)</span>. For example, in a Normal model with a location parameter, the mean should be easy to recover, so a posterior predictive check using the mean as a test statistic would not be a particularly stringent test. As in many common models there is a location parameter, then the mean is usually not a good test statistic.</p>
+<p>Besides directly comparing observations and predictions in terms of their densities, we can do comparisons in terms of summary statistics, like the median, the interquartile range, the standard deviation etc. Which ones we decide to use can vary from one data-analysis problem to another, and ideally they should be informed by the data-analysis goals. As in posterior predictive checks we use the data twice, first for fitting the model and then for checking it. It is advisable to select test statistics that are orthogonal to the model parameters <span class="citation" data-cites="Gabry_2019">(<a href="References.html#ref-Gabry_2019" role="doc-biblioref">Gabry et al. 2019</a>)</span>. For example, in a Normal model with a location parameter, the mean should be easy to recover, so a posterior predictive check using the mean as a test statistic would not be a particularly stringent test. As in many common models there is a location parameter, then the mean is usually not a good test statistic.</p>
 <p>We can use the <code>plot_ppc_tstat</code> function to display the posterior predictive distribution of a test statistic. The function takes as input a DataTree with a <code>posterior_predictive</code> and <code>observed_data</code> groups and a name of the test statistic (custom function are also allowed), and it will compute the posterior predictive distribution of that statistic. The function also computes the observed value of the test statistic and plots it as a dot at the bottom of each subplot.</p>
 <p>The following figure shows a comparison in terms of the mean, median and interquartile range (IQR). The dots at the bottom of each subplots corresponds to the summary statistics computed for the observed data and the KDE is for the model’s predictions.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content" data-group="language">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
 <div id="cell-fig-post_pred_check_stats" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>pc <span class="op">=</span> az.combine_plots(dt,</span>
 <span id="cb15-2"><a href="#cb15-2"></a>                 plots<span class="op">=</span>[</span>
@@ -783,13 +792,19 @@ Figure&nbsp;2.5: Posterior predictive check for the model of heights using summa
 </div>
 </div>
 </div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
 <p>If we want a numerical summary of a posterior predictive checks using test statistics we can compute the proportion of simulated data that is less than or equal to the observed data: <span class="math display">\[
 p(T_{\text{sim}} \le T_{\text{obs}} \mid \tilde y)
 \]</span></p>
 <p>Where <span class="math inline">\(T\)</span> is the summary statistic of our choice, computed for both the observed data <span class="math inline">\(T_{\text{obs}}\)</span> and the simulated data <span class="math inline">\(T_{\text{sim}}\)</span>.</p>
-<p>This is known as a posterior predictive p-value (or Bayesian p-value) <span class="citation" data-cites="Gelman_2013">(<a href="#ref-Gelman_2013" role="doc-biblioref">Gelman et al. 2013</a>)</span>. This is similar to the frequentist p-value, but computed with respect to the posterior predictive distribution, instead of the sample distribution under the null hypothesis.</p>
-<p>A posterior predictive p-value of 0.5 indicates that half of the predictions are below the observed values and half above. Posterior predictive p-values do not in general have uniform distributions under the null hypothesis but instead tend to have distributions more concentrated near 0.5 <span class="citation" data-cites="Gelman_2013b">(<a href="#ref-Gelman_2013b" role="doc-biblioref">Gelman 2013</a>)</span>. For instance, we already mentioned that the mean is easy to recover for many models and thus the posterior predictive p-value for the mean is often concentrated around 0.5.</p>
-<p>The term “Bayesian p-values” may sound like an oxymoron or paradoxical <span class="citation" data-cites="Meng_1994">(<a href="#ref-Meng_1994" role="doc-biblioref">Meng 1994</a>)</span>. The Bayesian p-values are defined similar to their frequentist cousins and hence the name. But they are used in a very different way. We use posterior predictive p-values as a diagnostic tool to asses potential mismatches between model and data rather than as a measure of “statistical significance” or as a dichotomy decision tool. The null hypothesis is that the predictions from the model and the observed data are drawn from the same data-generating process, but in practice we are not interested in rejecting this hypothesis. We already know is not true! Instead, we are interested in understanding how well the model is doing at predicting the data, detecting potential problems, an if possible or desirable improving the model.</p>
+<p>This is known as a posterior predictive p-value (or Bayesian p-value) <span class="citation" data-cites="Gelman_2013">(<a href="References.html#ref-Gelman_2013" role="doc-biblioref">Gelman et al. 2013</a>)</span>. This is similar to the frequentist p-value, but computed with respect to the posterior predictive distribution, instead of the sample distribution under the null hypothesis.</p>
+<p>A posterior predictive p-value of 0.5 indicates that half of the predictions are below the observed values and half above. Posterior predictive p-values do not in general have uniform distributions under the null hypothesis but instead tend to have distributions more concentrated near 0.5 <span class="citation" data-cites="Gelman_2013b">(<a href="References.html#ref-Gelman_2013b" role="doc-biblioref">Gelman 2013</a>)</span>. For instance, we already mentioned that the mean is easy to recover for many models and thus the posterior predictive p-value for the mean is often concentrated around 0.5.</p>
+<p>The term “Bayesian p-values” may sound like an oxymoron or paradoxical <span class="citation" data-cites="Meng_1994">(<a href="References.html#ref-Meng_1994" role="doc-biblioref">Meng 1994</a>)</span>. The Bayesian p-values are defined similar to their frequentist cousins and hence the name. But they are used in a very different way. We use posterior predictive p-values as a diagnostic tool to asses potential mismatches between model and data rather than as a measure of “statistical significance” or as a dichotomy decision tool. The null hypothesis is that the predictions from the model and the observed data are drawn from the same data-generating process, but in practice we are not interested in rejecting this hypothesis. We already know is not true! Instead, we are interested in understanding how well the model is doing at predicting the data, detecting potential problems, an if possible or desirable improving the model.</p>
 </section>
 <section id="pit-ecdfs" class="level3" data-number="2.2.2">
 <h3 data-number="2.2.2" class="anchored" data-anchor-id="pit-ecdfs"><span class="header-section-number">2.2.2</span> PIT-ECDFs</h3>
@@ -801,7 +816,7 @@ p(\tilde y_i \le y_i \mid y)
 <p><span class="math display">\[
 U = F_Y(Y)
 \]</span></p>
-<p>follows a standard Uniform distribution. A proof of this result can be found in <a href="https://statproofbook.github.io/P/cdf-pit.html">The Book of Statistical Proofs</a> <span class="citation" data-cites="soch_2024">(<a href="#ref-soch_2024" role="doc-biblioref">Soch et al. 2024</a>)</span>.</p>
+<p>follows a standard Uniform distribution. A proof of this result can be found in <a href="https://statproofbook.github.io/P/cdf-pit.html">The Book of Statistical Proofs</a> <span class="citation" data-cites="soch_2024">(<a href="References.html#ref-soch_2024" role="doc-biblioref">Soch et al. 2024</a>)</span>.</p>
 <p>In other words if we apply the CDF of any continuous distribution to a random variable with that distribution, the result will be a random variable with a standard uniform distribution. This is a very powerful result, as it allows us to use the standard uniform distribution as a reference distribution for many statistical tests, including posterior predictive checks.</p>
 <p>As mentioned earlier, the marginal p-value is given by</p>
 <p><span class="math display">\[
@@ -814,7 +829,7 @@ F_Y(y) = \mathrm{Pr}(Y \leq y).
 <p>Thus, we can see the computation of the marginal p-value as an application of the Probability Integral Transform. In practice we may not know the CDF, but as long as we have samples from a distribution, like the posterior predictive, we can compute the empirical CDF (ECDF).</p>
 <p>The CDF of the standard Uniform distribution is a diagonal line that goes from (0, 0) to (1,1), as shown in <a href="#fig-post_pred_uniform_cdf" class="quarto-xref">Figure&nbsp;<span>2.6</span></a>.</p>
 <div id="cell-fig-post_pred_uniform_cdf" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>pz.Uniform(<span class="dv">0</span>, <span class="dv">1</span>).plot_cdf()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>pz.Uniform(<span class="dv">0</span>, <span class="dv">1</span>).plot_cdf()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_pred_uniform_cdf" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -831,8 +846,12 @@ Figure&nbsp;2.6: The CDF of the standard Uniform distribution.
 <p>We can compute the ECDF from our samples and compare it to this line. Deviations from this line may indicate problems with the model. This is a very simple to interpret visualization. That’s the basic idea, but there are a few additional ingredients that can make this visualization more informative and easier to interpret.</p>
 <p>The disadvantage of visualization like <a href="#fig-post_pred_uniform_cdf" class="quarto-xref">Figure&nbsp;<span>2.6</span></a> is that all the “action” is close to the diagonal and then most of the plot is just blank space. A simple <em>trick</em> to improve the <em>data-ink</em> ratio is to render the difference between the observed and expected cumulative distribution functions, the <span class="math inline">\(\Delta\)</span>-ECDF, as shown in <a href="#fig-post_ppc_pit_ecdf" class="quarto-xref">Figure&nbsp;<span>2.7</span></a>. This makes deviations from uniformity more visible, as they will appear as peaks and valleys in the plot.</p>
 <p>Another potential issue with this visualization is that it can be difficult to interpret the magnitude of the deviations from uniformity. Due to finite sample size we should expect deviations from uniformity even if the model is good, so how can we know if a deviation from uniformity is larger than expected? One way to address this issue is to add a uniformity test to the visualization. This test can help us determine when a deviation from uniformity is larger than expected, and it can also help us identify which points contribute the most to the rejection of the null hypothesis of uniformity.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content" data-group="language">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
 <div id="cell-fig-post_ppc_pit_ecdf" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>az.plot_ppc_pit(dt)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>az.plot_ppc_pit(dt)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_ppc_pit_ecdf" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -846,7 +865,13 @@ Figure&nbsp;2.7: Posterior predictive check for the model of heights using margi
 </div>
 </div>
 </div>
-<p>In ArviZ, we use the uniformity test develop by <span class="citation" data-cites="tesso_2026">Tesso and Vehtari (<a href="#ref-tesso_2026" role="doc-biblioref">2026</a>)</span>. This test returns two results: a p-value for the null hypothesis of uniformity and if the p-value is below a certain threshold (default is 0.05) it also returns the points that contribute the most to the rejection of the null hypothesis (the deviations from uniformity that are larger than expected).</p>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p>We use the uniformity test develop by <span class="citation" data-cites="tesso_2026">Tesso and Vehtari (<a href="References.html#ref-tesso_2026" role="doc-biblioref">2026</a>)</span>. This test returns two results: a p-value for the null hypothesis of uniformity and if the p-value is below a certain threshold (default is 0.05) it also returns the points that contribute the most to the rejection of the null hypothesis (the deviations from uniformity that are larger than expected).</p>
 <p>To build intuition for PIT-ECDF plots, we will look at four simple examples using synthetic data. In all cases, the observed data come from a standard normal distribution (<span class="math inline">\(\mu = 0, \sigma^2 = 1\)</span>). For each example, we compare the observed data to predictions where:</p>
 <ul>
 <li>The mean of the predictions is shifted to the right. The model is overpredicting the data.</li>
@@ -861,11 +886,11 @@ Figure&nbsp;2.7: Posterior predictive check for the model of heights using margi
 </ul>
 <p>The first column helps build intuition because it is in the original data space, but KDEs (and histograms/ECDFs etc) are relatively insensitive to subtle miscalibration. In contrast, the PIT-ECDF directly targets calibration: even small deviations from uniformity become visible, making it a more sensitive diagnostic.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
 <div id="cell-fig-post_ppc_pit_ecdf_alt_0" class="cell" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>az.plot_ppc_dist_pit(dt_i)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>az.plot_ppc_dist_pit(dt_i)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_ppc_pit_ecdf_alt_0" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -879,8 +904,9 @@ Figure&nbsp;2.8: Posterior predictive check with KDEs, ECDFs, and PIT-ECDFs show
 </div>
 </div>
 </div>
-<pre><code>## R
-```{.R}</code></pre>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -889,17 +915,17 @@ Figure&nbsp;2.8: Posterior predictive check with KDEs, ECDFs, and PIT-ECDFs show
 <h3 data-number="2.2.3" class="anchored" data-anchor-id="coverage"><span class="header-section-number">2.2.3</span> Coverage</h3>
 <p>The coverage is the proportion of true values that fall within a given prediction interval. For a well-calibrated model, the coverage should match the intended interval width. For example, a 95% credible interval should contain the true value 95% of the time.</p>
 <p>For equal-tailed intervals (ETI), the coverage can be obtained by transforming the PIT values, we just need to replace the PIT with two times the absolute difference between the PIT values and 0.5. As with the PIT-ECDFs we saw in the previous section, for a well calibrated model, we should expect the coverage to be uniform.</p>
-<p>Using ArviZ we can visualize the ETI coverage by setting <code>coverage=True</code> in the <code>plot_ppc_pit</code> function.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href="">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
 <div id="cell-fig-post_ppc_pit_coverage" class="cell" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>az.plot_ppc_pit(dt_i,</span>
-<span id="cb20-2"><a href="#cb20-2"></a>                 coverage<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb20-3"><a href="#cb20-3"></a>                 visuals<span class="op">=</span>{<span class="st">"ylabel"</span>:<span class="va">False</span>},</span>
-<span id="cb20-4"><a href="#cb20-4"></a>                 figure_kwargs<span class="op">=</span>{<span class="st">"sharey"</span>:<span class="va">True</span>, <span class="st">"figsize"</span>:(<span class="dv">9</span>, <span class="dv">3</span>)},</span>
-<span id="cb20-5"><a href="#cb20-5"></a>                 )<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># Using ArviZ we can visualize the ETI coverage by setting ``coverage=True`` in the `plot_ppc_pit` function.</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>az.plot_ppc_pit(dt_i,</span>
+<span id="cb22-3"><a href="#cb22-3"></a>                 coverage<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb22-4"><a href="#cb22-4"></a>                 visuals<span class="op">=</span>{<span class="st">"ylabel"</span>:<span class="va">False</span>},</span>
+<span id="cb22-5"><a href="#cb22-5"></a>                 figure_kwargs<span class="op">=</span>{<span class="st">"sharey"</span>:<span class="va">True</span>, <span class="st">"figsize"</span>:(<span class="dv">9</span>, <span class="dv">3</span>)},</span>
+<span id="cb22-6"><a href="#cb22-6"></a>                 )<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_ppc_pit_coverage" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -913,8 +939,9 @@ Figure&nbsp;2.9: Coverage check showing four alternative scenarios.
 </div>
 </div>
 </div>
-<pre><code>## R
-```{.R}</code></pre>
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -925,7 +952,7 @@ Figure&nbsp;2.9: Coverage check showing four alternative scenarios.
 </section>
 <section id="sec-avoid-double-dipping" class="level3" data-number="2.2.4">
 <h3 data-number="2.2.4" class="anchored" data-anchor-id="sec-avoid-double-dipping"><span class="header-section-number">2.2.4</span> Avoiding double-dipping</h3>
-<p>So far we have being using the data twice, first to fit the model and then to evaluate it. This is a common practice in Bayesian data analysis and it is not a problem as long as we are aware of it. The main goal is to understand how well the model is doing at predicting the data, detecting potential problems, and if possible or desirable improving the model <span class="citation" data-cites="Gelman_2013">(<a href="#ref-Gelman_2013" role="doc-biblioref">Gelman et al. 2013</a>)</span>.</p>
+<p>So far we have being using the data twice, first to fit the model and then to evaluate it. This is a common practice in Bayesian data analysis and it is not a problem as long as we are aware of it. The main goal is to understand how well the model is doing at predicting the data, detecting potential problems, and if possible or desirable improving the model <span class="citation" data-cites="Gelman_2013">(<a href="References.html#ref-Gelman_2013" role="doc-biblioref">Gelman et al. 2013</a>)</span>.</p>
 <p>Still, we may want to avoid double-dipping. So instead of computing:</p>
 <p><span class="math display">\[
 p(\tilde y_i \leq y_i \mid y)
@@ -936,13 +963,14 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 \]</span></p>
 <p>where <span class="math inline">\(y_{-i}\)</span> is the observed data without the <span class="math inline">\(i\)</span>-th observation.</p>
 <p>This is a more stringent test, as we are not using the <span class="math inline">\(i\)</span>-th observation to compute the posterior predictive distribution. This is known as the leave-one-out cross-validation (LOO-CV) and it is a very popular method to assess the predictive performance of a model.</p>
-<p>In principle computing this will be too costly, as we need to compute the posterior predictive distribution <span class="math inline">\(n\)</span> times, where <span class="math inline">\(n\)</span> is the number of observations. However, we can use a method called Pareto-smoothed importance sampling (PSIS) to approximate the LOO-CV from a single posterior computation. This is a topic we will discuss in more detail in <span class="quarto-unresolved-ref">?sec-model-comparison</span>. ArviZ offers many functions based on this method, one of them is <code>loo_pit</code>.</p>
+<p>In principle computing this will be too costly, as we need to compute the posterior predictive distribution <span class="math inline">\(n\)</span> times, where <span class="math inline">\(n\)</span> is the number of observations. However, we can use a method called Pareto-smoothed importance sampling (PSIS) to approximate the LOO-CV from a single posterior computation. This is a topic we will discuss in more detail in <span class="quarto-unresolved-ref">?sec-model-comparison</span>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true" href="">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
+<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
 <div id="cell-fig-post_loo_pit" class="cell" data-execution_count="18">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>az.plot_loo_pit(dt)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># ArviZ offers many functions based on this method, one of them is `loo_pit`.</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>az.plot_loo_pit(dt)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_loo_pit" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -956,8 +984,9 @@ Figure&nbsp;2.10: Posterior predictive check with LOO-PIT-ECDF.
 </div>
 </div>
 </div>
-<pre><code>## R
-```{.R}</code></pre>
+</div>
+<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -969,31 +998,32 @@ Figure&nbsp;2.10: Posterior predictive check with LOO-PIT-ECDF.
 <section id="posterior-predictive-checks-for-count-data" class="level3" data-number="2.3.1">
 <h3 data-number="2.3.1" class="anchored" data-anchor-id="posterior-predictive-checks-for-count-data"><span class="header-section-number">2.3.1</span> Posterior predictive checks for count data</h3>
 <p>Count data is a type of discrete data that is very common in many fields. For instance, the number of iguanas per square meter in a rainforest, the number of bikes in a bike-sharing station, the number of calls to a call center, the number of emails you got last year, etc. When assessing the fit of a model to count data we need to consider the discreetness of the data and that we usually care about the amount of (over/under-)dispersion.</p>
-<p>Rootograms are a graphical tool to assess the fit of count data models <span class="citation" data-cites="tukey_1977 Kleiber_2016">(<a href="#ref-tukey_1977" role="doc-biblioref">Tukey 1977</a>; <a href="#ref-Kleiber_2016" role="doc-biblioref">Kleiber and Zeileis 2016</a>)</span>. There are a few variations of rootograms, but traditionally rootograms use bars for the predicted data, and lines (plus markers) for the observed data. Finally, instead of plotting the raw data, they show the square <em>root</em> of the observed and predicted counts, which explain the name of the plots. The reason to square root the data is to make easier to compare observed and expected frequencies even for low frequencies. Often the uncertainty in the predictions is omitted.</p>
-<p>Here we are going to discuss the rootograms presented by <span class="citation" data-cites="Säilynoja_2025">Säilynoja et al. (<a href="#ref-Säilynoja_2025" role="doc-biblioref">2025</a>)</span>. These rootograms emphasize the discreteness of the data and predictions by using points. The uncertainty in the predictions is encoded using intervals. Instead of square-rooting the data, it set the y-axis on the square root scale, this makes easier to interpret the data, because we can directly read the frequencies from the y-axis (instead of reading the square roots) while keeping the advantage of being able to discriminate details at lower frequencies.</p>
-<p>To illustrate rootograms we are going to use the Horseshoe crabs dataset <span class="citation" data-cites="Brockmann_1996">(<a href="#ref-Brockmann_1996" role="doc-biblioref">Brockmann 1996</a>)</span>. Very briefly, horseshoe crabs arrive at the beach in pairs for their spawning ritual. Solitary males gather around the nesting couples and vying to fertilize the eggs. These individuals, known as satellite males, often congregate near certain nesting pairs while disregarding others. We used Bambi to create two models a Poisson model and a hurdle-negative binomial model for the number of male satellites as a function of the carapace width and color of the female.</p>
+<p>Rootograms are a graphical tool to assess the fit of count data models <span class="citation" data-cites="tukey_1977 Kleiber_2016">(<a href="References.html#ref-tukey_1977" role="doc-biblioref">Tukey 1977</a>; <a href="References.html#ref-Kleiber_2016" role="doc-biblioref">Kleiber and Zeileis 2016</a>)</span>. There are a few variations of rootograms, but traditionally rootograms use bars for the predicted data, and lines (plus markers) for the observed data. Finally, instead of plotting the raw data, they show the square <em>root</em> of the observed and predicted counts, which explain the name of the plots. The reason to square root the data is to make easier to compare observed and expected frequencies even for low frequencies. Often the uncertainty in the predictions is omitted.</p>
+<p>Here we are going to discuss the rootograms presented by <span class="citation" data-cites="Säilynoja_2025">Säilynoja et al. (<a href="References.html#ref-Säilynoja_2025" role="doc-biblioref">2025</a>)</span>. These rootograms emphasize the discreteness of the data and predictions by using points. The uncertainty in the predictions is encoded using intervals. Instead of square-rooting the data, it set the y-axis on the square root scale, this makes easier to interpret the data, because we can directly read the frequencies from the y-axis (instead of reading the square roots) while keeping the advantage of being able to discriminate details at lower frequencies.</p>
+<p>To illustrate rootograms we are going to use the Horseshoe crabs dataset <span class="citation" data-cites="Brockmann_1996">(<a href="References.html#ref-Brockmann_1996" role="doc-biblioref">Brockmann 1996</a>)</span>. Very briefly, horseshoe crabs arrive at the beach in pairs for their spawning ritual. Solitary males gather around the nesting couples and vying to fertilize the eggs. These individuals, known as satellite males, often congregate near certain nesting pairs while disregarding others. We used Bambi to create two models a Poisson model and a hurdle-negative binomial model for the number of male satellites as a function of the carapace width and color of the female.</p>
 <p>We are going to omit the modelling details, and just upload prefitted models.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href="">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
-<div id="7dd318fa" class="cell" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a>crabs_poisson <span class="op">=</span> az.load_arviz_data(<span class="st">'crabs_poisson'</span>)</span>
-<span id="cb24-2"><a href="#cb24-2"></a>crabs_hurdle_nb <span class="op">=</span> az.load_arviz_data(<span class="st">'crabs_hurdle_nb'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
+<div id="64f50f2a" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1"></a>crabs_poisson <span class="op">=</span> az.load_arviz_data(<span class="st">'crabs_poisson'</span>)</span>
+<span id="cb26-2"><a href="#cb26-2"></a>crabs_hurdle_nb <span class="op">=</span> az.load_arviz_data(<span class="st">'crabs_hurdle_nb'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<pre><code>## R
-```{.R}</code></pre>
+</div>
+<div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 <p>Let’s first check the Poisson model. We can see that the overall fit is not that bad, but the zeros are underpredicted, and counts 1 to 4 are overpredicted. Most counts from 6 onward are also underpredicted. This pattern is an indication of overdispersion in the data, and the huge difference for 0 indicates an excess of zeros.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true" href="">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" role="tab" aria-controls="tabset-11-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
+<div id="tabset-11-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-11-1-tab">
 <div id="cell-fig-ppc_rootogram_crab_poisson" class="cell" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1"></a>pc <span class="op">=</span> az.plot_ppc_rootogram(crabs_poisson)</span>
-<span id="cb26-2"><a href="#cb26-2"></a>pc.viz.plot[<span class="st">"satellite"</span>].item().set_xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1"></a>pc <span class="op">=</span> az.plot_ppc_rootogram(crabs_poisson)</span>
+<span id="cb28-2"><a href="#cb28-2"></a>pc.viz.plot[<span class="st">"satellite"</span>].item().set_xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_rootogram_crab_poisson" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1007,20 +1037,20 @@ Figure&nbsp;2.11: Rootogram showing the uncertainty in the predictions for a Poi
 </div>
 </div>
 </div>
-<pre><code>## R
-```{.R}</code></pre>
+</div>
+<div id="tabset-11-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
-<p>:::</p>
 <p>Now we will check the fit for the hurdle model. As expected for a hurdle model we get a perfect fit for the zeros. For the positive values, we still get some deviations, but the fit is better than with the Poisson model.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true" href="">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-12-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-1" role="tab" aria-controls="tabset-12-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-12-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-2" role="tab" aria-controls="tabset-12-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
+<div id="tabset-12-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-12-1-tab">
 <div id="cell-fig-ppc_rootogram_crab_hurdle_nb" class="cell" data-execution_count="21">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1"></a>pc <span class="op">=</span> az.plot_ppc_rootogram(crabs_hurdle_nb)</span>
-<span id="cb28-2"><a href="#cb28-2"></a>pc.viz.plot[<span class="st">"satellite"</span>].item().set_xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1"></a>pc <span class="op">=</span> az.plot_ppc_rootogram(crabs_hurdle_nb)</span>
+<span id="cb30-2"><a href="#cb30-2"></a>pc.viz.plot[<span class="st">"satellite"</span>].item().set_xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_rootogram_crab_hurdle_nb" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1034,8 +1064,9 @@ Figure&nbsp;2.12: Rootogram showing the uncertainty in the predictions for a Hur
 </div>
 </div>
 </div>
-<pre><code>## R
-```{.R}</code></pre>
+</div>
+<div id="tabset-12-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1043,17 +1074,17 @@ Figure&nbsp;2.12: Rootogram showing the uncertainty in the predictions for a Hur
 </section>
 <section id="posterior-predictive-checks-for-binary-data" class="level3" data-number="2.3.2">
 <h3 data-number="2.3.2" class="anchored" data-anchor-id="posterior-predictive-checks-for-binary-data"><span class="header-section-number">2.3.2</span> Posterior predictive checks for binary data</h3>
-<p>Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. We may be tempted to assess the fit of a binary model using a bar plot, or a plot similar to the rootogram we showed in the previous section, but this is not a good idea. The reason is that even a very simple model with one parameter for the proportion of one class (like an intercept), can perfectly model that proportion <span class="citation" data-cites="Säilynoja_2025">(<a href="#ref-Säilynoja_2025" role="doc-biblioref">Säilynoja et al. 2025</a>)</span>. Then a bar plot will not be able to tell much about the quality of our model.</p>
+<p>Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. We may be tempted to assess the fit of a binary model using a bar plot, or a plot similar to the rootogram we showed in the previous section, but this is not a good idea. The reason is that even a very simple model with one parameter for the proportion of one class (like an intercept), can perfectly model that proportion <span class="citation" data-cites="Säilynoja_2025">(<a href="References.html#ref-Säilynoja_2025" role="doc-biblioref">Säilynoja et al. 2025</a>)</span>. Then a bar plot will not be able to tell much about the quality of our model.</p>
 <p>One solution to this challenge is to use the so call calibration or reliability plots. To create this kind of plot we first bin the predicted probabilities (e.g., [0.0–0.1], [0.1–0.2], …, [0.9–1.0]) and then for each bin we compute the fraction of observed positive outcomes. In this way we can compare the predicted probabilities to the observed frequencies per bin. The ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. The problem with this approach is that in practice we don’t have good rules to select the bins and different bins can result in plots that look drastically different.</p>
-<p>A more robust and simple to use method, that does not rely on binning the data has been proposed by <span class="citation" data-cites="Dimitriadis_2021">Dimitriadis, Gneiting, and Jordan (<a href="#ref-Dimitriadis_2021" role="doc-biblioref">2021</a>)</span>. <a href="#fig-ppc_pava" class="quarto-xref">Figure&nbsp;<span>2.13</span></a> shows one example of this method. As previously mentioned, the ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. If the line is above the diagonal, the model is underestimating the probabilities, and if the line is below the diagonal, the model is overestimating the probabilities. The confidence bands are computed using the method proposed by <span class="citation" data-cites="Dimitriadis_2021">Dimitriadis, Gneiting, and Jordan (<a href="#ref-Dimitriadis_2021" role="doc-biblioref">2021</a>)</span>.</p>
+<p>A more robust and simple to use method, that does not rely on binning the data has been proposed by <span class="citation" data-cites="Dimitriadis_2021">Dimitriadis, Gneiting, and Jordan (<a href="References.html#ref-Dimitriadis_2021" role="doc-biblioref">2021</a>)</span>. <a href="#fig-ppc_pava" class="quarto-xref">Figure&nbsp;<span>2.13</span></a> shows one example of this method. As previously mentioned, the ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. If the line is above the diagonal, the model is underestimating the probabilities, and if the line is below the diagonal, the model is overestimating the probabilities. The confidence bands are computed using the method proposed by <span class="citation" data-cites="Dimitriadis_2021">Dimitriadis, Gneiting, and Jordan (<a href="References.html#ref-Dimitriadis_2021" role="doc-biblioref">2021</a>)</span>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true" href="">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-13-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-1" role="tab" aria-controls="tabset-13-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-13-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-2" role="tab" aria-controls="tabset-13-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-11-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-11-1-tab">
+<div id="tabset-13-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-13-1-tab">
 <div id="cell-fig-ppc_pava" class="cell" data-execution_count="22">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1"></a>dt <span class="op">=</span> az.load_arviz_data(<span class="st">'anes'</span>)</span>
-<span id="cb30-2"><a href="#cb30-2"></a></span>
-<span id="cb30-3"><a href="#cb30-3"></a>az.plot_ppc_pava(dt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1"></a>dt <span class="op">=</span> az.load_arviz_data(<span class="st">'anes'</span>)</span>
+<span id="cb32-2"><a href="#cb32-2"></a></span>
+<span id="cb32-3"><a href="#cb32-3"></a>az.plot_ppc_pava(dt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_pava" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1067,27 +1098,28 @@ Figure&nbsp;2.13: PAV-adjusted calibration plot for a logistic regression model.
 </div>
 </div>
 </div>
-<pre><code>## R
-```{.R}</code></pre>
+</div>
+<div id="tabset-13-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-13-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
-<p>The y-axis of <a href="#fig-ppc_pava" class="quarto-xref">Figure&nbsp;<span>2.13</span></a> is labeled as CEP, short for “conditional event probabilities.” A CEP represents the probability that an event occurs, given that the classifier assigned a particular predicted probability. These probabilities are computed using the pool adjacent violators algorithm <span class="citation" data-cites="Ayer_1955">(<a href="#ref-Ayer_1955" role="doc-biblioref">Ayer et al. 1955</a>)</span>, also known as the PAV-adjusted method—hence the name of the corresponding function in ArviZ. This algorithm ensures that CEPs are monotonic: they either increase or remain constant as the predicted probabilities increase, but never decrease. This monotonicity assumption is reasonable for calibrated models, where higher predicted probabilities should correspond to higher actual event probabilities.</p>
+<p>The y-axis of <a href="#fig-ppc_pava" class="quarto-xref">Figure&nbsp;<span>2.13</span></a> is labeled as CEP, short for “conditional event probabilities.” A CEP represents the probability that an event occurs, given that the classifier assigned a particular predicted probability. These probabilities are computed using the pool adjacent violators algorithm <span class="citation" data-cites="Ayer_1955">(<a href="References.html#ref-Ayer_1955" role="doc-biblioref">Ayer et al. 1955</a>)</span>, also known as the PAV-adjusted method. This algorithm ensures that CEPs are monotonic: they either increase or remain constant as the predicted probabilities increase, but never decrease. This monotonicity assumption is reasonable for calibrated models, where higher predicted probabilities should correspond to higher actual event probabilities.</p>
 </section>
 <section id="posterior-predictive-checks-for-categorical-data" class="level3" data-number="2.3.3">
 <h3 data-number="2.3.3" class="anchored" data-anchor-id="posterior-predictive-checks-for-categorical-data"><span class="header-section-number">2.3.3</span> Posterior predictive checks for categorical data</h3>
-<p>A <a href="https://en.wikipedia.org/wiki/Categorical_variable">categorical</a> variable can take on one of a limited, and usually fixed, number of possible values. For categorical data, we can use the same approach used for binary data if we follow a “one vs others” strategy. That is, we select one category and we compare it to all the other categories. This will give as many plots as categories, which can be fine when the number of categories is relatively low, but unwieldy otherwise. In those other cases, we can first use a confusion matrix or some scalar miscallibration summary per category to help us filter out the cases that we want to inspect visually <span class="citation" data-cites="Säilynoja_2025">(<a href="#ref-Säilynoja_2025" role="doc-biblioref">Säilynoja et al. 2025</a>)</span>.</p>
+<p>A <a href="https://en.wikipedia.org/wiki/Categorical_variable">categorical</a> variable can take on one of a limited, and usually fixed, number of possible values. For categorical data, we can use the same approach used for binary data if we follow a “one vs others” strategy. That is, we select one category and we compare it to all the other categories. This will give as many plots as categories, which can be fine when the number of categories is relatively low, but unwieldy otherwise. In those other cases, we can first use a confusion matrix or some scalar miscallibration summary per category to help us filter out the cases that we want to inspect visually <span class="citation" data-cites="Säilynoja_2025">(<a href="References.html#ref-Säilynoja_2025" role="doc-biblioref">Säilynoja et al. 2025</a>)</span>.</p>
 <p>We can use <code>plot_ppc_pava</code> for categorical data, but not directly. We need to tell it that we have categorical data by passing <code>data_type="categorical"</code>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-12-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-1" role="tab" aria-controls="tabset-12-1" aria-selected="true" href="">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-14-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-1" role="tab" aria-controls="tabset-14-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-14-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-2" role="tab" aria-controls="tabset-14-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-12-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-12-1-tab">
+<div id="tabset-14-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-14-1-tab">
 <div id="cell-fig-ppc_pava_cat" class="cell" data-execution_count="24">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1"></a>az.plot_ppc_pava(</span>
-<span id="cb32-2"><a href="#cb32-2"></a>    dt_cat,</span>
-<span id="cb32-3"><a href="#cb32-3"></a>    data_type<span class="op">=</span><span class="st">"categorical"</span>,</span>
-<span id="cb32-4"><a href="#cb32-4"></a>    figure_kwargs<span class="op">=</span>{<span class="st">"figsize"</span>:(<span class="dv">9</span>, <span class="dv">3</span>)},</span>
-<span id="cb32-5"><a href="#cb32-5"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1"></a>az.plot_ppc_pava(</span>
+<span id="cb34-2"><a href="#cb34-2"></a>    dt_cat,</span>
+<span id="cb34-3"><a href="#cb34-3"></a>    data_type<span class="op">=</span><span class="st">"categorical"</span>,</span>
+<span id="cb34-4"><a href="#cb34-4"></a>    figure_kwargs<span class="op">=</span>{<span class="st">"figsize"</span>:(<span class="dv">9</span>, <span class="dv">3</span>)},</span>
+<span id="cb34-5"><a href="#cb34-5"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_pava_cat" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1101,26 +1133,27 @@ Figure&nbsp;2.14: PAV-adjusted calibration plot for a categorical regression mod
 </div>
 </div>
 </div>
-<pre><code>## R
-```{.R}</code></pre>
+</div>
+<div id="tabset-14-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-14-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 </section>
 <section id="posterior-predictive-checks-for-ordinal-data" class="level3" data-number="2.3.4">
 <h3 data-number="2.3.4" class="anchored" data-anchor-id="posterior-predictive-checks-for-ordinal-data"><span class="header-section-number">2.3.4</span> Posterior predictive checks for ordinal data</h3>
-<p><a href="https://en.wikipedia.org/wiki/Ordinal_data">Ordinal data</a> is a categorical, statistical data type where the variables have natural, ordered categories and the distances between the categories are not known. For ordinal data, we must account for the order when evaluating the calibration. Then we can compute the cumulative conditional event probabilities <span class="citation" data-cites="Säilynoja_2025">(<a href="#ref-Säilynoja_2025" role="doc-biblioref">Säilynoja et al. 2025</a>)</span>, which will get us one plot less than the number of categories.</p>
+<p><a href="https://en.wikipedia.org/wiki/Ordinal_data">Ordinal data</a> is a categorical, statistical data type where the variables have natural, ordered categories and the distances between the categories are not known. For ordinal data, we must account for the order when evaluating the calibration. Then we can compute the cumulative conditional event probabilities <span class="citation" data-cites="Säilynoja_2025">(<a href="References.html#ref-Säilynoja_2025" role="doc-biblioref">Säilynoja et al. 2025</a>)</span>, which will get us one plot less than the number of categories.</p>
 <p>With ordinal data, we can not directly use <code>plot_ppc_pava</code>; we have to pass <code>data_type="ordinal"</code>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-13-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-1" role="tab" aria-controls="tabset-13-1" aria-selected="true" href="">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-15-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-15-1" role="tab" aria-controls="tabset-15-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-15-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-15-2" role="tab" aria-controls="tabset-15-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-13-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-13-1-tab">
+<div id="tabset-15-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-15-1-tab">
 <div id="cell-fig-ppc_pava_ord" class="cell" data-execution_count="26">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1"></a>az.plot_ppc_pava(</span>
-<span id="cb34-2"><a href="#cb34-2"></a>    dt_ord,</span>
-<span id="cb34-3"><a href="#cb34-3"></a>    data_type<span class="op">=</span><span class="st">"ordinal"</span>,</span>
-<span id="cb34-4"><a href="#cb34-4"></a>    figure_kwargs<span class="op">=</span>{<span class="st">"figsize"</span>:(<span class="dv">10</span>, <span class="dv">4</span>)},</span>
-<span id="cb34-5"><a href="#cb34-5"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1"></a>az.plot_ppc_pava(</span>
+<span id="cb36-2"><a href="#cb36-2"></a>    dt_ord,</span>
+<span id="cb36-3"><a href="#cb36-3"></a>    data_type<span class="op">=</span><span class="st">"ordinal"</span>,</span>
+<span id="cb36-4"><a href="#cb36-4"></a>    figure_kwargs<span class="op">=</span>{<span class="st">"figsize"</span>:(<span class="dv">10</span>, <span class="dv">4</span>)},</span>
+<span id="cb36-5"><a href="#cb36-5"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_pava_ord" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1134,8 +1167,9 @@ Figure&nbsp;2.15: PAV-adjusted calibration plot for an ordinal regression model.
 </div>
 </div>
 </div>
-<pre><code>## R
-```{.R}</code></pre>
+</div>
+<div id="tabset-15-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-15-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1147,12 +1181,12 @@ Figure&nbsp;2.15: PAV-adjusted calibration plot for an ordinal regression model.
 <p>For a full example of how to work with this type of data, you can check <a href="https://bambinos.github.io/bambi/notebooks/survival_model.html">Bambi’s documentation</a>. Even after correctly modeling this data, we still have a challenge when doing posterior predictive checks with censored data. Comparing predictions directly to the raw observed data can be misleading. Instead, we replace the raw observations with Kaplan–Meier estimates; a simple, non-parametric method for estimating the probability of survival (in this case, still searching for a job) over time.</p>
 <p>The following example is from a model of cat adoption. We record how many months pass until each cat is adopted, but at the time of data collection, some cats have not yet been adopted.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-14-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-1" role="tab" aria-controls="tabset-14-1" aria-selected="true" href="">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-16-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-16-1" role="tab" aria-controls="tabset-16-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-16-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-16-2" role="tab" aria-controls="tabset-16-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-14-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-14-1-tab">
+<div id="tabset-16-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-16-1-tab">
 <div id="cell-fig-ppc_censored" class="cell" data-execution_count="27">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1"></a>dt_cens <span class="op">=</span> az.load_arviz_data(<span class="st">'censored_cats'</span>)</span>
-<span id="cb36-2"><a href="#cb36-2"></a>az.plot_ppc_censored(dt_cens)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1"></a>dt_cens <span class="op">=</span> az.load_arviz_data(<span class="st">'censored_cats'</span>)</span>
+<span id="cb38-2"><a href="#cb38-2"></a>az.plot_ppc_censored(dt_cens)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_censored" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1166,15 +1200,16 @@ Figure&nbsp;2.16: Posterior predictive check for survival/censored data using Ka
 </div>
 </div>
 </div>
-<pre><code>## R
-```{.R}</code></pre>
+</div>
+<div id="tabset-16-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-16-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
-<p>To keep predictions within a meaningful range ArviZ limits the predictive data relative to the maximum observed duration, preventing the survival curves from extending too far beyond the observed data. You can change this with the argument <code>extrapolation_factor</code>, which defaults to 1.2, meaning up to a 20% larger that the maximum observation. For more recommendations on how to perform predictive assessment for survival model you can read <span class="citation" data-cites="suorsa_2026">(<a href="#ref-suorsa_2026" role="doc-biblioref">Suorsa and Vehtari 2026</a>)</span>.</p>
+<p>To keep predictions within a meaningful range we limit the predictive data relative to the maximum observed duration, preventing the survival curves from extending too far beyond the observed data. You can change this with the argument <code>extrapolation_factor</code>, which defaults to 1.2, meaning up to a 20% larger that the maximum observation. For more recommendations on how to perform predictive assessment for survival model you can read <span class="citation" data-cites="suorsa_2026">(<a href="References.html#ref-suorsa_2026" role="doc-biblioref">Suorsa and Vehtari 2026</a>)</span>.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-Ayer_1955" class="csl-entry" role="listitem">
 Ayer, Miriam, H. D. Brunk, G. M. Ewing, W. T. Reid, and Edward Silverman. 1955. <span>“<span class="nocase">An Empirical Distribution Function for Sampling with Incomplete Information</span>.”</span> <em>The Annals of Mathematical Statistics</em> 26 (4): 641–47. <a href="https://doi.org/10.1214/aoms/1177728423">https://doi.org/10.1214/aoms/1177728423</a>.
 </div>
@@ -1634,11 +1669,14 @@ Tukey, John W. 1977. <em>Exploratory <span>Data</span> <span>Analysis</span></em
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../index.html" class="pagination-link" aria-label="&quot;Bayesian model diagnostics: Workflows and software tools&quot;">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">“Bayesian model diagnostics: Workflows and software tools”</span></span>
+      <a href="../index.html" class="pagination-link" aria-label="Bayesian model diagnostics: Workflows and software tools">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Bayesian model diagnostics: Workflows and software tools</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../sections/References.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
