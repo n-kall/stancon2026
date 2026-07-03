@@ -5,11 +5,11 @@ project:
 book:
   title: "Bayesian model diagnostics: Workflows and software tools"
   author:
-    - name: noa kallioinen
+    - name: Noa Kallioinen
       url: XXXX
       orcid: XXXX
       affiliations:
-        - name: Aalto XXXX
+        - name: XXXX
           affiliation-url: XXXX
           address: XXXX
           city: XXXX
@@ -39,7 +39,7 @@ book:
   chapters:
     - index.md
     - sections/Posterior_predictive_checks.qmd
-    # - sections/References.qmd
+    - sections/References.qmd
 
   page-navigation: true
   reader-mode: true
