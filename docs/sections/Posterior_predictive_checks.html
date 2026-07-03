@@ -508,7 +508,7 @@ p(y) = \int p(y \mid \theta)\, p(\theta)\, d\theta.
 </ol>
 <p>Notice that in step 4 we use domain knowledge, <strong>not observed data</strong>.</p>
 <p>To exemplify a prior predictive check, let’s try with a super simple example. Let’s say we want to model the height of humans. We know that the heights are positive numbers, so we should use a distribution allocating zero mass to negative values. But we also know that at least for adults using a normal distribution could be a good approximation. So we create the following model, without too much thought, and then draw 500 samples from the prior predictive distribution.</p>
-<div id="d91dd068" class="cell" data-execution_count="2">
+<div id="aa7024e6" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>stan_code <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="st">data {</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="st">    int&lt;lower=0&gt; N;</span></span>
@@ -570,7 +570,7 @@ Figure&nbsp;2.1: The prior predictive check for the model of heights. We can see
 <p>We can see that our model is bananas the bulk of the prior predictive distribution is outside of our reference values and the model is predicting values below 0. This is a clear indication that the model is not a good representation of our prior knowledge.</p>
 <p>In many cases, data will be informative enough to overcome poorly selected priors, but this isn’t guaranteed. To address this, we can tighten our priors. While there’s no universal rule for doing so, a good guideline is to choose priors that concentrate most of the prior predictive distribution’s mass within a plausible range—such as between our reference values.</p>
 <p>Such priors are often called weakly informative priors. Though not strictly defined, these priors produce a prior predictive distribution with little to no probability mass in unrealistic or impossible regions. For example, a normal distribution with a mean of 160 and a standard deviation of 10 assigns negligible weight to negative values while still accommodating a wide range of plausible heights.</p>
-<div id="6013751b" class="cell" data-execution_count="5">
+<div id="5e6eba83" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>stan_code <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="st">data {</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="st">    int&lt;lower=0&gt; N;</span></span>
@@ -695,7 +695,7 @@ p(\tilde y \mid y) = \int p(\tilde y \mid \theta)\, p(\theta \mid y)\, d\theta.
 </ol>
 <p>Notice that, unlike prior predictive checks, posterior predictive checks compare simulated data with the observed data. Domain knowledge remains useful, but the observed data provide a much more stringent assessment of model adequacy.</p>
 <p>Continuing with our height example, we can generate synthetic data from the posterior predictive distribution.</p>
-<div id="dc5e79bc" class="cell" data-execution_count="9">
+<div id="e06f825d" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>stan_code <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb12-2"><a href="#cb12-2"></a><span class="st">data {</span></span>
 <span id="cb12-3"><a href="#cb12-3"></a><span class="st">    int&lt;lower=0&gt; N;</span></span>
@@ -827,31 +827,15 @@ p(\tilde y_i \leq y_i \mid y).
 F_Y(y) = \mathrm{Pr}(Y \leq y).
 \]</span></p>
 <p>Thus, we can see the computation of the marginal p-value as an application of the Probability Integral Transform. In practice we may not know the CDF, but as long as we have samples from a distribution, like the posterior predictive, we can compute the empirical CDF (ECDF).</p>
-<p>The CDF of the standard Uniform distribution is a diagonal line that goes from (0, 0) to (1,1), as shown in <a href="#fig-post_pred_uniform_cdf" class="quarto-xref">Figure&nbsp;<span>2.6</span></a>.</p>
-<div id="cell-fig-post_pred_uniform_cdf" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>pz.Uniform(<span class="dv">0</span>, <span class="dv">1</span>).plot_cdf()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div id="fig-post_pred_uniform_cdf" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-post_pred_uniform_cdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="Posterior_predictive_checks_files/figure-html/fig-post_pred_uniform_cdf-output-1.png" width="665" height="326" class="figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-post_pred_uniform_cdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.6: The CDF of the standard Uniform distribution.
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>We can compute the ECDF from our samples and compare it to this line. Deviations from this line may indicate problems with the model. This is a very simple to interpret visualization. That’s the basic idea, but there are a few additional ingredients that can make this visualization more informative and easier to interpret.</p>
-<p>The disadvantage of visualization like <a href="#fig-post_pred_uniform_cdf" class="quarto-xref">Figure&nbsp;<span>2.6</span></a> is that all the “action” is close to the diagonal and then most of the plot is just blank space. A simple <em>trick</em> to improve the <em>data-ink</em> ratio is to render the difference between the observed and expected cumulative distribution functions, the <span class="math inline">\(\Delta\)</span>-ECDF, as shown in <a href="#fig-post_ppc_pit_ecdf" class="quarto-xref">Figure&nbsp;<span>2.7</span></a>. This makes deviations from uniformity more visible, as they will appear as peaks and valleys in the plot.</p>
-<p>Another potential issue with this visualization is that it can be difficult to interpret the magnitude of the deviations from uniformity. Due to finite sample size we should expect deviations from uniformity even if the model is good, so how can we know if a deviation from uniformity is larger than expected? One way to address this issue is to add a uniformity test to the visualization. This test can help us determine when a deviation from uniformity is larger than expected, and it can also help us identify which points contribute the most to the rejection of the null hypothesis of uniformity.</p>
+<p>The CDF of the standard Uniform distribution is a diagonal line that goes from (0, 0) to (1,1). We can compute the ECDF from our samples and compare it to this line. Deviations from this line may indicate problems with the model. This is a very simple to interpret visualization. That’s the basic idea, but there are a few additional ingredients that can make this visualization more informative and easier to interpret.</p>
+<p>The disadvantage of “diagonal line” is preciselly that all the “action” is close to the diagonal and then most of the plot is just blank space. A simple <em>trick</em> to improve the <em>data-ink</em> ratio is to render the difference between the observed and expected cumulative distribution functions, the <span class="math inline">\(\Delta\)</span>-ECDF, as shown in <a href="#fig-post_ppc_pit_ecdf" class="quarto-xref">Figure&nbsp;<span>2.6</span></a>. The ideal <span class="math inline">\(\Delta\)</span>-ECDF will be a horizontal line at zero and deviations becomes peaks and valleys in the plot.</p>
+<p>Another potential issue is the difficulty to interpret the magnitude of the deviations from uniformity. Due to finite sample size we should expect deviations from uniformity even if the model is a good one, so how can we know if a deviation from uniformity is larger than expected? One way to address this is to complement the visualization with a uniformity test. This test can help us determine when a deviation from uniformity is larger than expected, and sometimes it can also help us identify which points contribute the most to the rejection of the null hypothesis.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
-<div id="cell-fig-post_ppc_pit_ecdf" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>az.plot_ppc_pit(dt)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-fig-post_ppc_pit_ecdf" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>az.plot_ppc_pit(dt)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_ppc_pit_ecdf" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -859,7 +843,7 @@ Figure&nbsp;2.6: The CDF of the standard Uniform distribution.
 <img src="Posterior_predictive_checks_files/figure-html/fig-post_ppc_pit_ecdf-output-1.png" width="458" height="209" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-post_ppc_pit_ecdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.7: Posterior predictive check for the model of heights using marginal Bayesian p-values, also know as u-values.
+Figure&nbsp;2.6: Posterior predictive check for the model of heights using marginal Bayesian p-values, also know as u-values.
 </figcaption>
 </figure>
 </div>
@@ -867,7 +851,7 @@ Figure&nbsp;2.7: Posterior predictive check for the model of heights using margi
 </div>
 </div>
 <div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -879,7 +863,7 @@ Figure&nbsp;2.7: Posterior predictive check for the model of heights using margi
 <li>The predictions have a wider spread. The predictions are too uncertain.</li>
 <li>The predictions have a narrower spread. The predictions are too certain.</li>
 </ul>
-<p>Each row in <a href="#fig-post_ppc_pit_ecdf_alt_0" class="quarto-xref">Figure&nbsp;<span>2.8</span></a> corresponds to one of these scenarios. The columns show complementary diagnostics:</p>
+<p>Each row in <a href="#fig-post_ppc_pit_ecdf_alt_0" class="quarto-xref">Figure&nbsp;<span>2.7</span></a> corresponds to one of these scenarios. The columns show complementary diagnostics:</p>
 <ul>
 <li>Left column. We inspect how KDEs of the observed and predicted distributions compare.</li>
 <li>Right column. We inspect how PIT–ECDFs deviate from the expected uniform distribution.</li>
@@ -889,8 +873,8 @@ Figure&nbsp;2.7: Posterior predictive check for the model of heights using margi
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
-<div id="cell-fig-post_ppc_pit_ecdf_alt_0" class="cell" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>az.plot_ppc_dist_pit(dt_i)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-fig-post_ppc_pit_ecdf_alt_0" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>az.plot_ppc_dist_pit(dt_i)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_ppc_pit_ecdf_alt_0" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -898,7 +882,7 @@ Figure&nbsp;2.7: Posterior predictive check for the model of heights using margi
 <img src="Posterior_predictive_checks_files/figure-html/fig-post_ppc_pit_ecdf_alt_0-output-1.png" width="908" height="559" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-post_ppc_pit_ecdf_alt_0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.8: Posterior predictive check with KDEs, ECDFs, and PIT-ECDFs showing four alternative scenarios.
+Figure&nbsp;2.7: Posterior predictive check with KDEs, ECDFs, and PIT-ECDFs showing four alternative scenarios.
 </figcaption>
 </figure>
 </div>
@@ -906,7 +890,7 @@ Figure&nbsp;2.8: Posterior predictive check with KDEs, ECDFs, and PIT-ECDFs show
 </div>
 </div>
 <div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -919,13 +903,14 @@ Figure&nbsp;2.8: Posterior predictive check with KDEs, ECDFs, and PIT-ECDFs show
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
-<div id="cell-fig-post_ppc_pit_coverage" class="cell" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># Using ArviZ we can visualize the ETI coverage by setting ``coverage=True`` in the `plot_ppc_pit` function.</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a>az.plot_ppc_pit(dt_i,</span>
-<span id="cb22-3"><a href="#cb22-3"></a>                 coverage<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb22-4"><a href="#cb22-4"></a>                 visuals<span class="op">=</span>{<span class="st">"ylabel"</span>:<span class="va">False</span>},</span>
-<span id="cb22-5"><a href="#cb22-5"></a>                 figure_kwargs<span class="op">=</span>{<span class="st">"sharey"</span>:<span class="va">True</span>, <span class="st">"figsize"</span>:(<span class="dv">9</span>, <span class="dv">3</span>)},</span>
-<span id="cb22-6"><a href="#cb22-6"></a>                 )<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-fig-post_ppc_pit_coverage" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Using ArviZ we can visualize the ETI coverage by setting</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="co"># ``coverage=True`` in the `plot_ppc_pit` function.</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>az.plot_ppc_pit(dt_i,</span>
+<span id="cb21-4"><a href="#cb21-4"></a>                 coverage<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb21-5"><a href="#cb21-5"></a>                 visuals<span class="op">=</span>{<span class="st">"ylabel"</span>:<span class="va">False</span>},</span>
+<span id="cb21-6"><a href="#cb21-6"></a>                 figure_kwargs<span class="op">=</span>{<span class="st">"sharey"</span>:<span class="va">True</span>, <span class="st">"figsize"</span>:(<span class="dv">9</span>, <span class="dv">3</span>)},</span>
+<span id="cb21-7"><a href="#cb21-7"></a>                 )<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_ppc_pit_coverage" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -933,7 +918,7 @@ Figure&nbsp;2.8: Posterior predictive check with KDEs, ECDFs, and PIT-ECDFs show
 <img src="Posterior_predictive_checks_files/figure-html/fig-post_ppc_pit_coverage-output-1.png" width="683" height="233" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-post_ppc_pit_coverage-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.9: Coverage check showing four alternative scenarios.
+Figure&nbsp;2.8: Coverage check showing four alternative scenarios.
 </figcaption>
 </figure>
 </div>
@@ -941,7 +926,7 @@ Figure&nbsp;2.9: Coverage check showing four alternative scenarios.
 </div>
 </div>
 <div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -968,9 +953,10 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
-<div id="cell-fig-post_loo_pit" class="cell" data-execution_count="18">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># ArviZ offers many functions based on this method, one of them is `loo_pit`.</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>az.plot_loo_pit(dt)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-fig-post_loo_pit" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># ArviZ offers many LOO-based functions</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="co"># `loo_pit` is one of them.</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a>az.plot_loo_pit(dt)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_loo_pit" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -978,7 +964,7 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 <img src="Posterior_predictive_checks_files/figure-html/fig-post_loo_pit-output-1.png" width="458" height="209" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-post_loo_pit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.10: Posterior predictive check with LOO-PIT-ECDF.
+Figure&nbsp;2.9: Posterior predictive check with LOO-PIT-ECDF.
 </figcaption>
 </figure>
 </div>
@@ -986,7 +972,7 @@ Figure&nbsp;2.10: Posterior predictive check with LOO-PIT-ECDF.
 </div>
 </div>
 <div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1006,13 +992,13 @@ Figure&nbsp;2.10: Posterior predictive check with LOO-PIT-ECDF.
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
-<div id="64f50f2a" class="cell" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1"></a>crabs_poisson <span class="op">=</span> az.load_arviz_data(<span class="st">'crabs_poisson'</span>)</span>
-<span id="cb26-2"><a href="#cb26-2"></a>crabs_hurdle_nb <span class="op">=</span> az.load_arviz_data(<span class="st">'crabs_hurdle_nb'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="4ba5b4ff" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a>crabs_poisson <span class="op">=</span> az.load_arviz_data(<span class="st">'crabs_poisson'</span>)</span>
+<span id="cb25-2"><a href="#cb25-2"></a>crabs_hurdle_nb <span class="op">=</span> az.load_arviz_data(<span class="st">'crabs_hurdle_nb'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1021,9 +1007,9 @@ Figure&nbsp;2.10: Posterior predictive check with LOO-PIT-ECDF.
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" role="tab" aria-controls="tabset-11-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-11-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-11-1-tab">
-<div id="cell-fig-ppc_rootogram_crab_poisson" class="cell" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1"></a>pc <span class="op">=</span> az.plot_ppc_rootogram(crabs_poisson)</span>
-<span id="cb28-2"><a href="#cb28-2"></a>pc.viz.plot[<span class="st">"satellite"</span>].item().set_xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-fig-ppc_rootogram_crab_poisson" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1"></a>pc <span class="op">=</span> az.plot_ppc_rootogram(crabs_poisson)</span>
+<span id="cb27-2"><a href="#cb27-2"></a>pc.viz.plot[<span class="st">"satellite"</span>].item().set_xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_rootogram_crab_poisson" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1031,7 +1017,7 @@ Figure&nbsp;2.10: Posterior predictive check with LOO-PIT-ECDF.
 <img src="Posterior_predictive_checks_files/figure-html/fig-ppc_rootogram_crab_poisson-output-1.png" width="458" height="209" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ppc_rootogram_crab_poisson-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.11: Rootogram showing the uncertainty in the predictions for a Poisson model.
+Figure&nbsp;2.10: Rootogram showing the uncertainty in the predictions for a Poisson model.
 </figcaption>
 </figure>
 </div>
@@ -1039,7 +1025,7 @@ Figure&nbsp;2.11: Rootogram showing the uncertainty in the predictions for a Poi
 </div>
 </div>
 <div id="tabset-11-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1048,9 +1034,9 @@ Figure&nbsp;2.11: Rootogram showing the uncertainty in the predictions for a Poi
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-12-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-1" role="tab" aria-controls="tabset-12-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-12-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-2" role="tab" aria-controls="tabset-12-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-12-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-12-1-tab">
-<div id="cell-fig-ppc_rootogram_crab_hurdle_nb" class="cell" data-execution_count="21">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1"></a>pc <span class="op">=</span> az.plot_ppc_rootogram(crabs_hurdle_nb)</span>
-<span id="cb30-2"><a href="#cb30-2"></a>pc.viz.plot[<span class="st">"satellite"</span>].item().set_xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-fig-ppc_rootogram_crab_hurdle_nb" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1"></a>pc <span class="op">=</span> az.plot_ppc_rootogram(crabs_hurdle_nb)</span>
+<span id="cb29-2"><a href="#cb29-2"></a>pc.viz.plot[<span class="st">"satellite"</span>].item().set_xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_rootogram_crab_hurdle_nb" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1058,7 +1044,7 @@ Figure&nbsp;2.11: Rootogram showing the uncertainty in the predictions for a Poi
 <img src="Posterior_predictive_checks_files/figure-html/fig-ppc_rootogram_crab_hurdle_nb-output-1.png" width="458" height="209" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ppc_rootogram_crab_hurdle_nb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.12: Rootogram showing the uncertainty in the predictions for a Hurdle Negative Binomial model.
+Figure&nbsp;2.11: Rootogram showing the uncertainty in the predictions for a Hurdle Negative Binomial model.
 </figcaption>
 </figure>
 </div>
@@ -1066,7 +1052,7 @@ Figure&nbsp;2.12: Rootogram showing the uncertainty in the predictions for a Hur
 </div>
 </div>
 <div id="tabset-12-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1076,15 +1062,15 @@ Figure&nbsp;2.12: Rootogram showing the uncertainty in the predictions for a Hur
 <h3 data-number="2.3.2" class="anchored" data-anchor-id="posterior-predictive-checks-for-binary-data"><span class="header-section-number">2.3.2</span> Posterior predictive checks for binary data</h3>
 <p>Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. We may be tempted to assess the fit of a binary model using a bar plot, or a plot similar to the rootogram we showed in the previous section, but this is not a good idea. The reason is that even a very simple model with one parameter for the proportion of one class (like an intercept), can perfectly model that proportion <span class="citation" data-cites="Säilynoja_2025">(<a href="References.html#ref-Säilynoja_2025" role="doc-biblioref">Säilynoja et al. 2025</a>)</span>. Then a bar plot will not be able to tell much about the quality of our model.</p>
 <p>One solution to this challenge is to use the so call calibration or reliability plots. To create this kind of plot we first bin the predicted probabilities (e.g., [0.0–0.1], [0.1–0.2], …, [0.9–1.0]) and then for each bin we compute the fraction of observed positive outcomes. In this way we can compare the predicted probabilities to the observed frequencies per bin. The ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. The problem with this approach is that in practice we don’t have good rules to select the bins and different bins can result in plots that look drastically different.</p>
-<p>A more robust and simple to use method, that does not rely on binning the data has been proposed by <span class="citation" data-cites="Dimitriadis_2021">Dimitriadis, Gneiting, and Jordan (<a href="References.html#ref-Dimitriadis_2021" role="doc-biblioref">2021</a>)</span>. <a href="#fig-ppc_pava" class="quarto-xref">Figure&nbsp;<span>2.13</span></a> shows one example of this method. As previously mentioned, the ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. If the line is above the diagonal, the model is underestimating the probabilities, and if the line is below the diagonal, the model is overestimating the probabilities. The confidence bands are computed using the method proposed by <span class="citation" data-cites="Dimitriadis_2021">Dimitriadis, Gneiting, and Jordan (<a href="References.html#ref-Dimitriadis_2021" role="doc-biblioref">2021</a>)</span>.</p>
+<p>A more robust and simple to use method, that does not rely on binning the data has been proposed by <span class="citation" data-cites="Dimitriadis_2021">Dimitriadis, Gneiting, and Jordan (<a href="References.html#ref-Dimitriadis_2021" role="doc-biblioref">2021</a>)</span>. <a href="#fig-ppc_pava" class="quarto-xref">Figure&nbsp;<span>2.12</span></a> shows one example of this method. As previously mentioned, the ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. If the line is above the diagonal, the model is underestimating the probabilities, and if the line is below the diagonal, the model is overestimating the probabilities. The confidence bands are computed using the method proposed by <span class="citation" data-cites="Dimitriadis_2021">Dimitriadis, Gneiting, and Jordan (<a href="References.html#ref-Dimitriadis_2021" role="doc-biblioref">2021</a>)</span>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-13-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-1" role="tab" aria-controls="tabset-13-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-13-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-2" role="tab" aria-controls="tabset-13-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-13-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-13-1-tab">
-<div id="cell-fig-ppc_pava" class="cell" data-execution_count="22">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1"></a>dt <span class="op">=</span> az.load_arviz_data(<span class="st">'anes'</span>)</span>
-<span id="cb32-2"><a href="#cb32-2"></a></span>
-<span id="cb32-3"><a href="#cb32-3"></a>az.plot_ppc_pava(dt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-fig-ppc_pava" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1"></a>dt <span class="op">=</span> az.load_arviz_data(<span class="st">'anes'</span>)</span>
+<span id="cb31-2"><a href="#cb31-2"></a></span>
+<span id="cb31-3"><a href="#cb31-3"></a>az.plot_ppc_pava(dt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_pava" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1092,7 +1078,7 @@ Figure&nbsp;2.12: Rootogram showing the uncertainty in the predictions for a Hur
 <img src="Posterior_predictive_checks_files/figure-html/fig-ppc_pava-output-1.png" width="458" height="209" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ppc_pava-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.13: PAV-adjusted calibration plot for a logistic regression model.
+Figure&nbsp;2.12: PAV-adjusted calibration plot for a logistic regression model.
 </figcaption>
 </figure>
 </div>
@@ -1100,11 +1086,11 @@ Figure&nbsp;2.13: PAV-adjusted calibration plot for a logistic regression model.
 </div>
 </div>
 <div id="tabset-13-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-13-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
-<p>The y-axis of <a href="#fig-ppc_pava" class="quarto-xref">Figure&nbsp;<span>2.13</span></a> is labeled as CEP, short for “conditional event probabilities.” A CEP represents the probability that an event occurs, given that the classifier assigned a particular predicted probability. These probabilities are computed using the pool adjacent violators algorithm <span class="citation" data-cites="Ayer_1955">(<a href="References.html#ref-Ayer_1955" role="doc-biblioref">Ayer et al. 1955</a>)</span>, also known as the PAV-adjusted method. This algorithm ensures that CEPs are monotonic: they either increase or remain constant as the predicted probabilities increase, but never decrease. This monotonicity assumption is reasonable for calibrated models, where higher predicted probabilities should correspond to higher actual event probabilities.</p>
+<p>The y-axis of <a href="#fig-ppc_pava" class="quarto-xref">Figure&nbsp;<span>2.12</span></a> is labeled as CEP, short for “conditional event probabilities.” A CEP represents the probability that an event occurs, given that the classifier assigned a particular predicted probability. These probabilities are computed using the pool adjacent violators algorithm <span class="citation" data-cites="Ayer_1955">(<a href="References.html#ref-Ayer_1955" role="doc-biblioref">Ayer et al. 1955</a>)</span>, also known as the PAV-adjusted method. This algorithm ensures that CEPs are monotonic: they either increase or remain constant as the predicted probabilities increase, but never decrease. This monotonicity assumption is reasonable for calibrated models, where higher predicted probabilities should correspond to higher actual event probabilities.</p>
 </section>
 <section id="posterior-predictive-checks-for-categorical-data" class="level3" data-number="2.3.3">
 <h3 data-number="2.3.3" class="anchored" data-anchor-id="posterior-predictive-checks-for-categorical-data"><span class="header-section-number">2.3.3</span> Posterior predictive checks for categorical data</h3>
@@ -1114,12 +1100,12 @@ Figure&nbsp;2.13: PAV-adjusted calibration plot for a logistic regression model.
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-14-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-1" role="tab" aria-controls="tabset-14-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-14-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-2" role="tab" aria-controls="tabset-14-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-14-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-14-1-tab">
-<div id="cell-fig-ppc_pava_cat" class="cell" data-execution_count="24">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1"></a>az.plot_ppc_pava(</span>
-<span id="cb34-2"><a href="#cb34-2"></a>    dt_cat,</span>
-<span id="cb34-3"><a href="#cb34-3"></a>    data_type<span class="op">=</span><span class="st">"categorical"</span>,</span>
-<span id="cb34-4"><a href="#cb34-4"></a>    figure_kwargs<span class="op">=</span>{<span class="st">"figsize"</span>:(<span class="dv">9</span>, <span class="dv">3</span>)},</span>
-<span id="cb34-5"><a href="#cb34-5"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-fig-ppc_pava_cat" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1"></a>az.plot_ppc_pava(</span>
+<span id="cb33-2"><a href="#cb33-2"></a>    dt_cat,</span>
+<span id="cb33-3"><a href="#cb33-3"></a>    data_type<span class="op">=</span><span class="st">"categorical"</span>,</span>
+<span id="cb33-4"><a href="#cb33-4"></a>    figure_kwargs<span class="op">=</span>{<span class="st">"figsize"</span>:(<span class="dv">9</span>, <span class="dv">3</span>)},</span>
+<span id="cb33-5"><a href="#cb33-5"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_pava_cat" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1127,7 +1113,7 @@ Figure&nbsp;2.13: PAV-adjusted calibration plot for a logistic regression model.
 <img src="Posterior_predictive_checks_files/figure-html/fig-ppc_pava_cat-output-1.png" width="690" height="233" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ppc_pava_cat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.14: PAV-adjusted calibration plot for a categorical regression model.
+Figure&nbsp;2.13: PAV-adjusted calibration plot for a categorical regression model.
 </figcaption>
 </figure>
 </div>
@@ -1135,7 +1121,7 @@ Figure&nbsp;2.14: PAV-adjusted calibration plot for a categorical regression mod
 </div>
 </div>
 <div id="tabset-14-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-14-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1148,12 +1134,12 @@ Figure&nbsp;2.14: PAV-adjusted calibration plot for a categorical regression mod
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-15-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-15-1" role="tab" aria-controls="tabset-15-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-15-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-15-2" role="tab" aria-controls="tabset-15-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-15-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-15-1-tab">
-<div id="cell-fig-ppc_pava_ord" class="cell" data-execution_count="26">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1"></a>az.plot_ppc_pava(</span>
-<span id="cb36-2"><a href="#cb36-2"></a>    dt_ord,</span>
-<span id="cb36-3"><a href="#cb36-3"></a>    data_type<span class="op">=</span><span class="st">"ordinal"</span>,</span>
-<span id="cb36-4"><a href="#cb36-4"></a>    figure_kwargs<span class="op">=</span>{<span class="st">"figsize"</span>:(<span class="dv">10</span>, <span class="dv">4</span>)},</span>
-<span id="cb36-5"><a href="#cb36-5"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-fig-ppc_pava_ord" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1"></a>az.plot_ppc_pava(</span>
+<span id="cb35-2"><a href="#cb35-2"></a>    dt_ord,</span>
+<span id="cb35-3"><a href="#cb35-3"></a>    data_type<span class="op">=</span><span class="st">"ordinal"</span>,</span>
+<span id="cb35-4"><a href="#cb35-4"></a>    figure_kwargs<span class="op">=</span>{<span class="st">"figsize"</span>:(<span class="dv">10</span>, <span class="dv">4</span>)},</span>
+<span id="cb35-5"><a href="#cb35-5"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_pava_ord" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1161,7 +1147,7 @@ Figure&nbsp;2.14: PAV-adjusted calibration plot for a categorical regression mod
 <img src="Posterior_predictive_checks_files/figure-html/fig-ppc_pava_ord-output-1.png" width="773" height="308" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ppc_pava_ord-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.15: PAV-adjusted calibration plot for an ordinal regression model.
+Figure&nbsp;2.14: PAV-adjusted calibration plot for an ordinal regression model.
 </figcaption>
 </figure>
 </div>
@@ -1169,7 +1155,7 @@ Figure&nbsp;2.15: PAV-adjusted calibration plot for an ordinal regression model.
 </div>
 </div>
 <div id="tabset-15-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-15-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1184,9 +1170,9 @@ Figure&nbsp;2.15: PAV-adjusted calibration plot for an ordinal regression model.
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-16-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-16-1" role="tab" aria-controls="tabset-16-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-16-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-16-2" role="tab" aria-controls="tabset-16-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-16-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-16-1-tab">
-<div id="cell-fig-ppc_censored" class="cell" data-execution_count="27">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1"></a>dt_cens <span class="op">=</span> az.load_arviz_data(<span class="st">'censored_cats'</span>)</span>
-<span id="cb38-2"><a href="#cb38-2"></a>az.plot_ppc_censored(dt_cens)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cell-fig-ppc_censored" class="cell" data-execution_count="26">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1"></a>dt_cens <span class="op">=</span> az.load_arviz_data(<span class="st">'censored_cats'</span>)</span>
+<span id="cb37-2"><a href="#cb37-2"></a>az.plot_ppc_censored(dt_cens)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_censored" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1194,7 +1180,7 @@ Figure&nbsp;2.15: PAV-adjusted calibration plot for an ordinal regression model.
 <img src="Posterior_predictive_checks_files/figure-html/fig-ppc_censored-output-1.png" width="458" height="209" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ppc_censored-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.16: Posterior predictive check for survival/censored data using Kaplan-Meier curves.
+Figure&nbsp;2.15: Posterior predictive check for survival/censored data using Kaplan-Meier curves.
 </figcaption>
 </figure>
 </div>
@@ -1202,7 +1188,7 @@ Figure&nbsp;2.16: Posterior predictive check for survival/censored data using Ka
 </div>
 </div>
 <div id="tabset-16-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-16-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
