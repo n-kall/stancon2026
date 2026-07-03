@@ -1,0 +1,73 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Bayesian model diagnostics: Workflows and software tools"
+  author:
+    - name: noa kallioinen
+      url: XXXX
+      orcid: XXXX
+      affiliations:
+        - name: Aalto XXXX
+          affiliation-url: XXXX
+          address: XXXX
+          city: XXXX
+          country: Finland
+          postal-code: XXXX
+    - name: Teemu Säilynoja
+      url: XXXX
+      orcid: XXXX
+      affiliations:
+        - name: XXXX
+          affiliation-url: XXXX
+          address: XXXX
+          city: XXXX
+          country: Finland
+          postal-code: XXXX
+    - name: Osvaldo A. Martin 
+      url: https://aloctavodia.github.io/
+      orcid: 0000-0001-7419-8978
+      affiliations:
+        - name: Aalto University
+          affiliation-url: https://research.cs.aalto.fi/pml/
+          address: Otakaari 24, 02150
+          city: Espoo
+          country: Finland
+  favicon: favicon.ico
+
+  chapters:
+    - index.md
+    - sections/Posterior_predictive_checks.qmd
+    # - sections/References.qmd
+
+  page-navigation: true
+  reader-mode: true
+  sidebar:
+    style: "docked"
+    search: true
+    tools:
+      - icon: github
+        text: github
+        menu:
+          - text: source
+            url:  https://github.com/n-kall/stancon2026-workflow-tools
+          - text: issues
+            url:  https://github.com/n-kall/stancon2026-workflow-tools/issues/new
+
+format:
+  html:
+    date: 2026-07-03
+    date-modified: today
+    toc: true
+    code-line-numbers: true
+    number-sections: true
+    number-offset: -1
+
+
+theme:
+  light: cosmo
+  dark: darkly
+
+bibliography: references.bib
+
