@@ -6,6 +6,8 @@
 import arviz as az
 import numpy as np
 import preliz as pz
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 az.style.use("arviz-variat")
 plt.rcParams["figure.dpi"] = 75
@@ -13,6 +15,15 @@ SEED = 3592
 np.random.seed(SEED)
 y = np.random.normal(174, 6, 127)
 ```
+
+```{r}
+#| echo: false
+#| warning: false
+library(ggplot2)
+library(bayesplot)
+library(loo)
+```
+
 
 Models are simplifications of reality, sometimes even very crude simplifications. Thus, we can never fully trust them. While hoping they are good enough is an option, we should try to do better. One general approach to criticizing model is to judge them by their predictions. If a model is robust, its predictions should align well with observations, domain knowledge, or some other benchmark. There are at least four avenues to explore:
 
@@ -98,37 +109,39 @@ generated quantities {
         y_prior_pred[i] = normal_rng(prior_mu, prior_sigma);
     }
 }
+"""
 ```
 
 
 ```{python}
 #| echo: false
-import os
-
-if not os.path.exists("../models/prerun/prior_predictive_00.nc"):
-    dt.to_netcdf("../models/prerun/prior_predictive_00.nc")
 dt = az.convert_to_datatree("../models/prerun/prior_predictive_00.nc")
+```
+
+
+```{r}
+#| echo: false
+data <- readRDS("../models/prerun/00.rds")
 ```
 
 
 The figure below displays samples from the prior predictive distribution (shown as solid blue lines). To aid interpretation, we have included two reference values: the average length/height of a newborn (approximately 50 cm) and the average height of adult males in the Netherlands (around 182 cm). Reference values are meaningful benchmarks derived from domain knowledge—not from the observed data—and help assess whether predictions are on a reasonable scale. While there are no strict rules for selecting reference values, different analysts might choose different benchmarks based on context
 
 ::: {.panel-tabset group="language"}
+
 ## Python
 ```{python}
-#| label: fig-prior_pred_check_wide
 #| fig-cap: "The prior predictive check for the model of heights. We can see that the bulk of the samples are outside the reference values."
 pc = az.plot_ppc_dist(dt, group="prior_predictive")
-az.add_lines(pc, values=(50, 182))
+az.add_lines(pc, values=(50, 182));
 ```
 ## R
-```{.R}
-
+```{r}
+#| fig-cap: "The prior predictive check for the model of heights. We can see that the bulk of the samples are outside the reference values."
+ppd_dens_overlay(data$prior_predictive) +
+  geom_vline(xintercept = c(50, 182), linetype = "dashed")
 ```
 :::
-
-
-
 
 We can see that our model is bananas the bulk of the prior predictive distribution is outside of our reference values and the model is predicting values below 0. This is a clear indication that the model is not a good representation of our prior knowledge. 
 
@@ -168,12 +181,13 @@ generated quantities {
 
 ```{python}
 #| echo: false
-import os
-
-if not os.path.exists("../models/prerun/prior_predictive_01.nc"):
-    dt.to_netcdf("../models/prerun/prior_predictive_01.nc")
 dt = az.convert_to_datatree("../models/prerun/prior_predictive_01.nc")
 ```
+
+```{r}
+#| echo: false
+data <- readRDS("../models/prerun/01.rds")
+``` 
 
 
 We repeat the prior predictive checks with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is within the reference values. 
@@ -181,13 +195,15 @@ We repeat the prior predictive checks with the new prior predictive distribution
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-#| label: fig-prior_pred_check_narrow
-#| fig-cap: "The prior predictive check for the model of heights with a more narrower prior than @fig-prior_pred_check_wide. Predictions are closer to our domain knowledge about human heights."
+#| fig-cap: "The prior predictive check for the model of heights with a more narrower prior than previous figure. Predictions are closer to our domain knowledge about human heights."
 pc = az.plot_ppc_dist(dt, group="prior_predictive")
 az.add_lines(pc, values=(50, 182))
 ```
 ## R
-```{.R}
+```{r}
+#| fig-cap: "The prior predictive check for the model of heights with a more narrower prior than previous figure. Predictions are closer to our domain knowledge about human heights."
+ppd_dens_overlay(data$prior_predictive) +
+  geom_vline(xintercept = c(50, 182), linetype = "dashed")
 ```
 :::
 
@@ -199,13 +215,15 @@ When plotting many distributions, where each one spans a narrow range of values 
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-#| label: fig-prior_pred_check_narrow_ecdf
-#| fig-cap: "The prior predictive check for the model of heights. Same as @fig-prior_pred_check_narrow but using empirical CDFs instead of KDEs."
+#| fig-cap: "The prior predictive check for the model of heights. Same as previous figure, but using empirical CDFs instead of KDEs."
 pc = az.plot_ppc_dist(dt, group="prior_predictive", kind="ecdf")
 az.add_lines(pc, values=(50, 182))
 ```
 ## R
-```{.R}
+```{r}
+#| fig-cap: "The prior predictive check for the model of heights. Same as previous figure, but using empirical CDFs instead of KDEs."
+ppd_ecdf_overlay(data$prior_predictive) +
+  geom_vline(xintercept = c(50, 182), linetype = "dashed")
 ```
 :::
 
@@ -297,13 +315,13 @@ generated quantities {
 
 ```{python}
 #| echo: false
-import os
-
-if not os.path.exists("../models/prerun/prior_predictive_02.nc"):
-    dt.to_netcdf("../models/prerun/prior_predictive_02.nc")
-dt = az.convert_to_datatree("../models/prerun/prior_predictive_02.nc")
+dt = az.convert_to_datatree("../models/prerun/posterior_predictive_02.nc")
 ```
 
+```{r}
+#| echo: false
+data <- readRDS("../models/prerun/02.rds")
+```
 
 And then visualize the comparison. We can see that the model is doing a good job at predicting the data. The observed data (black line) is within the bulk of the posterior predictive distribution (blue lines).
 
@@ -311,12 +329,13 @@ And then visualize the comparison. We can see that the model is doing a good job
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-#| label: fig-post_pred
 #| fig-cap: "Posterior predictive check for the model of heights."
 az.plot_ppc_dist(dt, num_samples=200);
 ```
 ## R
-```{.R}
+```{r}
+#| fig-cap: "Posterior predictive check for the model of heights."
+ppc_dens_overlay(data$observed_data, data$posterior_predictive[1:200, ])
 ```
 :::
 
@@ -333,7 +352,6 @@ The following figure shows a comparison in terms of the mean, median and interqu
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-#| label: fig-post_pred_check_stats
 #| fig-cap: "Posterior predictive check for the model of heights using summary statistics."
 pc = az.combine_plots(dt,
                  plots=[
@@ -346,7 +364,16 @@ pc = az.combine_plots(dt,
 )
 ```
 ## R
-```{.R}
+```{r}
+#| fig-cap: "Posterior predictive check for the model of heights using summary statistics."
+y    <- data$observed_data
+yrep <- data$posterior_predictive
+
+p1 <- ppc_stat(y, yrep, stat = "median")
+p2 <- ppc_stat(y, yrep, stat = "mad")
+p3 <- ppc_stat(y, yrep, stat = "IQR")
+
+bayesplot_grid(p1, p2, p3, grid_args = list(nrow = 1))
 ```
 :::
 
@@ -400,19 +427,20 @@ Thus, we can see the computation of the marginal p-value as an application of th
 
 The CDF of the standard Uniform distribution is a diagonal line that goes from (0, 0) to (1,1). We can compute the ECDF from our samples and compare it to this line. Deviations from this line may indicate problems with the model. This is a very simple to interpret visualization. That's the basic idea, but there are a few additional ingredients that can make this visualization more informative and easier to interpret.
 
-The disadvantage of "diagonal line" is preciselly that all the "action" is close to the diagonal and then most of the plot is just blank space. A simple *trick* to improve the *data-ink* ratio is to render the difference between the observed and expected cumulative distribution functions, the $\Delta$-ECDF, as shown in @fig-post_ppc_pit_ecdf. The ideal $\Delta$-ECDF will be a horizontal line at zero and deviations becomes peaks and valleys in the plot. 
+The disadvantage of "diagonal line" is precisely that all the "action" is close to the diagonal and then most of the plot is just blank space. A simple *trick* to improve the *data-ink* ratio is to render the difference between the observed and expected cumulative distribution functions, the $\Delta$-ECDF, as shown in next figure. The ideal $\Delta$-ECDF will be a horizontal line at zero and deviations becomes peaks and valleys in the plot. 
 
 Another potential issue is the difficulty to interpret the magnitude of the deviations from uniformity. Due to finite sample size we should expect deviations from uniformity even if the model is a good one, so how can we know if a deviation from uniformity is larger than expected? One way to address this is to complement the visualization with a uniformity test. This test can help us determine when a deviation from uniformity is larger than expected, and sometimes it can also help us identify which points contribute the most to the rejection of the null hypothesis.
 
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-#| label: fig-post_ppc_pit_ecdf
 #| fig-cap: "Posterior predictive check for the model of heights using marginal Bayesian p-values, also know as u-values."
 az.plot_ppc_pit(dt);
 ```
 ## R
-```{.R}
+```{r}
+#| fig-cap: "Posterior predictive check for the model of heights using marginal Bayesian p-values, also know as u-values."
+ppc_pit_ecdf(data$observed_data, data$posterior_predictive, method = "correlated", plot_diff = TRUE)
 ```
 :::
 
@@ -427,7 +455,7 @@ To build intuition for PIT-ECDF plots, we will look at four simple examples usin
 * The predictions have a narrower spread. The predictions are too certain.
 
 
-Each row in @fig-post_ppc_pit_ecdf_alt_0 corresponds to one of these scenarios. The columns show complementary diagnostics:
+Each row in the next figure corresponds to one of these scenarios. The columns show complementary diagnostics:
 
 * Left column. We inspect how KDEs of the observed and predicted distributions compare.
 * Right column. We inspect how PIT–ECDFs deviate from the expected uniform distribution.
@@ -437,52 +465,38 @@ The first column helps build intuition because it is in the original data space,
 
 ```{python}
 #| echo: false
-import os
 dt_i = az.convert_to_datatree("../models/prerun/pit_ecdf_quartet.nc")
 ```
+
+```{r}
+#| echo: false
+data_i <- readRDS("../models/prerun/pit_ecdf_quartet.rds")
+```
+
 
 
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-#| label: fig-post_ppc_pit_ecdf_alt_0
 #| fig-cap: "Posterior predictive check with KDEs, ECDFs, and PIT-ECDFs showing four alternative scenarios."
 az.plot_ppc_dist_pit(dt_i);
 ```
 ## R
-```{.R}
+```{r}
+#| fig-cap: "Posterior predictive check with KDEs, ECDFs, and PIT-ECDFs showing four alternative scenarios."
+vars <- c("y0", "y1", "y2", "y3")
+
+plots <- do.call(c, lapply(vars, function(v) {
+  list(
+    ppc_dens_overlay(data_i$observed_data[[v]], data_i$posterior_predictive[[v]][1:50, ]),
+    ppc_pit_ecdf(data_i$observed_data[[v]], data_i$posterior_predictive[[v]],
+                 method = "correlated", plot_diff = TRUE)
+  )
+}))
+
+bayesplot_grid(plots = plots, grid_args = list(ncol = 2))
 ```
 :::
-
-
-### Coverage
-
-The coverage is the proportion of true values that fall within a given prediction interval. For a well-calibrated model, the coverage should match the intended interval width. For example, a 95% credible interval should contain the true value 95% of the time.
-
-For equal-tailed intervals (ETI), the coverage can be obtained by transforming the PIT values, we just need to replace the PIT with two times the absolute difference between the PIT values and 0.5. As with the PIT-ECDFs we saw in the previous section, for a well calibrated model, we should expect the coverage to be uniform.
-
-
-::: {.panel-tabset group="language"}
-## Python
-```{python}
-#| label: fig-post_ppc_pit_coverage
-#| fig-cap: "Coverage check showing four alternative scenarios."
-# Using ArviZ we can visualize the ETI coverage by setting
-# ``coverage=True`` in the `plot_ppc_pit` function.
-az.plot_ppc_pit(dt_i,
-                 coverage=True,
-                 visuals={"ylabel":False},
-                 figure_kwargs={"sharey":True, "figsize":(9, 3)},
-                 );
-```
-## R
-```{.R}
-```
-:::
-
-- If the difference is **positive**, the model is **under-confident**: the predictions have a wider spread than the data -- they are **too uncertain**.
-- If the difference is **negative**, the model is **over-confident**: the predictions have a narrower spread than the data -- they are **too certain**.
-
 
 
 ### Avoiding double-dipping {#sec-avoid-double-dipping}
@@ -510,14 +524,15 @@ In principle computing this will be too costly, as we need to compute the poster
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-#| label: fig-post_loo_pit
 #| fig-cap: "Posterior predictive check with LOO-PIT-ECDF."
-# ArviZ offers many LOO-based functions
-# `loo_pit` is one of them.
 az.plot_loo_pit(dt);
 ```
 ## R
-```{.R}
+```{r}
+#| fig-cap: "Posterior predictive check with LOO-PIT-ECDF."
+psis_result <- psis(-data$log_likelihood)
+lw = psis_result$log_weights
+ppc_loo_pit_ecdf(data$observed_data, data$posterior_predictive, lw, method = "correlated", plot_diff = TRUE)
 ```
 :::
 
@@ -538,16 +553,19 @@ To illustrate rootograms we are going to use the Horseshoe crabs dataset [@Brock
 
 We are going to omit the modelling details, and just upload prefitted models.
 
-::: {.panel-tabset group="language"}
-## Python
+
 ```{python}
+#| echo: false
 crabs_poisson = az.load_arviz_data('crabs_poisson')
 crabs_hurdle_nb = az.load_arviz_data('crabs_hurdle_nb')
 ```
-## R
-```{.R}
+
+```{r}
+#| echo: false
+crabs_poisson <- readRDS("../models/prerun/crabs_poisson.rds")
+crabs_hurdle_nb <- readRDS("../models/prerun/crabs_hurdle_nb.rds")
 ```
-:::
+
 
 Let's first check the Poisson model. We can see that the overall fit is not that bad, but the zeros are underpredicted, and counts 1 to 4 are overpredicted. Most
 counts from 6 onward are also underpredicted. This pattern is an indication of overdispersion in the data, and the huge difference for 0 indicates an excess of zeros.
@@ -556,13 +574,14 @@ counts from 6 onward are also underpredicted. This pattern is an indication of o
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-#| label: fig-ppc_rootogram_crab_poisson
 #| fig-cap: "Rootogram showing the uncertainty in the predictions for a Poisson model."
 pc = az.plot_ppc_rootogram(crabs_poisson)
-pc.viz.plot["satellite"].item().set_xlim(-0.5, 20)
+pc.viz.plot["satellite"].item().set_xlim(-0.5, 20);
 ```
 ## R
-```{.R}
+```{r}
+#| fig-cap: "Rootogram showing the uncertainty in the predictions for a Poisson model."
+ppc_rootogram(crabs_poisson$observed_data, crabs_poisson$posterior_predictive)
 ```
 :::
 
@@ -572,13 +591,14 @@ Now we will check the fit for the hurdle model. As expected for a hurdle model w
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-#| label: fig-ppc_rootogram_crab_hurdle_nb
 #| fig-cap: "Rootogram showing the uncertainty in the predictions for a Hurdle Negative Binomial model."
 pc = az.plot_ppc_rootogram(crabs_hurdle_nb)
-pc.viz.plot["satellite"].item().set_xlim(-0.5, 20)
+pc.viz.plot["satellite"].item().set_xlim(-0.5, 20);
 ```
 ## R
-```{.R}
+```{r}
+#| fig-cap: "Rootogram showing the uncertainty in the predictions for a Hurdle Negative Binomial model."
+ppc_rootogram(crabs_hurdle_nb$observed_data, crabs_hurdle_nb$posterior_predictive)
 ```
 :::
 
@@ -591,25 +611,23 @@ Binary data is a common form of discrete data, often used to represent outcomes 
 
 One solution to this challenge is to use the so call calibration or reliability plots. To create this kind of plot we first bin the predicted probabilities (e.g., [0.0–0.1], [0.1–0.2], ..., [0.9–1.0]) and then for each bin we compute the fraction of observed positive outcomes. In this way we can compare the predicted probabilities to the observed frequencies per bin. The ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. The problem with this approach is that in practice we don't have good rules to select the bins and different bins can result in plots that look drastically different. 
 
-A more robust and simple to use method, that does not rely on binning the data has been proposed by @Dimitriadis_2021. @fig-ppc_pava shows one example of this method. As previously mentioned, the ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. If the line is above the diagonal, the model is underestimating the probabilities, and if the line is below the diagonal, the model is overestimating the probabilities. The confidence bands are computed using the method proposed by @Dimitriadis_2021.
+A more robust and simple to use method, that does not rely on binning the data has been proposed by @Dimitriadis_2021. Next figure shows one example of this method. As previously mentioned, the ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. If the line is above the diagonal, the model is underestimating the probabilities, and if the line is below the diagonal, the model is overestimating the probabilities. The confidence bands are computed using the method proposed by @Dimitriadis_2021.
 
 
 
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-#| label: fig-ppc_pava
 #| fig-cap: "PAV-adjusted calibration plot for a logistic regression model."
 dt = az.load_arviz_data('anes')
-
 az.plot_ppc_pava(dt)
 ```
 ## R
-```{.R}
+```{r}
 ```
 :::
 
-The y-axis of @fig-ppc_pava is labeled as CEP, short for "conditional event probabilities." A CEP represents the probability that an event occurs, given that the classifier assigned a particular predicted probability. These probabilities are computed using the pool adjacent violators algorithm [@Ayer_1955], also known as the PAV-adjusted method. This algorithm ensures that CEPs are monotonic: they either increase or remain constant as the predicted probabilities increase, but never decrease. This monotonicity assumption is reasonable for calibrated models, where higher predicted probabilities should correspond to higher actual event probabilities. 
+The y-axis of the previous figure is labeled as CEP, short for "conditional event probabilities." A CEP represents the probability that an event occurs, given that the classifier assigned a particular predicted probability. These probabilities are computed using the pool adjacent violators algorithm [@Ayer_1955], also known as the PAV-adjusted method. This algorithm ensures that CEPs are monotonic: they either increase or remain constant as the predicted probabilities increase, but never decrease. This monotonicity assumption is reasonable for calibrated models, where higher predicted probabilities should correspond to higher actual event probabilities. 
 
 ### Posterior predictive checks for categorical data
 
@@ -627,7 +645,6 @@ dt_cat = az.convert_to_datatree("../models/prerun/dt_cat.nc")
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-#| label: fig-ppc_pava_cat
 #| fig-cap: "PAV-adjusted calibration plot for a categorical regression model."
 az.plot_ppc_pava(
     dt_cat,
@@ -636,7 +653,7 @@ az.plot_ppc_pava(
     )
 ```
 ## R
-```{.R}
+```{r}
 ```
 :::
 
@@ -658,7 +675,6 @@ dt_ord = az.convert_to_datatree("../models/prerun/dt_ord.nc")
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-#| label: fig-ppc_pava_ord
 #| fig-cap: "PAV-adjusted calibration plot for an ordinal regression model."
 az.plot_ppc_pava(
     dt_ord,
@@ -667,7 +683,7 @@ az.plot_ppc_pava(
     )
 ```
 ## R
-```{.R}
+```{r}
 ```
 :::
 
@@ -683,17 +699,23 @@ For a full example of how to work with this type of data, you can check [Bambi's
 The following example is from a model of cat adoption. We record how many months pass until each cat is adopted, but at the time of data collection, some cats have not yet been adopted.
 
 
+```{r}
+#| echo: false
+cens <- readRDS("../models/prerun/censored_cats.rds")
+```
+
 
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-#| label: fig-ppc_censored
-#| fig-cap: "Posterior predictive check for survival/censored data using Kaplan-Meier curves."
+#| fig-cap: "Posterior predictive check for survival/censored data using Kaplan–Meier curves."
 dt_cens = az.load_arviz_data('censored_cats')
 az.plot_ppc_censored(dt_cens)
 ```
 ## R
-```{.R}
+```{r}
+#| fig-cap: "Posterior predictive check for survival/censored data using Kaplan–Meier curves."
+ppc_km_overlay(cens$observed_data, cens$posterior_predictive[1:50,], status_y = cens$constant_data)
 ```
 :::
 
