@@ -6,15 +6,14 @@ book:
   title: "Bayesian model diagnostics: Workflows and software tools"
   author:
     - name: Noa Kallioinen
-      url: XXXX
-      orcid: XXXX
+      url: https://github.com/n-kall
+      orcid: 0000-0003-1586-8382
       affiliations:
-        - name: XXXX
-          affiliation-url: XXXX
-          address: XXXX
-          city: XXXX
+        - name: University of Helsinki
+          affiliation-url: https://www.helsinki.fi/en/researchgroups/environmental-and-ecological-statistics
+          address: Biocenter 3, Viikinkaari 1
+          city: Helsinki
           country: Finland
-          postal-code: XXXX
     - name: Teemu Säilynoja
       url: XXXX
       orcid: XXXX
@@ -39,7 +38,9 @@ book:
   chapters:
     - index.md
     - sections/DataTree.qmd
+    - sections/MCMC_diagnostics.qmd
     - sections/Posterior_predictive_checks.qmd
+    - sections/Sensitivity_checks.qmd
     - sections/References.qmd
 
   page-navigation: true
