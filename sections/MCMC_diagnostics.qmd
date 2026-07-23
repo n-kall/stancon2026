@@ -39,12 +39,12 @@ The theory describes certain behaviors of MCMCs methods, many diagnoses are base
     * For example, for a sufficiently long sample, the first portion must be indistinguishable from the last (and so should any other combination of regions).
 * For a given model, every time we sample from the posterior distribution, the generated samples will be different from the others, but for our purposes, they should be practically indistinguishable from each other.
 
-We are going to see that many diagnostics need multiple chains. Each chain is an independent MCMC run. The logic is that by comparing independent runs we can more easily spot issues than running a single instance. This multiple-chain approach also takes advantage of modern hardware. If you have a CPU with 4 cores you can get 4 independent chains in essentially the same time that one single chain.  
+We are going to see that many diagnostics need multiple chains. Each chain is an independent MCMC run. The logic is that by comparing independent runs we can more easily spot issues than running a single instance. This multiple-chain approach also takes advantage of modern hardware. If you have a CPU with 4 cores you can get 4 independent chains in essentially the same time that one single chain.
 
-To keep the focus on the diagnostics and not on any particular Bayesian model. We are going to first create 3 synthetic samples, we will use them to emulate samples from a posterior distribution. 
+To keep the focus on the diagnostics and not on any particular Bayesian model. We are going to first create 3 synthetic samples, we will use them to emulate samples from a posterior distribution.
 
-* `good_sample`: A random sample from a `Gamma(2, 5)`. This is an example of a good sample because we are generating independent and identically distributed (iid) draws. This is the ideal scenario. 
-* `bad_sample_0`: We sorted good_sample, split it into four chains, and then added a small Gaussian error. This is a representation of a bad sample because values are not independent (we sorted the values!) and they do not come from the same distribution. This represents a scenario where the sampler has clearly very poor mixing. 
+* `good_sample`: A random sample from a `Gamma(2, 5)`. This is an example of a good sample because we are generating independent and identically distributed (iid) draws. This is the ideal scenario.
+* `bad_sample_0`: We sorted good_sample, split it into four chains, and then added a small Gaussian error. This is a representation of a bad sample because values are not independent (we sorted the values!) and they do not come from the same distribution. This represents a scenario where the sampler has clearly very poor mixing.
 * `bad_sample_1`: we start from `good_chains`, and turn into a poor sample by randomly introducing portions where consecutive samples are highly correlated to each other. This represents a common scenario, a sampler can resolve a region of the parameter space very well, but get stuck into one or more regions.
 
 ::: {.panel-tabset group="language"}
@@ -73,11 +73,11 @@ $$
 \hat R = \sqrt{\frac{\widehat{\mathrm{var}}^+}{W}}.
 $$
 
-The version implemented in `ArviZ` and in `posterior` follows @vehtari_2021, and improves on the original @gelman_rubin_1992 statistic in three ways: 
+The version implemented in `ArviZ` and in `posterior` follows @vehtari_2021, and improves on the original @gelman_rubin_1992 statistic in three ways:
 
 * It *splits* each chain in half before comparing them (so it can catch non-stationarity within a single chain, not just disagreement across chains)
-* It *rank-normalizes* the draws before computing $\hat R$ (so it isn't thrown off by heavy-tailed posteriors, where ordinary variance estimates are unstable), 
-* It computes a $\hat R$ on the *folded* (absolute deviation from the median) draws to catch differences in scale, not just location, between chains. 
+* It *rank-normalizes* the draws before computing $\hat R$ (so it isn't thrown off by heavy-tailed posteriors, where ordinary variance estimates are unstable),
+* It computes a $\hat R$ on the *folded* (absolute deviation from the median) draws to catch differences in scale, not just location, between chains.
 
 The final reported $\hat R$ is the maximum of the rank-normalized and folded $\hat R$ values. Because of these refinements, the recommended convergence threshold is stricter than it used to be: $\hat R < 1.01$, rather than the older rule of thumb of $1.1$.
 
@@ -110,6 +110,33 @@ summarise_draws(sample, rhat)
 It's important to keep in mind that $\hat R$ close to 1 is a *necessary but not sufficient* condition for convergence: it can still be fooled, for example if all chains happen to get stuck in the same region of a multimodal posterior, or fail to explore the tails in the same way. A low $\hat R$ tells you the chains agree with each other, but it says nothing about whether they've explored *enough* of the posterior to give you reliable estimates. That's the question the effective sample size (ESS) answers next.
 
 
+
+## Nested Rhat
+
+It is becoming more common to run many short chains rather than just a few longer chains. This allows for potentially large speed ups if running parallel. @Margossian2024 has developed an updated R-hat diagnostic for use in this paradigm, called nested R-hat. The key difference is that chains are grouped into superchains. All chains within a superchain are initialized at the same point. Nested R-hat then quantifies the ratio between within super-chain and between superchain variances.
+
+::: {.panel-tabset group="language"}
+## Python
+```{python}
+#| eval: false
+superchain_ids = [i for i in range(10) for j in range(5)]
+
+az.rhat_nested(sample, superchain_ids = superchain_ids)
+```
+## R
+```{r}
+many_short_chains <- readRDS("../models/prerun/many_short_chains.rds")
+
+summarise_draws(
+    many_short_chains,
+    rhat,
+    nested_rhat = ~ rhat_nested(.x, superchain_ids = attr(many_short_chains, "superchain_ids"))
+)
+```
+:::
+
+
+
 ## Effective Sample Size (ESS)
 
 $\hat R$ tells us whether the chains agree with each other, but it says nothing about how much *information* those chains actually contain. That's the question the **effective sample size** (ESS) answers.
@@ -128,7 +155,7 @@ $$
 
 When $\rho_t = 0$ for all $t$ (independent draws), $\mathrm{ESS} = N$. As autocorrelation increases, the denominator grows and $\mathrm{ESS}$ shrinks, sometimes far below $N$.
 
-In practice we don't know the $\rho_t$'s and must estimate them from the draws themselves, which is where @vehtari_2021 comes in. As with $\hat R$, the version implemented in `ArviZ` and `posterior` improves on the classical estimator by combining information across chains (via split chains) and by rank-normalizing the draws before estimating autocorrelations, which makes the estimate more robust for posteriors that are far from Gaussian. 
+In practice we don't know the $\rho_t$'s and must estimate them from the draws themselves, which is where @vehtari_2021 comes in. As with $\hat R$, the version implemented in `ArviZ` and `posterior` improves on the classical estimator by combining information across chains (via split chains) and by rank-normalizing the draws before estimating autocorrelations, which makes the estimate more robust for posteriors that are far from Gaussian.
 
 The following figure illustrates the resulting relationship between raw sample size and ESS: ESS increases with sample size, but the slope is steeper for lower autocorrelation, consistent with the intuition developed above.
 
@@ -197,7 +224,7 @@ az.plot_ess(
 :::
 
 
-A simple way to increase the ESS is to increase the number of samples, but it could be the case that the ESS grows very slowly with the number of samples, so even if we increased the number of samples 10 times we could still be very far from our target value. One way to estimate "how many more samples do we need" is to use `az.plot_ess_evolution(.)`. This graph shows us how the ESS changed with each iteration, which allows us to make predictions. 
+A simple way to increase the ESS is to increase the number of samples, but it could be the case that the ESS grows very slowly with the number of samples, so even if we increased the number of samples 10 times we could still be very far from our target value. One way to estimate "how many more samples do we need" is to use `az.plot_ess_evolution(.)`. This graph shows us how the ESS changed with each iteration, which allows us to make predictions.
 
 From the next figure we can see that the ESS grows linearly with the number of samples for `good_sample`, and it does not grow at all for `bad_sample_0`. In the latter case, this is an indication that there is virtually no hope of improving the ESS simply by increasing the number of draws.
 
