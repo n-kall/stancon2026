@@ -1,0 +1,143 @@
+---
+title: "Bayesian model diagnostics"
+subtitle: "Workflows and software tools"
+author:
+  - name: "Noa Kallioinen"
+    affiliation: University of Helsinki
+  - name: "Osvaldo Martin"
+    affiliation: Aalto University
+  - name: "Teemu Säilynoja"
+    affiliation:
+format:
+  revealjs: default
+revealjs-plugins:
+  - tabset
+---
+
+```{python}
+#| echo : false
+#| warning: false
+import arviz as az
+import numpy as np
+import xarray as xr
+xr.set_options(display_expand_attrs=False)
+az.style.use("arviz-variat")
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+library(posterior)
+library(ggplot2)
+library(loo)
+library(bayesplot)
+library(priorsense)
+theme_set(bayesplot::theme_default(base_family = "sans", base_size = 14))
+library(tinytable)
+```
+
+## Outline
+
+- Tools and posterior draws objects (9:00-9:45)
+- Convergence and uncertainty (9:50-10:55)
+- Model evaluation and critique (11:00-12:00)
+
+Work book: n-kall.github.io/stancon2026-workflow-tools
+
+# Tools
+
+## R
+
+- [posterior](https://mc-stan.org/posterior/): Conversion, manipulation, and summarization of draws from posterior and prior distributions.
+- [bayesplot](https://mc-stan.org/bayesplot/): Visual checks and summaries.
+- [loo](https://mc-stan.org/loo/): Model comparison using leave-one-out cross-validation and related methods.
+- [priorsense](https://n-kall.github.io/priorsense/): Prior diagnostics and sensitivity analysis.
+
+## Python
+- [arviz-base](https://python.arviz.org/projects/base/en/latest/): Data related functionality, including converters from different PPLs.
+- [arviz-stats](https://python.arviz.org/projects/stats/en/latest/): Statistical functions and diagnostics.
+- [arviz-plots](https://python.arviz.org/projects/plots/en/latest/): Visual checks and summaries built on top of arviz-stats and arviz-base.
+- [arviz](https://python.arviz.org/en/latest/): a meta-package that imports all the above and provides a single namespace for users.
+
+# Posterior objects
+
+`posterior` provides objects for draws that mimic built-in types `matrix`,
+`array` `data.frame`, `list`
+
+`arviz` provides the `DataTree` object for posterior draws.
+
+## Example
+
+::: {.panel-tabset}
+
+### Python
+
+```{python}
+#| echo: false
+dt = az.load_arviz_data("centered_eight")
+dt
+```
+
+### R
+
+```{r}
+#| echo: false
+
+posterior::example_draws() |> posterior::as_draws_df()
+
+```
+
+:::
+
+# MCMC diagnostics
+
+## R-hat
+
+- Convergence diagnostic
+- Measure of ratio between within-chain and between-chain variance
+- R-hat > 1.01 indicates lack of convergence
+
+```{r}
+sample <- readRDS("models/prerun/sample.rds")
+summarise_draws(sample, rhat) |> tt()
+```
+
+## Nested R-hat
+
+- Convergence diagnostic when using many short chains
+- Chains are grouped into superchains (sharing initialization)
+- Classic R-hat may wrongly indicate lack of convergence, but nested R-hat does not
+
+```{r}
+#| echo: false
+many_short_chains <- readRDS("models/prerun/many_short_chains.rds")
+
+summarise_draws(
+    many_short_chains,
+    rhat,
+    nested_rhat = ~ rhat_nested(.x, superchain_ids = attr(many_short_chains, "superchain_ids"))
+) |>
+tt()
+```
+
+
+## Effective sample size
+
+## Monte Carlo standard error
+
+## Pareto-k
+
+# Predictive checking
+
+## Prior predictive checks
+
+## Posterior predictive checks
+
+# Model comparison
+
+## Leave-one-out cross-validation
+
+# Sensitivity checking
+
+## Power-scaling sensitivity checks
