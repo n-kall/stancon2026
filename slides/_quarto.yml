@@ -1,0 +1,13 @@
+title: "Bayesian model diagnostics"
+subtitle: "Workflows and software tools"
+author:
+  - name: "Noa Kallioinen"
+    affiliation: University of Helsinki
+  - name: "Osvaldo Martin"
+    affiliation: Aalto University
+  - name: "Teemu Säilynoja"
+    affiliation:
+format:
+  revealjs: default
+revealjs-plugins:
+  - tabset

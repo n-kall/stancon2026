@@ -1,0 +1,10 @@
+engine: jupyter
+jupyter: ir
+
+format:
+  ipynb:
+    jupyter:
+      kernelspec:
+        display_name: R
+        language: R
+        name: ir

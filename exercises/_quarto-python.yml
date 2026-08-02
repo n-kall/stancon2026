@@ -1,0 +1,10 @@
+engine: jupyter
+jupyter: python3
+
+format:
+  ipynb:
+    jupyter:
+      kernelspec:
+        display_name: python
+        language: python
+        name: jupyter

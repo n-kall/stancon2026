@@ -71,5 +71,5 @@ theme:
   light: cosmo
   dark: darkly
 
-bibliography: references.bib
+bibliography: ../references.bib
 

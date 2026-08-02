@@ -114,13 +114,13 @@ generated quantities {
 
 ```{python}
 #| echo: false
-dt = az.convert_to_datatree("../models/prerun/prior_predictive_00.nc")
+dt = az.convert_to_datatree("../../models/prerun/prior_predictive_00.nc")
 ```
 
 
 ```{r}
 #| echo: false
-data <- readRDS("../models/prerun/00.rds")
+data <- readRDS("../../models/prerun/00.rds")
 ```
 
 
@@ -178,12 +178,12 @@ generated quantities {
 
 ```{python}
 #| echo: false
-dt = az.convert_to_datatree("../models/prerun/prior_predictive_01.nc")
+dt = az.convert_to_datatree("../../models/prerun/prior_predictive_01.nc")
 ```
 
 ```{r}
 #| echo: false
-data <- readRDS("../models/prerun/01.rds")
+data <- readRDS("../../models/prerun/01.rds")
 ```
 
 
@@ -309,12 +309,12 @@ generated quantities {
 
 ```{python}
 #| echo: false
-dt = az.convert_to_datatree("../models/prerun/posterior_predictive_02.nc")
+dt = az.convert_to_datatree("../../models/prerun/posterior_predictive_02.nc")
 ```
 
 ```{r}
 #| echo: false
-data <- readRDS("../models/prerun/02.rds")
+data <- readRDS("../../models/prerun/02.rds")
 ```
 
 And then visualize the comparison. We can see that the model is doing a good job at predicting the data. The observed data (black line) is within the bulk of the posterior predictive distribution (blue lines).
@@ -459,12 +459,12 @@ The first column helps build intuition because it is in the original data space,
 
 ```{python}
 #| echo: false
-dt_i = az.convert_to_datatree("../models/prerun/pit_ecdf_quartet.nc")
+dt_i = az.convert_to_datatree("../../models/prerun/pit_ecdf_quartet.nc")
 ```
 
 ```{r}
 #| echo: false
-data_i <- readRDS("../models/prerun/pit_ecdf_quartet.rds")
+data_i <- readRDS("../../models/prerun/pit_ecdf_quartet.rds")
 ```
 
 
@@ -563,8 +563,8 @@ crabs_hurdle_nb = az.load_arviz_data('crabs_hurdle_nb')
 
 ```{r}
 #| echo: false
-crabs_poisson <- readRDS("../models/prerun/crabs_poisson.rds")
-crabs_hurdle_nb <- readRDS("../models/prerun/crabs_hurdle_nb.rds")
+crabs_poisson <- readRDS("../../models/prerun/crabs_poisson.rds")
+crabs_hurdle_nb <- readRDS("../../models/prerun/crabs_hurdle_nb.rds")
 ```
 
 
@@ -639,7 +639,7 @@ We can use `plot_ppc_pava` for categorical data, but not directly. We need to te
 
 ```{python}
 #| echo: false
-dt_cat = az.convert_to_datatree("../models/prerun/dt_cat.nc")
+dt_cat = az.convert_to_datatree("../../models/prerun/dt_cat.nc")
 ```
 
 
@@ -668,7 +668,7 @@ With ordinal data, we can not directly use `plot_ppc_pava`; we have to pass `dat
 
 ```{python}
 #| echo: false
-dt_ord = az.convert_to_datatree("../models/prerun/dt_ord.nc")
+dt_ord = az.convert_to_datatree("../../models/prerun/dt_ord.nc")
 ```
 
 
@@ -702,7 +702,7 @@ The following example is from a model of cat adoption. We record how many months
 
 ```{r}
 #| echo: false
-cens <- readRDS("../models/prerun/censored_cats.rds")
+cens <- readRDS("../../models/prerun/censored_cats.rds")
 ```
 
 

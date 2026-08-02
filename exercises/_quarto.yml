@@ -1,0 +1,8 @@
+project:
+  type: default
+
+format:
+  ipynb: default
+
+execute:
+  enabled: false

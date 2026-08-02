@@ -1,0 +1,49 @@
+# Model evaluation {#sec-mcmc-diagnostics}
+
+```{python}
+#| echo: false
+#| warning: false
+import warnings
+warnings.filterwarnings("ignore")
+import arviz as az
+import matplotlib.pyplot as plt
+az.style.use("arviz-variat")
+plt.rcParams["figure.dpi"] = 75
+```
+
+```{r}
+#| echo: false
+#| warning: false
+library(bayesplot)
+library(posterior)
+theme_set(bayesplot::theme_default(base_family = "sans", base_size = 14))
+library(loo)
+```
+
+Model evaluation is a topic extensively covered elsewhere, so here we will highlight some of the tools available, and recent updates to the workflow.
+
+## Leave-one-out cross-validation
+
+Efficient approximate leave-one-out cross-validation is possible using Pareto smoothed
+importance sampling.
+
+
+::: {.panel-tabset group="language"}
+
+## Python
+```{python}
+#| eval: false
+az.loo()
+```
+## R
+```{r}
+#| eval: false
+
+m1_loo <- loo(m1)
+m2_loo <- loo(m2)
+
+loo_compare(model1 = m1_loo, model2 = m2_loo)
+
+```
+:::
+

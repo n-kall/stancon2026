@@ -51,11 +51,11 @@ To keep the focus on the diagnostics and not on any particular Bayesian model. W
 ## Python
 ```{python}
 #| code-summary: "Show the code for more details"
-sample = az.convert_to_datatree("../models/prerun/sample.nc")
+sample = az.convert_to_datatree("../../models/prerun/sample.nc")
 ```
 ## R
 ```{r}
-sample <- readRDS("../models/prerun/sample.rds")
+sample <- readRDS("../../models/prerun/sample.rds")
 ```
 :::
 
@@ -125,7 +125,7 @@ az.rhat_nested(sample, superchain_ids = superchain_ids)
 ```
 ## R
 ```{r}
-many_short_chains <- readRDS("../models/prerun/many_short_chains.rds")
+many_short_chains <- readRDS("../../models/prerun/many_short_chains.rds")
 
 summarise_draws(
     many_short_chains,
@@ -290,11 +290,11 @@ To see the diagnostic do more interesting work, we switch to an example with gen
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
-drt = az.convert_to_datatree("../models/prerun/drt.nc")
+drt = az.convert_to_datatree("../../models/prerun/drt.nc")
 ```
 ## R
 ```{r}
-drt <- readRDS("../models/prerun/drt.rds")
+drt <- readRDS("../../models/prerun/drt.rds")
 ```
 :::
 
