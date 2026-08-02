@@ -5,17 +5,19 @@
 quarto render exercises.qmd \
   --profile r \
   --to ipynb \
-  --output exercises-r.ipynb
+  --output exercises-r.ipynb \
+  -M jupyter:ir
 
 # Convert the R notebook to a quarto document
 quarto convert exercises-r.ipynb \
-  --output exercises-r.qmd
+       --output exercises-r.qmd
 
 # Generate the Python Jupyter notebook
 quarto render exercises.qmd \
   --profile python \
   --to ipynb \
-  --output exercises-python.ipynb
+  --output exercises-python.ipynb \
+  -M jupyter:python3
 
 # Convert the Python notebook to a quarto document
 quarto convert exercises-python.ipynb \
