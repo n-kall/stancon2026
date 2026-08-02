@@ -576,3 +576,277 @@ eight_schools_draws |>
 ```
 
 :::
+
+# Plotting posterior draws
+
+## Marginal posteriors
+
+Plot the marginal posteriors for the school means.
+
+::: {.content-visible when-profile="r"}
+
+You can use the functions `mcmc_intervals()` or `mcmc_areas()`.
+
+```{r}
+# Your code here
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="r-solutions"}
+
+
+```{r}
+eight_schools_draws |>
+  subset_draws(variable = "theta") |>
+  mcmc_intervals()
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="python-solutions"}
+
+```{python}
+
+
+```
+
+:::
+
+
+## Pairs plot
+
+Plot the variables `mu` and `tau` in an pairs plot.
+
+
+::: {.content-visible when-profile="r"}
+
+You can use the functions `mcmc_pairs()`
+
+```{r}
+# Your code here
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="r-solutions"}
+
+
+```{r}
+eight_schools_draws |>
+    subset_draws(variable = c("mu", "tau")) |>
+    mcmc_pairs()
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="python-solutions"}
+
+```{python}
+
+
+```
+
+:::
+
+# Prior predictive check
+
+We can generate prior predictions from the eight schools model, using the following function.
+
+::: {.content-visible when-profile="r"}
+
+```{r}
+eight_schools_prior <- function(ndraws, mu_prior_sd = 1, tau_prior_sd = 1, sigma_obs = c(15, 10, 16, 11, 9, 11, 10, 18)) {
+
+  J <- length(sigma_obs)
+
+  mu <- rnorm(ndraws, 0, mu_prior_sd)
+  tau <- abs(rnorm(ndraws, 0, tau_prior_sd))
+
+  theta <- sapply(1:J, \(j) rnorm(ndraws, mu, tau))
+  yrep <- sapply(1:J, \(j) rnorm(ndraws, theta[, j], sigma_obs[j])) 
+  
+  prior_draws <- as_draws(yrep)
+  variables(prior_draws) <- paste0("yrep[", 1:J, "]")
+  
+  return(prior_draws)
+}
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+
+
+```
+
+:::
+
+
+Generate 1000 prior predictive draws, and plot the distributions for each school.
+Try with different `mu_prior_sd` and `tau_prior_sd` values (e.g. 1, 10, 100).
+
+::: {.content-visible when-profile="r"}
+
+You can use the `ppd_intervals` function.
+
+```{r}
+prior_predictive_draws <- eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, tau_prior_sd = 1)
+# Continue the code
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+::: {.content-visible when-profile="r-solutions"}
+
+```{r}
+eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, tau_prior_sd = 1) |>
+  ppd_intervals()
+
+eight_schools_prior(ndraws = 1000, mu_prior_sd = 0.01, tau_prior_sd = 1) |>
+  ppd_intervals()
+
+eight_schools_prior(ndraws = 1000, mu_prior_sd = 100, tau_prior_sd = 1) |>
+  ppd_intervals()
+
+eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, tau_prior_sd = 0.01) |>
+  ppd_intervals()
+  
+eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, tau_prior_sd = 100) |>
+  ppd_intervals()
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python-solutions"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+## Posterior predictive checks
+
+We can create posterior predictive draws from our posterior draws and plot against our actual observations.
+
+::: {.content-visible when-profile="r"}
+```{r}
+
+sigma_obs <- c(15, 10, 16, 11, 9, 11, 10, 18)
+
+eight_schools_post_pred <- eight_schools_draws |>
+  mutate_variables(
+    `yrep[1]` = rnorm(length(`theta[1]`), `theta[1]`, sigma_obs[1]),
+    `yrep[2]` = rnorm(length(`theta[2]`), `theta[2]`, sigma_obs[2]),
+    `yrep[3]` = rnorm(length(`theta[3]`), `theta[3]`, sigma_obs[3]),
+    `yrep[4]` = rnorm(length(`theta[4]`), `theta[4]`, sigma_obs[4]),
+    `yrep[5]` = rnorm(length(`theta[5]`), `theta[5]`, sigma_obs[5]),
+    `yrep[6]` = rnorm(length(`theta[6]`), `theta[6]`, sigma_obs[6]),
+    `yrep[7]` = rnorm(length(`theta[7]`), `theta[7]`, sigma_obs[7]),
+    `yrep[8]` = rnorm(length(`theta[8]`), `theta[8]`, sigma_obs[8])
+  ) |>
+  subset_draws(variable = "yrep") |>
+  as_draws_matrix()
+
+# Or alternatively in a nicer way, using rvars
+
+eight_schools_post_pred <- eight_schools_draws |>
+  as_draws_rvars() |>
+  mutate_variables(
+    yrep = rvar_rng(
+      rnorm,
+      n = length(sigma_obs),
+      mean = theta,
+      sd = sigma_obs
+    )
+  ) |>
+  subset_draws(variable = "yrep") |>
+  as_draws_matrix()
+
+```
+:::
+
+::: {.content-visible when-profile="python"}
+
+:::
+
+Plot the posterior predictions on top of the actual observations. Then use the PIT-ECDF plot.
+
+::: {.content-visible when-profile="r"}
+You can use the `ppc_intervals()` function.
+```{r}
+y <- c(28,  8, -3,  7, -1,  1, 18, 12)
+# Your code here
+```
+:::
+
+::: {.content-visible when-profile="r-solutions"}
+```{r}
+y <- c(28,  8, -3,  7, -1,  1, 18, 12)
+ppc_intervals(y, eight_schools_post_pred)
+
+ppc_pit_ecdf(y, eight_schools_post_pred, method = "correlated")
+```
+:::
+
+::: {.content-visible when-profile="python"}
+```{python}
+# Your code here
+```
+:::
+
+::: {.content-visible when-profile="python-solutions"}
+```{r}
+
+```
+:::
+
