@@ -3,6 +3,7 @@ jupyter: python3
 
 format:
   ipynb:
+    output-file: exercises-python.ipynb
     jupyter:
       kernelspec:
         display_name: python

@@ -22,6 +22,12 @@ theme_set(bayesplot::theme_default(base_family = "sans", base_size = 14))
 library(tinytable)
 ```
 
+## Sponsors
+
+- Bayesian Workflow group at Aalto University
+- EnvStat at University of Helsinki
+- PyMC Labs
+
 ## Outline
 
 - Tools and posterior draws objects (9:00-9:45)

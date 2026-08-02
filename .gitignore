@@ -4,9 +4,7 @@ docs/
 *_files/
 *#
 *.html
-exercises-python.ipynb
-exercises-r.ipynb
-exercises-r.qmd
 .Rhistory
 *.save
-
+exercises/rendered/
+slides/slides.html

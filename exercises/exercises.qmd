@@ -73,7 +73,7 @@ and `nvariables()` functions.
 
 :::
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 ```{r}
 nchains(eight_schools_draws)
@@ -84,7 +84,7 @@ nvariables(eight_schools_draws)
 
 :::
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 
@@ -118,7 +118,7 @@ You can use the `subset_draws()` function, specifying the `chain` argument.
 
 :::
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 ```{r}
 eight_schools_draws |>
@@ -129,7 +129,7 @@ eight_schools_draws |>
 :::
 
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 
@@ -163,7 +163,7 @@ You can use the `subset_draws()` function, specifying the `iteration` argument.
 :::
 
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 
 ```{r}
@@ -174,7 +174,7 @@ eight_schools_draws |>
 
 :::
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 
@@ -211,7 +211,7 @@ You can use the function ...
 :::
 
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 
 ```{r}
@@ -224,7 +224,7 @@ thin_draws(eight_schools_draws)
 :::
 
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 
@@ -263,7 +263,7 @@ You can use the functions ...
 
 :::
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 ```{r}
 eight_schools_draws |>
@@ -274,7 +274,7 @@ eight_schools_draws |>
 
 :::
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 
 ```{python}
@@ -311,7 +311,7 @@ You can use the functions `mutate_variables()` and `quantile2()`
 
 :::
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 ```{r}
 eight_schools_draws |>
@@ -328,7 +328,7 @@ eight_schools_draws |>
 :::
 
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 
@@ -366,7 +366,7 @@ You can use the functions `summarise_draws()` and `rhat`
 
 :::
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 ```{r}
 eight_schools_draws |>
@@ -378,7 +378,7 @@ eight_schools_draws |>
 
 
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 
@@ -415,7 +415,7 @@ You can use the functions `summarise_draws()` and `rhat()`
 :::
 
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 ```{r}
 eight_schools_draws |>
@@ -427,7 +427,7 @@ eight_schools_draws |>
 
 
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 
@@ -462,7 +462,7 @@ You can use the functions `summarise_draws()` and `mcse_mean()`
 
 :::
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 ```{r}
 eight_schools_draws |>
@@ -507,7 +507,7 @@ You can use the functions `summarise_draws()` and `mcse_quantile()`
 :::
 
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 ```{r}
 eight_schools_draws |>
@@ -518,7 +518,7 @@ eight_schools_draws |>
 :::
 
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 
@@ -556,7 +556,7 @@ You can use the functions `summarise_draws()` and `pareto_min_ss()`
 :::
 
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 
 ```{r}
@@ -568,7 +568,7 @@ eight_schools_draws |>
 :::
 
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 
@@ -606,7 +606,7 @@ You can use the functions `mcmc_intervals()` or `mcmc_areas()`.
 :::
 
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 
 ```{r}
@@ -619,7 +619,7 @@ eight_schools_draws |>
 :::
 
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 
@@ -657,7 +657,7 @@ You can use the functions `mcmc_pairs()`
 :::
 
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 
 ```{r}
@@ -670,7 +670,7 @@ eight_schools_draws |>
 :::
 
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 
@@ -742,7 +742,7 @@ prior_predictive_draws <- eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, ta
 
 :::
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 
 ```{r}
 eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, tau_prior_sd = 1) |>
@@ -765,7 +765,7 @@ eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, tau_prior_sd = 100) |>
 
 
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 # Your code here
@@ -829,7 +829,7 @@ y <- c(28,  8, -3,  7, -1,  1, 18, 12)
 ```
 :::
 
-::: {.content-visible when-profile="r-solutions"}
+::: {.content-visible when-profile="rsolutions"}
 ```{r}
 y <- c(28,  8, -3,  7, -1,  1, 18, 12)
 ppc_intervals(y, eight_schools_post_pred)
@@ -844,7 +844,7 @@ ppc_pit_ecdf(y, eight_schools_post_pred, method = "correlated")
 ```
 :::
 
-::: {.content-visible when-profile="python-solutions"}
+::: {.content-visible when-profile="pythonsolutions"}
 ```{r}
 
 ```

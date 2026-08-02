@@ -3,6 +3,7 @@ jupyter: ir
 
 format:
   ipynb:
+    output-file: exercises-r.ipynb
     jupyter:
       kernelspec:
         display_name: R
