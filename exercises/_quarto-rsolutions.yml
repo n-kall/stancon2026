@@ -1,3 +1,10 @@
 format:
   html:
     output-file: solutions-r.html
+    format-links: false
+
+execute:
+  enabled: true
+  output: true
+  echo: true
+  warning: false
