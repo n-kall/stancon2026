@@ -1,6 +1,6 @@
 ---
-title: "Workshop Exercises"
-jupyter: python3
+title: "Exercises"
+
 ---
 
 ::: {.content-visible when-profile="r"}
@@ -29,20 +29,62 @@ import arviz as az
 
 For this set of exercises we will use draws from the classic eight schools model. These draws are included in both `posterior` and ArviZ.
 
-## Understanding draws objects
-
-Inspect the posterior object. How many chains, iterations and variables does it contain?
-
 ::: {.content-visible when-profile="r"}
 
 ```{r}
-
+eight_schools_draws <- example_draws("eight_schools")
 
 ```
 
 :::
 
 ::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+
+## Understanding draws objects
+
+Inspect the posterior object. How many chains, iterations and variables does it contain?
+
+::: {.content-visible when-profile="r"}
+
+You can print the draws object, or you can use the `nchains()`, `niterations()`
+and `nvariables()` functions.
+
+```{r}
+# Your code here
+
+```
+
+:::
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+::: {.content-visible when-profile="r-solutions"}
+
+```{r}
+nchains(eight_schools_draws)
+niterations(eight_schools_draws)
+nvariables(eight_schools_draws)
+
+```
+
+:::
+
+::: {.content-visible when-profile="python-solutions"}
 
 ```{python}
 
@@ -60,13 +102,34 @@ Extract only the first chain.
 You can use the `subset_draws()` function, specifying the `chain` argument.
 
 ```{r}
-
+# Your code here
 
 ```
 
 :::
 
+
 ::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+::: {.content-visible when-profile="r-solutions"}
+
+```{r}
+eight_schools_draws |>
+  subset_draws(chain = 1)
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="python-solutions"}
 
 ```{python}
 
@@ -76,6 +139,7 @@ You can use the `subset_draws()` function, specifying the `chain` argument.
 :::
 
 
+
 Extract only the first 10 iterations, from all the chains.
 
 ::: {.content-visible when-profile="r"}
@@ -83,13 +147,34 @@ Extract only the first 10 iterations, from all the chains.
 You can use the `subset_draws()` function, specifying the `iteration` argument.
 
 ```{r}
-
+# Your code here
 
 ```
 
 :::
 
 ::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="r-solutions"}
+
+
+```{r}
+eight_schools_draws |>
+  subset_draws(iteration = 1:10)
+
+```
+
+:::
+
+::: {.content-visible when-profile="python-solutions"}
 
 ```{python}
 
@@ -101,24 +186,45 @@ You can use the `subset_draws()` function, specifying the `iteration` argument.
 
 ## Thinning draws
 
-Thin the draws so that only half of the draws are included. Then try the automatic thinning.
+Thin the draws so that only half of the draws are included. Then try automatic thinning.
 
 ::: {.content-visible when-profile="r"}
 
 You can use the function `thin_draws()`, specifying the `thin` argument.
 
 ```{r}
+# Your code here
 
+```
+
+:::
+
+::: {.content-visible when-profile="python"}
+
+You can use the function ...
+
+```{python}
+# Your code here
 
 ```
 
 :::
 
 
+::: {.content-visible when-profile="r-solutions"}
 
-::: {.content-visible when-profile="python"}
 
-You can use the function ...
+```{r}
+thin_draws(eight_schools_draws, thin = 2)
+
+thin_draws(eight_schools_draws)
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="python-solutions"}
 
 ```{python}
 
@@ -128,7 +234,7 @@ You can use the function ...
 :::
 
 
-## 
+##
 
 
 ## Summarising draws
@@ -140,8 +246,7 @@ Extract the variable `mu` and summarise it via mean and sd.
 You can use the functions `subset_draws()`, specifying the `variable` argument and `summarise_draws()`, specifying the functions.
 
 ```{r}
-
-
+# Your code here
 
 ```
 
@@ -152,10 +257,33 @@ You can use the functions `subset_draws()`, specifying the `variable` argument a
 You can use the functions ...
 
 ```{python}
+# Your code here
 
 ```
 
 :::
+
+::: {.content-visible when-profile="r-solutions"}
+
+```{r}
+eight_schools_draws |>
+  subset_draws(variable = "mu") |>
+  summarise_draws(mean, sd)
+
+```
+
+:::
+
+::: {.content-visible when-profile="python-solutions"}
+
+
+```{python}
+
+
+```
+
+:::
+
 
 ## Creating new variables
 
@@ -166,7 +294,7 @@ Create a new variable that is the difference between school 1 and school 2 means
 You can use the functions `mutate_variables()` and `quantile2()`
 
 ```{r}
-
+# Your code here
 
 ```
 
@@ -175,6 +303,32 @@ You can use the functions `mutate_variables()` and `quantile2()`
 
 
 ::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+::: {.content-visible when-profile="r-solutions"}
+
+```{r}
+eight_schools_draws |>
+  mutate_variables(
+    diff_1_2 = `theta[2]` - `theta[1]`,
+    diff_3_4 = `theta[3]` - `theta[4]`
+  ) |>
+  subset_draws(
+    variable = c("diff_1_2", "diff_3_4")
+  ) |>
+  summarise_draws(median, ~quantile2(.x, c(0.3, 0.7)))
+```
+
+:::
+
+
+::: {.content-visible when-profile="python-solutions"}
 
 ```{python}
 
@@ -195,7 +349,7 @@ Calculate the R-hat for all the variables in the model. Which variables have hig
 You can use the functions `summarise_draws()` and `rhat`
 
 ```{r}
-
+# Your code here
 
 ```
 
@@ -206,11 +360,33 @@ You can use the functions `summarise_draws()` and `rhat`
 ::: {.content-visible when-profile="python"}
 
 ```{python}
+# Your code here
+
+```
+
+:::
+
+::: {.content-visible when-profile="r-solutions"}
+
+```{r}
+eight_schools_draws |>
+  summarise_draws(rhat)
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python-solutions"}
+
+```{python}
 
 
 ```
 
 :::
+
 
 ## Effective sample size (ESS)
 
@@ -221,7 +397,7 @@ Calculate the bulk and tail ESS for all the variables in the model.
 You can use the functions `summarise_draws()` and `rhat()`
 
 ```{r}
-
+# Your code here
 
 ```
 
@@ -230,6 +406,28 @@ You can use the functions `summarise_draws()` and `rhat()`
 
 
 ::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="r-solutions"}
+
+```{r}
+eight_schools_draws |>
+  summarise_draws(ess_bulk, ess_tail)
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python-solutions"}
 
 ```{python}
 
@@ -241,14 +439,14 @@ You can use the functions `summarise_draws()` and `rhat()`
 
 ## Monte Carlo standard error
 
-Calculate the mean of each variable, and also the Monte Carlo standard error of the mean. The do the same for the 0.05 and 0.95 quantiles.
+Calculate the mean of each variable, and also the Monte Carlo standard error of the mean.
 
 ::: {.content-visible when-profile="r"}
 
 You can use the functions `summarise_draws()` and `mcse_mean()`
 
 ```{r}
-
+# Your code here
 
 ```
 
@@ -256,6 +454,71 @@ You can use the functions `summarise_draws()` and `mcse_mean()`
 
 
 ::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+::: {.content-visible when-profile="r-solutions"}
+
+```{r}
+eight_schools_draws |>
+  summarise_draws(mean, mcse_mean)
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+
+
+```
+
+:::
+
+
+Then do the same for the 0.05 and 0.95 quantiles. Think about how the Monte Carlo standard error might influence how you report the quantiles.
+
+::: {.content-visible when-profile="r"}
+
+You can use the functions `summarise_draws()` and `mcse_quantile()`
+
+```{r}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="r-solutions"}
+
+```{r}
+eight_schools_draws |>
+  summarise_draws(quantile2, mcse_quantile)
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="python-solutions"}
 
 ```{python}
 
@@ -275,7 +538,7 @@ Calculate the minimum sample size for stable estimates for each variable in the 
 You can use the functions `summarise_draws()` and `pareto_min_ss()`
 
 ```{r}
-
+# Your code here
 
 ```
 
@@ -284,6 +547,28 @@ You can use the functions `summarise_draws()` and `pareto_min_ss()`
 
 
 ::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="r-solutions"}
+
+
+```{r}
+eight_schools_draws |>
+  summarise_draws(pareto_min_ss)
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="python-solutions"}
 
 ```{python}
 
