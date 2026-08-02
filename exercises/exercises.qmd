@@ -850,3 +850,72 @@ ppc_pit_ecdf(y, eight_schools_post_pred, method = "correlated")
 ```
 :::
 
+
+## Sensitivity checks
+
+Check for prior and likelihood sensitivity in the eight schools model. First check by power-scaling all priors, then select only the "mu" and only the "tau" prior separately.
+
+
+::: {.content-visible when-profile="r"}
+You can use `powerscale_sensitivity()` with the `prior_selection` argument.
+
+```{r}
+eight_schools_draws_ps <- example_powerscale_model("eight_schools")$draws
+# Your code here
+```
+:::
+
+::: {.content-visible when-profile="rsolutions"}
+```{r}
+eight_schools_draws_ps <- example_powerscale_model("eight_schools")$draws
+
+powerscale_sensitivity(eight_schools_draws_ps, variable = c("mu", "tau", "theta"))
+powerscale_sensitivity(eight_schools_draws_ps, variable = c("mu", "tau", "theta"), prior_selection = "mu")
+powerscale_sensitivity(eight_schools_draws_ps, variable = c("mu", "tau", "theta"), prior_selection = "tau")
+
+```
+:::
+
+::: {.content-visible when-profile="python"}
+```{python}
+# Your code here
+```
+:::
+
+::: {.content-visible when-profile="pythonsolutions"}
+```{r}
+
+```
+:::
+
+
+Next plot sensitivity using as density plots. Plot only the mu and tau variables.
+
+::: {.content-visible when-profile="r"}
+
+
+```{r}
+# Your code here
+```
+:::
+
+::: {.content-visible when-profile="rsolutions"}
+You can use `powerscale_plot_dens()`.
+```{r}
+powerscale_plot_dens(eight_schools_draws_ps, variable = c("mu", "tau"))
+powerscale_plot_dens(eight_schools_draws_ps, variable = c("mu", "tau"), prior_selection = "mu")
+powerscale_plot_dens(eight_schools_draws_ps, variable = c("mu", "tau"), prior_selection = "tau")
+```
+:::
+
+::: {.content-visible when-profile="python"}
+```{python}
+# Your code here
+```
+:::
+
+::: {.content-visible when-profile="pythonsolutions"}
+```{r}
+
+```
+:::
