@@ -1,0 +1,293 @@
+---
+title: "Workshop Exercises"
+jupyter: python3
+---
+
+::: {.content-visible when-profile="r"}
+
+```{r}
+library(posterior)
+library(priorsense)
+library(bayesplot)
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+import arviz as az
+
+```
+
+:::
+
+
+# Draws objects
+
+For this set of exercises we will use draws from the classic eight schools model. These draws are included in both `posterior` and ArviZ.
+
+## Understanding draws objects
+
+Inspect the posterior object. How many chains, iterations and variables does it contain?
+
+::: {.content-visible when-profile="r"}
+
+```{r}
+
+
+```
+
+:::
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+
+
+```
+
+:::
+
+## Subsetting draws
+
+Extract only the first chain.
+
+::: {.content-visible when-profile="r"}
+
+You can use the `subset_draws()` function, specifying the `chain` argument.
+
+```{r}
+
+
+```
+
+:::
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+
+
+```
+
+:::
+
+
+Extract only the first 10 iterations, from all the chains.
+
+::: {.content-visible when-profile="r"}
+
+You can use the `subset_draws()` function, specifying the `iteration` argument.
+
+```{r}
+
+
+```
+
+:::
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+
+
+```
+
+:::
+
+
+## Thinning draws
+
+Thin the draws so that only half of the draws are included. Then try the automatic thinning.
+
+::: {.content-visible when-profile="r"}
+
+You can use the function `thin_draws()`, specifying the `thin` argument.
+
+```{r}
+
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+You can use the function ...
+
+```{python}
+
+
+```
+
+:::
+
+
+## 
+
+
+## Summarising draws
+
+Extract the variable `mu` and summarise it via mean and sd.
+
+::: {.content-visible when-profile="r"}
+
+You can use the functions `subset_draws()`, specifying the `variable` argument and `summarise_draws()`, specifying the functions.
+
+```{r}
+
+
+
+```
+
+:::
+
+::: {.content-visible when-profile="python"}
+
+You can use the functions ...
+
+```{python}
+
+```
+
+:::
+
+## Creating new variables
+
+Create a new variable that is the difference between school 1 and school 2 means. Call it `diff_1_2`. Do the same with school 3 and school 4. Then summarise these new variables with median, 0.3 and 0.7 quantiles.
+
+::: {.content-visible when-profile="r"}
+
+You can use the functions `mutate_variables()` and `quantile2()`
+
+```{r}
+
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+
+
+```
+
+:::
+
+
+# Convergence diagnostics
+
+## R-hat
+
+Calculate the R-hat for all the variables in the model. Which variables have high R-hat (> 1.01)?
+
+::: {.content-visible when-profile="r"}
+
+You can use the functions `summarise_draws()` and `rhat`
+
+```{r}
+
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+
+
+```
+
+:::
+
+## Effective sample size (ESS)
+
+Calculate the bulk and tail ESS for all the variables in the model.
+
+::: {.content-visible when-profile="r"}
+
+You can use the functions `summarise_draws()` and `rhat()`
+
+```{r}
+
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+
+
+```
+
+:::
+
+
+## Monte Carlo standard error
+
+Calculate the mean of each variable, and also the Monte Carlo standard error of the mean. The do the same for the 0.05 and 0.95 quantiles.
+
+::: {.content-visible when-profile="r"}
+
+You can use the functions `summarise_draws()` and `mcse_mean()`
+
+```{r}
+
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+
+
+```
+
+:::
+
+
+
+## Pareto diagnostics
+
+Calculate the minimum sample size for stable estimates for each variable in the model. Which has the highest minimum sample size?
+
+::: {.content-visible when-profile="r"}
+
+You can use the functions `summarise_draws()` and `pareto_min_ss()`
+
+```{r}
+
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+
+
+```
+
+:::
