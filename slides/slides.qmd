@@ -5,7 +5,7 @@
 import arviz as az
 import numpy as np
 import xarray as xr
-xr.set_options(display_expand_attrs=False)
+xr.set_options(display_expand_attrs=False);
 az.style.use("arviz-variat")
 ```
 
@@ -34,7 +34,11 @@ library(tinytable)
 - Convergence and uncertainty (9:50-10:55)
 - Model evaluation and critique (11:00-12:00)
 
-Work book: n-kall.github.io/stancon2026-workflow-tools
+::: {style="text-align: center;"}
+[Course materials](https://n-kall.github.io/stancon2026-workflow-tools)
+
+![](img/workbook_qr.svg)
+:::
 
 # Tools
 
@@ -56,7 +60,7 @@ Work book: n-kall.github.io/stancon2026-workflow-tools
 `posterior` provides objects for draws that mimic built-in types `matrix`,
 `array` `data.frame`, `list`
 
-`arviz` provides the `DataTree` object for posterior draws.
+`arviz` uses xarray's `DataTree` object for posterior draws (and other related data, like posterior predictive draws and observed data).
 
 ## Example
 
@@ -91,7 +95,9 @@ posterior::example_draws() |> posterior::as_draws_df()
 
 ```{r}
 sample <- readRDS("../models/prerun/sample.rds")
-summarise_draws(sample, rhat) |> tt()
+summarise_draws(sample, rhat) |>
+tt() |>
+format_tt(j = "rhat", fn = function(x) sprintf("%.3f", x))
 ```
 
 ## Nested R-hat
@@ -109,13 +115,14 @@ summarise_draws(
     rhat,
     nested_rhat = ~ rhat_nested(.x, superchain_ids = attr(many_short_chains, "superchain_ids"))
 ) |>
-tt()
+tt() |>
+format_tt(digits = 3, num_fmt = "decimal")
 ```
 
 
-## Effective sample size
+## Effective Sample Size
 
-## Monte Carlo standard error
+## Monte Carlo Standard Error
 
 ## Pareto-k
 
