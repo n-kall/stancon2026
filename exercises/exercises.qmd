@@ -27,7 +27,7 @@ import arviz as az
 
 # Draws objects
 
-For this set of exercises we will use draws from the classic eight schools model. These draws are included in both `posterior` and ArviZ.
+For this set of exercises we will use draws from the classic eight schools model. These draws are included in both `posterior` and `ArviZ`.
 
 ::: {.content-visible when-profile="r"}
 
@@ -41,8 +41,8 @@ eight_schools_draws <- example_draws("eight_schools")
 ::: {.content-visible when-profile="python"}
 
 ```{python}
-# Your code here
-
+dt = az.load_arviz_data('non_centered_eight')
+eight_schools_draws = dt.posterior
 ```
 
 :::
@@ -87,8 +87,9 @@ nvariables(eight_schools_draws)
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
-
-
+eight_schools_draws.posterior.sizes["chain"]
+eight_schools_draws.posterior.sizes["draw"]
+len(eight_schools_draws.posterior.data_vars)
 ```
 
 :::
@@ -111,6 +112,8 @@ You can use the `subset_draws()` function, specifying the `chain` argument.
 
 ::: {.content-visible when-profile="python"}
 
+You can use the `sel()` method, specifying the `chain` argument.
+
 ```{python}
 # Your code here
 
@@ -132,7 +135,7 @@ eight_schools_draws |>
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
-
+eight_schools_draws.sel(chain=0)
 
 ```
 
@@ -154,6 +157,8 @@ You can use the `subset_draws()` function, specifying the `iteration` argument.
 :::
 
 ::: {.content-visible when-profile="python"}
+
+You can use the `sel()` method, specifying the `draw` argument and using the `slice()` function.
 
 ```{python}
 # Your code here
@@ -177,7 +182,7 @@ eight_schools_draws |>
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
-
+eight_schools_draws.sel(draw=slice(0, 10))
 
 ```
 
@@ -190,7 +195,7 @@ Thin the draws so that only half of the draws are included. Then try automatic t
 
 ::: {.content-visible when-profile="r"}
 
-You can use the function `thin_draws()`, specifying the `thin` argument.
+You can use the function `thin_draws()`, optionally specifying the `thin` argument.
 
 ```{r}
 # Your code here
@@ -201,7 +206,7 @@ You can use the function `thin_draws()`, specifying the `thin` argument.
 
 ::: {.content-visible when-profile="python"}
 
-You can use the function ...
+You can use the function `az.thin()`, optionally specifying the `factor` argument.
 
 ```{python}
 # Your code here
@@ -217,9 +222,13 @@ You can use the function ...
 ```{r}
 thin_draws(eight_schools_draws, thin = 2)
 
+```
+
+```{r}
 thin_draws(eight_schools_draws)
 
 ```
+
 
 :::
 
@@ -227,7 +236,12 @@ thin_draws(eight_schools_draws)
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
+az.thin(eight_schools_draws, factor=2)
 
+```
+
+```{python}
+az.thin(eight_schools_draws)
 
 ```
 
@@ -254,7 +268,7 @@ You can use the functions `subset_draws()`, specifying the `variable` argument a
 
 ::: {.content-visible when-profile="python"}
 
-You can use the functions ...
+You can use the functions `az.summary()`, specifying the `var_names` argument and the `kind` argument.
 
 ```{python}
 # Your code here
@@ -278,7 +292,11 @@ eight_schools_draws |>
 
 
 ```{python}
+# XXX do we want to show this?
+az.summary(eight_schools_draws, var_names=["mu"], kind="stats")
 
+## or this?
+az.summary(eight_schools_draws, var_names=["mu"], kind="stats")[["mean", "sd"]]
 
 ```
 
@@ -330,10 +348,31 @@ eight_schools_draws |>
 
 ::: {.content-visible when-profile="pythonsolutions"}
 
+The simplest version is to call `az.summary()` with the `kind` argument set to `"stats_median"` and the `ci_prob` argument set to `0.40`.
 ```{python}
+import xarray as xr
 
+diff_1_2 = eight_schools_draws["theta"].isel(school=1) - eight_schools_draws["theta"].isel(school=0)
+diff_3_4 = eight_schools_draws["theta"].isel(school=3) - eight_schools_draws["theta"].isel(school=2)
+
+diffs = xr.Dataset({"diff_1_2": diff_1_2, "diff_3_4": diff_3_4})
+
+az.summary(diffs, kind="stats_median", ci_prob=0.40)
 
 ```
+But a more explicit version is to do.
+
+```{python}
+result = pd.DataFrame({
+    "median": diffs.median(dim=["chain", "draw"]).to_pandas(),
+    "q30": diffs.quantile(0.3, dim=["chain", "draw"]).to_pandas(),
+    "q70": diffs.quantile(0.7, dim=["chain", "draw"]).to_pandas(),
+})
+
+result
+
+```
+Optionally you can use `.sel` and reference the school by name like `eight_schools_draws["theta"].sel(school="Choate")`
 
 :::
 
@@ -359,6 +398,9 @@ You can use the functions `summarise_draws()` and `rhat`
 
 ::: {.content-visible when-profile="python"}
 
+You can use the function `az.rhat()`
+
+
 ```{python}
 # Your code here
 
@@ -381,7 +423,7 @@ eight_schools_draws |>
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
-
+az.rhat(eight_schools_draws)
 
 ```
 
@@ -430,10 +472,9 @@ eight_schools_draws |>
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
-
+az.summary(eight_schools_draws)[["ess_bulk", "ess_tail"]]
 
 ```
-
 :::
 
 
@@ -476,8 +517,7 @@ eight_schools_draws |>
 ::: {.content-visible when-profile="python"}
 
 ```{python}
-
-
+az.summary(eight_schools_draws)[["mean", "mcse_mean"]]
 ```
 
 :::
