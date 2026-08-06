@@ -87,9 +87,9 @@ nvariables(eight_schools_draws)
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
-eight_schools_draws.posterior.sizes["chain"]
-eight_schools_draws.posterior.sizes["draw"]
-len(eight_schools_draws.posterior.data_vars)
+eight_schools_draws.sizes["chain"]
+eight_schools_draws.sizes["draw"]
+len(eight_schools_draws.data_vars)
 ```
 
 :::
