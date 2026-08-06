@@ -363,6 +363,7 @@ az.summary(diffs, kind="stats_median", ci_prob=0.40)
 But a more explicit version is to do.
 
 ```{python}
+import pandas as pd
 result = pd.DataFrame({
     "median": diffs.median(dim=["chain", "draw"]).to_pandas(),
     "q30": diffs.quantile(0.3, dim=["chain", "draw"]).to_pandas(),
@@ -424,7 +425,6 @@ eight_schools_draws |>
 
 ```{python}
 az.rhat(eight_schools_draws)
-
 ```
 
 :::
@@ -552,7 +552,6 @@ You can use the functions `summarise_draws()` and `mcse_quantile()`
 ```{r}
 eight_schools_draws |>
   summarise_draws(quantile2, mcse_quantile)
-
 ```
 
 :::
@@ -561,8 +560,18 @@ eight_schools_draws |>
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
+mcse_q05 = az.mcse(eight_schools_draws, method="quantile", prob=0.05).ds.expand_dims(summary=["mcse_5%"])
+mcse_q95 = az.mcse(eight_schools_draws, method="quantile", prob=0.95).ds.expand_dims(summary=["mcse_95%"])
 
+eti_05 = (
+    az.eti(eight_schools_draws, prob=0.90)
+    .ds.rename({"ci_bound": "summary"})
+    .assign_coords(summary=["eti90_lb", "eti90_ub"])
+)
 
+summary = xr.concat([mcse_q05, mcse_q95, eti_05], dim="summary")
+
+az.dataset_to_dataframe(summary, sample_dims=["summary"]).T
 ```
 
 :::
@@ -611,8 +620,7 @@ eight_schools_draws |>
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
-
-
+eight_schools_draws.azstats.pareto_min_ss()
 ```
 
 :::
@@ -662,8 +670,7 @@ eight_schools_draws |>
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
-
-
+az.plot_forest(eight_schools_draws, var_names=["theta"])
 ```
 
 :::
@@ -713,7 +720,7 @@ eight_schools_draws |>
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
-
+az.plot_pair(eight_schools_draws, var_names=["mu", "tau"])
 
 ```
 
@@ -750,7 +757,27 @@ eight_schools_prior <- function(ndraws, mu_prior_sd = 1, tau_prior_sd = 1, sigma
 ::: {.content-visible when-profile="python"}
 
 ```{python}
+import numpy as np
+import pymc as pm
+import pymc.dims as pmd
 
+def make_eight_schools_model(mu_prior_sd=1, tau_prior_sd=1, observe=False):
+  coords = {"school": eight_schools_draws.coords["school"].values}
+  sigma_obs=xr.DataArray(np.array([15, 10, 16, 11, 9, 11, 10, 18]), coords=coords, dims=("school"))
+  
+  with pm.Model(coords=coords) as model:
+    mu = pmd.Normal("mu", mu=0, sigma=mu_prior_sd)
+    tau = pmd.HalfNormal("tau", sigma=tau_prior_sd)
+    theta = pmd.Normal("theta", mu=mu, sigma=tau, dims=("school"))
+    yrep = pmd.Normal("yrep", mu=theta, sigma=sigma_obs, dims=("school"), observed= dt["observed_data"]["obs"] if observe else None)
+    
+  return model
+
+def eight_schools_prior(ndraws=1000, mu_prior_sd=1, tau_prior_sd=1):
+  model = make_eight_schools_model(mu_prior_sd=mu_prior_sd, tau_prior_sd=tau_prior_sd)
+  with model:
+    prior_predictive_draws = pm.sample_prior_predictive(samples=ndraws)
+  return prior_predictive_draws
 
 ```
 
@@ -776,7 +803,7 @@ prior_predictive_draws <- eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, ta
 ::: {.content-visible when-profile="python"}
 
 ```{python}
-# Your code here
+prior_predictive_draws = eight_schools_prior(ndraws=1000, mu_prior_sd=1, tau_prior_sd=1)
 
 ```
 
@@ -808,8 +835,11 @@ eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, tau_prior_sd = 100) |>
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
-# Your code here
-
+az.plot_forest(eight_schools_prior(ndraws=1000, mu_prior_sd=1, tau_prior_sd=1), group="prior", var_names=["yrep"])
+az.plot_forest(eight_schools_prior(ndraws=1000, mu_prior_sd=0.01, tau_prior_sd=1), group="prior", var_names=["yrep"])
+az.plot_forest(eight_schools_prior(ndraws=1000, mu_prior_sd=100, tau_prior_sd=1), group="prior", var_names=["yrep"])
+az.plot_forest(eight_schools_prior(ndraws=1000, mu_prior_sd=1, tau_prior_sd=0.01), group="prior", var_names=["yrep"])
+az.plot_forest(eight_schools_prior(ndraws=1000, mu_prior_sd=1, tau_prior_sd=100), group="prior", var_names=["yrep"])
 ```
 
 :::
@@ -857,6 +887,12 @@ eight_schools_post_pred <- eight_schools_draws |>
 
 ::: {.content-visible when-profile="python"}
 
+```{python}
+with make_eight_schools_model() as model:
+    posterior_predictive_draws = pm.sample_posterior_predictive(eight_schools_draws, var_names=["yrep"])
+
+posterior_predictive_draws
+```
 :::
 
 Plot the posterior predictions on top of the actual observations. Then use the PIT-ECDF plot.
@@ -879,14 +915,18 @@ ppc_pit_ecdf(y, eight_schools_post_pred, method = "correlated")
 :::
 
 ::: {.content-visible when-profile="python"}
+You can use the `az.plot_ppc_pit()` function.
 ```{python}
+y = np.array([28,  8, -3,  7, -1,  1, 18, 12])
 # Your code here
 ```
 :::
 
 ::: {.content-visible when-profile="pythonsolutions"}
-```{r}
-
+```{python}
+y = np.array([28,  8, -3,  7, -1,  1, 18, 12])
+posterior_predictive_draws["observed_data"]["yrep"] = xr.DataArray(y, dims=["school"])
+az.plot_ppc_pit(posterior_predictive_draws, var_names=["yrep"])
 ```
 :::
 
@@ -918,12 +958,21 @@ powerscale_sensitivity(eight_schools_draws_ps, variable = c("mu", "tau", "theta"
 
 ::: {.content-visible when-profile="python"}
 ```{python}
+eight_schools_draws
+with make_eight_schools_model(observe=True) as model:
+  pm.stats.compute_log_prior(
+    dt,
+    var_names=["mu", "tau", "theta"],
+  #  extend_inferencedata=False
+    )
 # Your code here
 ```
 :::
 
 ::: {.content-visible when-profile="pythonsolutions"}
-```{r}
+```{python}
+
+az.psense_summary(dt)
 
 ```
 :::
@@ -955,7 +1004,9 @@ powerscale_plot_dens(eight_schools_draws_ps, variable = c("mu", "tau"), prior_se
 :::
 
 ::: {.content-visible when-profile="pythonsolutions"}
-```{r}
+```{python}
+
+az.plot_psense_dist(dt, var_names=["mu", "tau"])
 
 ```
 :::
