@@ -3,10 +3,6 @@
 #| echo : false
 #| warning: false
 import arviz as az
-import numpy as np
-import xarray as xr
-xr.set_options(display_expand_attrs=False);
-az.style.use("arviz-variat")
 ```
 
 ```{r}
@@ -122,15 +118,258 @@ format_tt(digits = 3, num_fmt = "decimal")
 
 ## Effective Sample Size
 
+- Measures how much *independent* information the draws contain
+- Accounts for autocorrelation between samples
+- `ess_bulk`: precision for mean/median (central distribution)
+- `ess_tail`: precision for interval estimates (5%/95% quantiles)
+- Rule of thumb: at least 400 total (100 per chain x 4 chains) for both
+
+```{r}
+summarise_draws(sample, ess_bulk, ess_tail) |>
+  tt() |>
+  format_tt(j = c("ess_bulk", "ess_tail"), fn = function(x) sprintf("%.0f", x)) |>
+  style_tt(j = c("ess_bulk", "ess_tail"), align = "r")
+```
+
 ## Monte Carlo Standard Error
 
-## Pareto-k
+- Standard error of a posterior estimate (e.g. the mean), accounting for autocorrelation
+- Related to ESS: $\text{MCSE} = \frac{\hat\sigma}{\sqrt{\text{ESS}}}$
+- Tells us [how many digits](https://avehtari.github.io/Bayesian-Workflow/digits/digits.html) of a reported estimate we can trust
 
-# Predictive checking
+```{r}
+summarise_draws(sample, mcse_mean) |>
+  tt() |>
+  format_tt(j = c("mcse_mean"), fn = function(x) sprintf("%.4f", x)) |>
+  style_tt(j = c("mcse_mean"), align = "r")
+```
+
+## Pareto-$\hat{k}$
+
+- Quantifies whether the tails are too heavy to trust the mean/MCSE
+- Fits a generalized Pareto distribution to the tail, $\hat k$ estimates tail heaviness
+- Converts to a minimum sample size to trust MCSE: $10^{1 / (1 - \max(0, \hat{k}))}$
+- If $\hat{k} \geq 1$: the mean doesn't exist (no amount of sampling helps)
+
+```{r}
+drt <- readRDS("../models/prerun/drt.rds")
+summarise_draws(drt, mcse_mean, ess_mean, min_ss = pareto_min_ss) |> 
+  tt() |>
+  format_tt(j = c("mcse_mean", "ess_mean"), fn = function(x) sprintf("%.3f", x)) |>
+  format_tt(j = c("min_ss"), fn = function(x) sprintf("%.0f", x)) |>
+  style_tt(j = c("mcse_mean", "ess_mean", "min_ss"), align = "r")
+
+```
+
+## Predictive checks
+
+- Models are simplifications — judge them by their predictions
+- Four ways to check predictions: prior knowledge, observed data, unobserved data, other models
+- Two types of predictions: **prior predictive** (before seeing data) and **posterior predictive** (after seeing data)
 
 ## Prior predictive checks
 
+- Generate synthetic data from the prior, *before* looking at observed data
+- Algorithm: sample $\theta \sim p(\theta)$ → simulate $y \sim p(y \mid \theta)$ → compare to domain knowledge
+- Judged against domain knowledge, **not** observed data
+
+
+## 
+```{r}
+#| fig-cap: "Prior predictive check for heights: bulk of mass falls outside plausible range."
+data <- readRDS("../models/prerun/00.rds")
+ppd_dens_overlay(data$prior_predictive) +
+  geom_vline(xintercept = c(50, 182), linetype = "dashed")
+```
+
+## Weakly informative priors
+
+- Vague priors can produce implausible predictions (e.g. negative heights)
+- Weakly informative priors: little/no mass in impossible regions, but not overly restrictive
+- Benefits: guards against implausible results, can improve sampling efficiency, easier to elicit than fully informative priors
+
+
+## 
+```{r}
+#| fig-cap: "Prior predictive check with a tighter, weakly informative prior."
+data <- readRDS("../models/prerun/01.rds")
+ppd_dens_overlay(data$prior_predictive) +
+  geom_vline(xintercept = c(50, 182), linetype = "dashed")
+```
+
+
 ## Posterior predictive checks
+
+- Generate synthetic data from the posterior, *after* fitting the model
+- Algorithm: sample $\theta \sim p(\theta \mid y)$ → simulate $\tilde y \sim p(\tilde y \mid \theta)$ → compare to **observed** data
+- A more stringent test than prior predictive checks
+
+## 
+```{r}
+#| fig-cap: "Posterior predictive check: observed data (black) vs. predictive draws (blue)."
+data <- readRDS("../models/prerun/02.rds")
+ppc_dens_overlay(data$observed_data, data$posterior_predictive[1:200, ])
+```
+
+
+## Posterior predictive checks: summary statistics
+
+- Compare observed vs. predicted **test statistics** (median, MAD, IQR, ...) instead of full densities
+- Choose statistics orthogonal to model parameters (e.g. avoid the mean for a location-parameter model - it's trivially recovered)
+
+## 
+```{r}
+#| fig-cap: "Posterior predictive check using median, MAD, and IQR as test statistics."
+y    <- data$observed_data
+yrep <- data$posterior_predictive
+
+p1 <- ppc_stat(y, yrep, stat = "median")
+p2 <- ppc_stat(y, yrep, stat = "mad")
+p3 <- ppc_stat(y, yrep, stat = "IQR")
+
+bayesplot_grid(p1, p2, p3, grid_args = list(nrow = 1))
+```
+
+## Posterior predictive p-values
+
+- $p(T_{\text{sim}} \leq T_{\text{obs}} \mid \tilde y)$ - proportion of simulated statistics below the observed one
+- 0.5 = predictions split evenly around the observation
+- Not uniform under the null - tend to concentrate near 0.5
+- Used as a **diagnostic**, not a significance test
+
+## PIT-ECDFs
+
+- Marginal p-value: $p(\tilde y_i \leq y_i \mid y)$, computed per observation
+- By the Probability Integral Transform, this should be **standard Uniform** if model and data agree
+- Compare the empirical CDF of these values to the diagonal line
+
+## 
+```{r}
+#| fig-cap: "PIT-ECDF (Δ-ECDF) for the heights model."
+ppc_pit_ecdf(data$observed_data, data$posterior_predictive,
+             method = "correlated", plot_diff = TRUE)
+```
+
+## PIT-ECDF: why the Δ version?
+
+- Plain ECDF vs. diagonal wastes space — all the signal sits near the line
+- **Δ-ECDF**: plot the *difference* from the uniform CDF instead
+- Ideal Δ-ECDF: flat line at zero; deviations show as peaks/valleys
+- Complement with a uniformity test to judge if deviations exceed what's expected by chance
+
+## PIT-ECDF quartet
+
+- Four miscalibration patterns, compared via KDE (left) vs. PIT-ECDF (right)
+  - Predictions shifted right → overprediction
+  - Predictions shifted left → underprediction
+  - Predictions too spread out → overdispersed
+  - Predictions too narrow → overconfident
+- PIT-ECDF is more sensitive to subtle miscalibration than KDEs/histograms
+
+## 
+```{r}
+#| fig-cap: "KDE and PIT-ECDF comparison across four miscalibration scenarios."
+data_i <- readRDS("../models/prerun/pit_ecdf_quartet.rds")
+vars <- c("y0", "y1", "y2", "y3")
+
+plots <- do.call(c, lapply(vars, function(v) {
+  y <- data_i$observed_data[[v]]
+  yrep <- as_draws_matrix(data_i$posterior_predictive[[v]])
+
+  list(
+    ppc_dens_overlay(y, yrep[1:50, ]),
+    ppc_pit_ecdf(y, yrep, method = "correlated", plot_diff = TRUE)
+  )
+}))
+
+patchwork::wrap_plots(plots, ncol = 2, axes = "collect", guides = "collect")
+```
+
+## Avoiding double-dipping
+
+- So far: data used twice (fit *and* check) - generally fine, but a more stringent test exists
+- Leave-one-out: $p(\tilde y_i \leq y_i \mid y_{-i})$ instead of $p(\tilde y_i \leq y_i \mid y)$
+- Exact LOO-CV is expensive ($n$ refits) → approximate with **Pareto-smoothed importance sampling (PSIS)**
+
+
+# 
+```{r}
+#| fig-cap: "LOO-PIT-ECDF for the heights model."
+psis_result <- psis(-data$log_likelihood)
+lw <- psis_result$log_weights
+ppc_loo_pit_ecdf(data$observed_data, data$posterior_predictive, lw,
+                  method = "correlated", plot_diff = TRUE)
+```
+XXX: THIS SHOULD LOOK OK
+
+## Predictive checks for discrete data
+
+- KDEs don't work well for discrete data (unless enough distinct values to treat as continuous)
+- Histograms (one bin per value) and ECDFs still apply
+- Some tools are purpose-built per data type: **count**, **binary**, **categorical**, **ordinal**, **censored**
+
+## Count data: rootograms
+
+- Rootograms compare observed vs. predicted counts, on a **square-root** y-axis (easier to compare low frequencies)
+- Points = predictions with uncertainty intervals; markers = observed counts
+
+##
+```{r}
+#| fig-cap: "Rootogram for the Poisson model of crab satellites."
+crabs_poisson <- readRDS("../models/prerun/crabs_poisson.rds")
+ppc_rootogram(crabs_poisson$observed_data, crabs_poisson$posterior_predictive)
+```
+
+
+## 
+```{r}
+#| fig-cap: "Rootogram for the Hurdle Negative Binomial model of crab satellites."
+crabs_hurdle_nb <- readRDS("../models/prerun/crabs_hurdle_nb.rds")
+ppc_rootogram(crabs_hurdle_nb$observed_data, crabs_hurdle_nb$posterior_predictive)
+```
+
+## Binary data: calibration plots
+
+- Bar plots don't work - even trivial models can match the observed proportion
+- Bin predicted probabilities → compare to observed frequency per bin (traditional calibration plot)
+- Binning is arbitrary and unstable → prefer a binning-free method (Dimitriadis et al.)
+- Ideal plot: diagonal line. Above diagonal = underestimating; below = overestimating
+
+<!-- We need new unreleased version of bayesplot -->
+
+## Categorical data
+
+- One-vs-others strategy: pick one category, compare it to "everything else" — repeat per category
+- Manageable for few categories; use a confusion matrix or scalar miscalibration summary to triage which categories to inspect visually when there are many
+
+<!-- We need new unreleased version of bayesplot -->
+
+
+## Ordinal data
+
+- Categories have a natural order, but unknown distances between them
+- Must account for order: compute **cumulative** conditional event probabilities
+- Yields one fewer plot than the number of categories
+
+<!-- We need new unreleased version of bayesplot -->
+
+
+## Censored data
+
+- Survival/time-to-event models: some events not yet observed at data-collection time
+- Naively discarding censored cases biases the estimate
+- Replace raw observations with **Kaplan–Meier** estimates for posterior predictive checks
+
+## 
+```{r}
+#| fig-cap: "Posterior predictive check for cat adoption times using Kaplan–Meier curves."
+cens <- readRDS("/home/osvaldo/proyectos/06_Tutoriales/stancon2026-workflow-tools/models/prerun/censored_cats.rds")
+ppc_km_overlay(cens$observed_data, cens$posterior_predictive[1:50, ],
+               status_y = cens$constant_data)
+```
+
+- Predictive curves capped relative to max observed duration (`extrapolation_factor`, default 1.2 → up to 20% beyond max observation)
+
 
 # Model comparison
 
