@@ -124,6 +124,7 @@ format_tt(digits = 3, num_fmt = "decimal")
 - `ess_tail`: precision for interval estimates (5%/95% quantiles)
 - Rule of thumb: at least 400 total (100 per chain x 4 chains) for both
 
+## 
 ```{r}
 summarise_draws(sample, ess_bulk, ess_tail) |>
   tt() |>
@@ -151,6 +152,7 @@ summarise_draws(sample, mcse_mean) |>
 - Converts to a minimum sample size to trust MCSE: $10^{1 / (1 - \max(0, \hat{k}))}$
 - If $\hat{k} \geq 1$: the mean doesn't exist (no amount of sampling helps)
 
+##
 ```{r}
 drt <- readRDS("../models/prerun/drt.rds")
 summarise_draws(drt, mcse_mean, ess_mean, min_ss = pareto_min_ss) |> 
@@ -367,9 +369,6 @@ cens <- readRDS("/home/osvaldo/proyectos/06_Tutoriales/stancon2026-workflow-tool
 ppc_km_overlay(cens$observed_data, cens$posterior_predictive[1:50, ],
                status_y = cens$constant_data)
 ```
-
-- Predictive curves capped relative to max observed duration (`extrapolation_factor`, default 1.2 → up to 20% beyond max observation)
-
 
 # Model comparison
 
