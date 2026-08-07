@@ -365,7 +365,7 @@ ppc_rootogram(crabs_hurdle_nb$observed_data, crabs_hurdle_nb$posterior_predictiv
 ## 
 ```{r}
 #| fig-cap: "Posterior predictive check for cat adoption times using Kaplan–Meier curves."
-cens <- readRDS("/home/osvaldo/proyectos/06_Tutoriales/stancon2026-workflow-tools/models/prerun/censored_cats.rds")
+cens <- readRDS("../models/prerun/censored_cats.rds")
 ppc_km_overlay(cens$observed_data, cens$posterior_predictive[1:50, ],
                status_y = cens$constant_data)
 ```
