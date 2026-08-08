@@ -73,3 +73,6 @@ theme:
 
 bibliography: ../references.bib
 
+execute:
+  cache: true
+  freeze: auto

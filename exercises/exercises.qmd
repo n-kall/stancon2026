@@ -776,7 +776,7 @@ def make_eight_schools_model(mu_prior_sd=1, tau_prior_sd=1, observe=False):
 def eight_schools_prior(ndraws=1000, mu_prior_sd=1, tau_prior_sd=1):
   model = make_eight_schools_model(mu_prior_sd=mu_prior_sd, tau_prior_sd=tau_prior_sd)
   with model:
-    prior_predictive_draws = pm.sample_prior_predictive(samples=ndraws)
+    prior_predictive_draws = pm.sample_prior_predictive(draws=ndraws)
   return prior_predictive_draws
 
 ```
@@ -792,7 +792,12 @@ Try with different `mu_prior_sd` and `tau_prior_sd` values (e.g. 1, 10, 100).
 You can use the `ppd_intervals` function.
 
 ```{r}
-prior_predictive_draws <- eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, tau_prior_sd = 1)
+prior_predictive_draws <- eight_schools_prior(
+  ndraws = 1000,
+  mu_prior_sd = 1,
+  tau_prior_sd = 1
+)
+
 # Continue the code
 ```
 
@@ -803,7 +808,11 @@ prior_predictive_draws <- eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, ta
 ::: {.content-visible when-profile="python"}
 
 ```{python}
-prior_predictive_draws = eight_schools_prior(ndraws=1000, mu_prior_sd=1, tau_prior_sd=1)
+prior_predictive_draws = eight_schools_prior(
+  ndraws=1000,
+  mu_prior_sd=1,
+  tau_prior_sd=1
+)
 
 ```
 
@@ -933,7 +942,7 @@ az.plot_ppc_pit(posterior_predictive_draws, var_names=["yrep"])
 
 ## Sensitivity checks
 
-Check for prior and likelihood sensitivity in the eight schools model. First check by power-scaling all priors, then select only the "mu" and only the "tau" prior separately.
+Check for prior and likelihood sensitivity in the eight schools model. First check by power-scaling all priors jointly, then select only the "mu" and only the "tau" prior separately.
 
 
 ::: {.content-visible when-profile="r"}

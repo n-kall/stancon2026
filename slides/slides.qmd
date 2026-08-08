@@ -53,8 +53,13 @@ library(tinytable)
 
 # Posterior objects
 
-`posterior` provides objects for draws that mimic built-in types `matrix`,
-`array` `data.frame`, `list`
+## Data structures
+
+`posterior` provides objects for draws that mimic built-in types:
+- `matrix`
+- `array`
+- `data.frame`
+- `list`
 
 `arviz` uses xarray's `DataTree` object for posterior draws (and other related data, like posterior predictive draws and observed data).
 
@@ -81,7 +86,7 @@ posterior::example_draws() |> posterior::as_draws_df()
 
 :::
 
-# MCMC diagnostics
+# Convergence and uncertainty
 
 ## R-hat
 
@@ -92,8 +97,7 @@ posterior::example_draws() |> posterior::as_draws_df()
 ```{r}
 sample <- readRDS("../models/prerun/sample.rds")
 summarise_draws(sample, rhat) |>
-tt() |>
-format_tt(j = "rhat", fn = function(x) sprintf("%.3f", x))
+tt(digits = 2)
 ```
 
 ## Nested R-hat
@@ -163,7 +167,9 @@ summarise_draws(drt, mcse_mean, ess_mean, min_ss = pareto_min_ss) |>
 
 ```
 
-## Predictive checks
+# Model evaluation and critique
+
+# Predictive checks
 
 - Models are simplifications — judge them by their predictions
 - Four ways to check predictions: prior knowledge, observed data, unobserved data, other models
@@ -370,10 +376,9 @@ ppc_km_overlay(cens$observed_data, cens$posterior_predictive[1:50, ],
                status_y = cens$constant_data)
 ```
 
-# Model comparison
+# Sensitivity checks
+## Power-scaling sensitivity checks
 
+# Model comparison
 ## Leave-one-out cross-validation
 
-# Sensitivity checking
-
-## Power-scaling sensitivity checks
