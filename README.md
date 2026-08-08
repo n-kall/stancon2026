@@ -23,7 +23,7 @@
 * Posterior summaries and uncertainty quantification
   - mean, median, quantiles with MCSE
 ### Part 3: Model evaluation and critique
+* prior predictive checks
 * posterior predictive checks (PIT-ECDF, calibration)
 * prior and likelihood sensitivity (power-scaling)
 * model performance (R2, loo)
-* 
