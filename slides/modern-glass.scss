@@ -1,0 +1,180 @@
+/*-- scss:defaults --*/
+
+// Typography
+$font-family-sans-serif: Inter, "Segoe UI", Roboto, Arial, sans-serif !default;
+$presentation-heading-font: $font-family-sans-serif !default;
+
+// Colors
+$body-bg: #fafafa !default;
+$body-color: #1f2937 !default;
+
+$link-color: #2563eb !default;
+$link-color-hover: #1d4ed8 !default;
+
+$selection-bg: #dbeafe !default;
+$selection-color: #1e293b !default;
+
+$text-muted: #64748b !default;
+
+// Headings
+$presentation-heading-color: #111827 !default;
+$presentation-heading-font-weight: 750 !default;
+
+$presentation-h1-font-size: 2.8em !default;
+$presentation-h2-font-size: 1.9em !default;
+$presentation-h3-font-size: 1.3em !default;
+
+// Code
+$code-color: #2563eb !default;
+$code-block-bg: #f5f7fb !default;
+
+/*-- scss:rules --*/
+
+// Background
+.reveal {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(37, 99, 235, 0.06),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(14, 165, 233, 0.05),
+      transparent 35%
+    ),
+    #fafafa;
+}
+
+// Slide content width feel
+.reveal .slides section {
+  padding-top: 0.5rem;
+}
+
+// Typography
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+.reveal h1 {
+  font-weight: 500;
+}
+
+.reveal h2 {
+  font-weight: 300;
+}
+
+.reveal p,
+.reveal li {
+  color: #374151;
+  line-height: 1.55;
+}
+
+// Elegant divider under title slides
+.title-slide h1::after {
+  content: "";
+  display: block;
+  width: 90px;
+  height: 5px;
+  margin-top: 20px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    #2563eb,
+    #06b6d4
+  );
+}
+
+// Links
+.reveal a {
+  text-decoration: none;
+  transition: all .2s ease;
+}
+
+.reveal a:hover {
+  opacity: .8;
+}
+
+// Code
+.reveal pre {
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow:
+    0 12px 24px rgba(0,0,0,.05);
+}
+
+.reveal code {
+  border-radius: 6px;
+}
+
+// Tables
+.reveal table {
+  border-collapse: collapse;
+  font-size: 0.8em;
+}
+
+.reveal th {
+  background: #f3f4f6;
+  color: #111827;
+  border-bottom: 2px solid #d1d5db;
+}
+
+.reveal td {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.reveal th,
+.reveal td {
+  padding: 12px 16px;
+}
+
+// Images
+.reveal img {
+  border-radius: 20px;
+  border: none;
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.08);
+}
+
+// Blockquotes
+.reveal blockquote {
+  background: white;
+  border-left: 5px solid #2563eb;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.05);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+}
+
+// Progress bar
+.reveal .progress {
+  height: 5px;
+}
+
+.reveal .progress span {
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      #06b6d4
+    );
+}
+
+// Slide numbers
+.reveal .slide-number {
+  color: #94a3b8;
+  background: transparent;
+}
+
+// Strong callout cards
+.card {
+  padding: 1.2rem;
+  border-radius: 18px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.04);
+}

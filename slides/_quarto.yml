@@ -8,6 +8,10 @@ author:
   - name: "Teemu Säilynoja"
     affiliation: PyMC-Labs
 format:
-  revealjs: default
+  revealjs:
+    theme: [default, modern-glass.scss]
 revealjs-plugins:
   - tabset
+execute:
+  cache: true
+  freeze: auto

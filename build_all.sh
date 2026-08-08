@@ -1,7 +1,7 @@
 #!/bin/bash
 
 uv run quarto render book
-uv run quarto render slides
+uv run quarto render slides/slides.qmd
 
 uv run quarto render exercises/exercises.qmd \
    --profile r
