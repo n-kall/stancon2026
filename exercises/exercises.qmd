@@ -3,10 +3,18 @@ title: "Exercises"
 
 ---
 
+::: {.content-visible when-format="org"}
+
+```{=org}
+#+PROPERTY: header-args:R :session *stancon-r* :results output :exports both
+```
+
+:::
+
 ::: {.content-visible when-profile="r"}
 First load the environment and install the required packages:
 ```{r}
-renv::restore()
+renv::restore(prompt = FALSE)
 
 ```
 
@@ -15,8 +23,21 @@ renv::restore()
 ::: {.content-visible when-profile="python"}
 
 ```{python}
+#| eval: false
+import shutil
+import subprocess
 
+if shutil.which("uv") is None:
+    raise RuntimeError(
+        "uv is not installed.\n"
+        "Install it from https://docs.astral.sh/uv/getting-started/installation/\n"
+        "Then restart the kernel and run this cell again."
+    )
 
+subprocess.run(["uv", "sync"], check=True)
+
+print("Environment created successfully.")
+print("Now change the kernel to uv: stancon2026-workflow-tools")
 ```
 
 :::
@@ -34,7 +55,7 @@ library(bayesplot)
 :::
 
 
-::: {.content-visible when-profile="python,pythonsolutions"}
+::: {.content-visible when-profile="python"}
 
 ```{python}
 import arviz as az
@@ -47,7 +68,7 @@ import arviz as az
 
 For this set of exercises we will use draws from the classic eight schools model. These draws are included in both `posterior` and `ArviZ`.
 
-::: {.content-visible when-profile="r,rsolutions"}
+::: {.content-visible when-profile="r"}
 
 ```{r}
 eight_schools_draws <- example_draws("eight_schools")
@@ -56,7 +77,7 @@ eight_schools_draws <- example_draws("eight_schools")
 
 :::
 
-::: {.content-visible when-profile="python,pythonsolutions"}
+::: {.content-visible when-profile="python"}
 
 ```{python}
 dt = az.load_arviz_data('non_centered_eight')
@@ -748,7 +769,7 @@ az.plot_pair(eight_schools_draws, var_names=["mu", "tau"])
 
 We can generate prior predictions from the eight schools model, using the following function.
 
-::: {.content-visible when-profile="r,rsolutions"}
+::: {.content-visible when-profile="r"}
 
 ```{r}
 eight_schools_prior <- function(ndraws, mu_prior_sd = 1, tau_prior_sd = 1, sigma_obs = c(15, 10, 16, 11, 9, 11, 10, 18)) {
@@ -772,7 +793,7 @@ eight_schools_prior <- function(ndraws, mu_prior_sd = 1, tau_prior_sd = 1, sigma
 
 
 
-::: {.content-visible when-profile="python,pythonsolutions"}
+::: {.content-visible when-profile="python"}
 
 ```{python}
 import numpy as np
@@ -876,7 +897,7 @@ az.plot_forest(eight_schools_prior(ndraws=1000, mu_prior_sd=1, tau_prior_sd=100)
 
 We can create posterior predictive draws from our posterior draws and plot against our actual observations.
 
-::: {.content-visible when-profile="r,rsolutions"}
+::: {.content-visible when-profile="r"}
 ```{r}
 
 sigma_obs <- c(15, 10, 16, 11, 9, 11, 10, 18)
@@ -913,7 +934,7 @@ eight_schools_post_pred <- eight_schools_draws |>
 ```
 :::
 
-::: {.content-visible when-profile="python,pythonsolutions"}
+::: {.content-visible when-profile="python"}
 
 ```{python}
 with make_eight_schools_model() as model:

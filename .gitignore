@@ -8,3 +8,4 @@ docs/
 *.save
 exercises/rendered/
 slides/slides.html
+.Rproj.user
