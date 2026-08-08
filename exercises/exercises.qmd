@@ -4,6 +4,25 @@ title: "Exercises"
 ---
 
 ::: {.content-visible when-profile="r"}
+First load the environment and install the required packages:
+```{r}
+renv::restore()
+
+```
+
+:::
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="r"}
 
 ```{r}
 library(posterior)
@@ -15,11 +34,10 @@ library(bayesplot)
 :::
 
 
-::: {.content-visible when-profile="python"}
+::: {.content-visible when-profile="python,pythonsolutions"}
 
 ```{python}
 import arviz as az
-
 ```
 
 :::
@@ -29,7 +47,7 @@ import arviz as az
 
 For this set of exercises we will use draws from the classic eight schools model. These draws are included in both `posterior` and `ArviZ`.
 
-::: {.content-visible when-profile="r"}
+::: {.content-visible when-profile="r,rsolutions"}
 
 ```{r}
 eight_schools_draws <- example_draws("eight_schools")
@@ -38,7 +56,7 @@ eight_schools_draws <- example_draws("eight_schools")
 
 :::
 
-::: {.content-visible when-profile="python"}
+::: {.content-visible when-profile="python,pythonsolutions"}
 
 ```{python}
 dt = az.load_arviz_data('non_centered_eight')
@@ -514,7 +532,7 @@ eight_schools_draws |>
 :::
 
 
-::: {.content-visible when-profile="python"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 az.summary(eight_schools_draws)[["mean", "mcse_mean"]]
@@ -730,7 +748,7 @@ az.plot_pair(eight_schools_draws, var_names=["mu", "tau"])
 
 We can generate prior predictions from the eight schools model, using the following function.
 
-::: {.content-visible when-profile="r"}
+::: {.content-visible when-profile="r,rsolutions"}
 
 ```{r}
 eight_schools_prior <- function(ndraws, mu_prior_sd = 1, tau_prior_sd = 1, sigma_obs = c(15, 10, 16, 11, 9, 11, 10, 18)) {
@@ -754,7 +772,7 @@ eight_schools_prior <- function(ndraws, mu_prior_sd = 1, tau_prior_sd = 1, sigma
 
 
 
-::: {.content-visible when-profile="python"}
+::: {.content-visible when-profile="python,pythonsolutions"}
 
 ```{python}
 import numpy as np
@@ -798,7 +816,7 @@ prior_predictive_draws <- eight_schools_prior(
   tau_prior_sd = 1
 )
 
-# Continue the code
+# Your code here
 ```
 
 :::
@@ -814,6 +832,7 @@ prior_predictive_draws = eight_schools_prior(
   tau_prior_sd=1
 )
 
+# Your code here
 ```
 
 :::
@@ -857,7 +876,7 @@ az.plot_forest(eight_schools_prior(ndraws=1000, mu_prior_sd=1, tau_prior_sd=100)
 
 We can create posterior predictive draws from our posterior draws and plot against our actual observations.
 
-::: {.content-visible when-profile="r"}
+::: {.content-visible when-profile="r,rsolutions"}
 ```{r}
 
 sigma_obs <- c(15, 10, 16, 11, 9, 11, 10, 18)
@@ -894,7 +913,7 @@ eight_schools_post_pred <- eight_schools_draws |>
 ```
 :::
 
-::: {.content-visible when-profile="python"}
+::: {.content-visible when-profile="python,pythonsolutions"}
 
 ```{python}
 with make_eight_schools_model() as model:
