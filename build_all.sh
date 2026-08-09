@@ -50,4 +50,4 @@ cp slides/slides.html docs/slides/
 cp -r slides/slides_files docs/slides/
 
 uv run quarto render book
-
+mv book/docs docs

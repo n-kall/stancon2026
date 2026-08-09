@@ -425,7 +425,7 @@ Calculate the R-hat for all the variables in the model. Which variables have hig
 
 ::: {.content-visible when-profile="r"}
 
-You can use the functions `summarise_draws()` and `rhat`
+You can use the function `summarise_draws()` with `rhat`
 
 ```{r}
 # Your code here
@@ -475,7 +475,7 @@ Calculate the bulk and tail ESS for all the variables in the model.
 
 ::: {.content-visible when-profile="r"}
 
-You can use the functions `summarise_draws()` and `rhat()`
+You can use the function `summarise_draws()` with `ess_tail` and `ess_bulk`
 
 ```{r}
 # Your code here
@@ -523,7 +523,7 @@ Calculate the mean of each variable, and also the Monte Carlo standard error of 
 
 ::: {.content-visible when-profile="r"}
 
-You can use the functions `summarise_draws()` and `mcse_mean()`
+You can use the functions `summarise_draws()` with `mean` and `mcse_mean`
 
 ```{r}
 # Your code here
@@ -566,7 +566,7 @@ Then do the same for the 0.05 and 0.95 quantiles. Think about how the Monte Carl
 
 ::: {.content-visible when-profile="r"}
 
-You can use the functions `summarise_draws()` and `mcse_quantile()`
+You can use the functions `summarise_draws()` with `quantile2` and `mcse_quantile`
 
 ```{r}
 # Your code here
@@ -623,7 +623,7 @@ Calculate the minimum sample size for stable estimates for each variable in the 
 
 ::: {.content-visible when-profile="r"}
 
-You can use the functions `summarise_draws()` and `pareto_min_ss()`
+You can use the function `summarise_draws()` with `pareto_min_ss`
 
 ```{r}
 # Your code here
@@ -947,7 +947,7 @@ posterior_predictive_draws
 Plot the posterior predictions on top of the actual observations. Then use the PIT-ECDF plot.
 
 ::: {.content-visible when-profile="r"}
-You can use the `ppc_intervals()` function.
+You can use the `ppc_intervals()` and `ppc_pit_ecdf()` functions.
 ```{r}
 y <- c(28,  8, -3,  7, -1,  1, 18, 12)
 # Your code here
