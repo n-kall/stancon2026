@@ -1,3 +1,24 @@
+# Material
+
+The material for this tutorial consists of the slides, exercises, and this book.
+
+## Exercises
+
+The exercises are available in both Python and R:
+
+* Download and expand [the exercises](exercises/workflow_exercises.zip)
+* This contains the exercises in different formats
+* Use your preferred editor to open the chosen notebook
+* The first chunk will install the required packages
+* Solutions are available here: [R](exercises/r-solutions.html), [Python](exercises/python-solutions.html)
+
+## Slides
+
+The slides are available [here](slides/slides.html)
+
+## Web book
+Use the side bar to read further about any of the topics discussed.
+
 # Overview
 
 When working with Bayesian models, a range of related tasks must be addressed beyond inference itself. These include:
@@ -5,7 +26,6 @@ When working with Bayesian models, a range of related tasks must be addressed be
 * Diagnosing the quality of the inferencial method (MCMC, VI, ...). As we usually use numerical methods to perform inference.
 * Model checking and criticism, which includes posterior predictive checks, prior predictive checks, prior/likelihood sensitivity analysis.
 * Model comparison
-* etc...
 
 To simplify the workflow of performing these tasks, we can use some tools. The ones we are going to cover in this tutorial are: 
 
@@ -20,21 +40,3 @@ To simplify the workflow of performing these tasks, we can use some tools. The o
     * [arviz-stats](https://python.arviz.org/projects/stats/en/latest/): Statistical functions and diagnostics.
     * [arviz-plots](https://python.arviz.org/projects/plots/en/latest/): Visual checks and summaries built on top of arviz-stats and arviz-base.
     * [arviz](https://python.arviz.org/en/latest/): a meta-package that imports all the above and provides a single namespace for users.
-
-
-# Material
-
-The material for this tutorial consists of the slides, exercises, and this book.
-
-## Exercises
-
-The exercises are available in both Python and R:
-
-* Download and expand [the exercises](exercises/workflow_exercises.zip)
-* This contains the exercises in different formats
-* Use your preferred editor to open the chosen notebook
-* The first chunk will install the required packages
-
-### Slides
-
-The slides are available [here](slides/slides.html)
