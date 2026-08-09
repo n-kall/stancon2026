@@ -24,25 +24,22 @@ mkdir -p docs
 mkdir -p docs/exercises
 mkdir -p docs/slides
 
-rm -f docs/exercises/workflow_exercises_R.zip
+rm -f docs/exercises/workflow_exercises.zip
 
-zip --junk-paths docs/exercises/workflow_exercises_R.zip \
+zip --junk-paths docs/exercises/workflow_exercises.zip \
     exercises/stancon2026-workflow-tools.Rproj \
     exercises/rendered/renv.lock \
     exercises/rendered/.Rprofile \
     exercises/rendered/exercises-r.qmd \
-    exercises/rendered/exercises-r.org
-
-(
-    cd exercises/rendered &&
-    zip -r ../../docs/exercises/workflow_exercises_R.zip renv/activate.R
-)
-
-rm -f docs/exercises/workflow_exercises_python.zip
-zip --junk-paths docs/exercises/workflow_exercises_python.zip \
+    exercises/rendered/exercises-r.org \
     requirements.txt \
     pyproject.toml \
     exercises/rendered/exercises-python.ipynb
+
+(
+    cd exercises/rendered &&
+    zip -r ../../docs/exercises/workflow_exercises.zip renv/activate.R
+)
 
 cp exercises/rendered/exercises-r.html docs/exercises/
 cp exercises/rendered/exercises-python.html docs/exercises/
