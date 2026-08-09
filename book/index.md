@@ -1,9 +1,4 @@
-
-# Bayesian model diagnostics: Workflows and software tools
-
-blah blah blah
-
-## overview
+# Overview
 
 When working with Bayesian models, a range of related tasks must be addressed beyond inference itself. These include:
 
@@ -25,3 +20,21 @@ To simplify the workflow of performing these tasks, we can use some tools. The o
     * [arviz-stats](https://python.arviz.org/projects/stats/en/latest/): Statistical functions and diagnostics.
     * [arviz-plots](https://python.arviz.org/projects/plots/en/latest/): Visual checks and summaries built on top of arviz-stats and arviz-base.
     * [arviz](https://python.arviz.org/en/latest/): a meta-package that imports all the above and provides a single namespace for users.
+
+
+# Material
+
+The material for this tutorial consists of the slides, exercises, and this book.
+
+## Exercises
+
+The exercises are available in both Python and R:
+
+* Download and expand [the exercises](exercises/workflow_exercises.zip)
+* This contains the exercises in different formats
+* Use your preferred editor to open the chosen notebook
+* The first chunk will install the required packages
+
+### Slides
+
+The slides are available [here](slides/slides.html)

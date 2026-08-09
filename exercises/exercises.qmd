@@ -3,6 +3,46 @@ title: "Exercises"
 
 ---
 
+::: {.content-visible when-format="org"}
+
+```{=org}
+#+PROPERTY: header-args:R :session *stancon-r* :results output :exports both
+```
+
+:::
+
+::: {.content-visible when-profile="r"}
+First load the environment and install the required packages:
+```{r}
+renv::restore(prompt = FALSE)
+
+```
+
+:::
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+#| eval: false
+import shutil
+import subprocess
+
+if shutil.which("uv") is None:
+    raise RuntimeError(
+        "uv is not installed.\n"
+        "Install it from https://docs.astral.sh/uv/getting-started/installation/\n"
+        "Then restart the kernel and run this cell again."
+    )
+
+subprocess.run(["uv", "sync"], check=True)
+
+print("Environment created successfully.")
+print("Now change the kernel to uv: stancon2026-workflow-tools")
+```
+
+:::
+
+
 ::: {.content-visible when-profile="r"}
 
 ```{r}
@@ -19,7 +59,6 @@ library(bayesplot)
 
 ```{python}
 import arviz as az
-
 ```
 
 :::
@@ -514,7 +553,7 @@ eight_schools_draws |>
 :::
 
 
-::: {.content-visible when-profile="python"}
+::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
 az.summary(eight_schools_draws)[["mean", "mcse_mean"]]
@@ -798,7 +837,7 @@ prior_predictive_draws <- eight_schools_prior(
   tau_prior_sd = 1
 )
 
-# Continue the code
+# Your code here
 ```
 
 :::
@@ -814,6 +853,7 @@ prior_predictive_draws = eight_schools_prior(
   tau_prior_sd=1
 )
 
+# Your code here
 ```
 
 :::

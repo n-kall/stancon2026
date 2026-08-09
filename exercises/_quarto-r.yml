@@ -2,6 +2,10 @@ engine: jupyter
 jupyter: ir
 
 format:
+  html:
+    output-file: exercises-r.html
+  org:
+    output-file: exercises-r.org
   ipynb:
     output-file: exercises-r.ipynb
     jupyter:

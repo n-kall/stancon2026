@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: docs
+  output-dir: ../docs
 
 book:
   title: "Bayesian model diagnostics: Workflows and software tools"
@@ -29,7 +29,7 @@ book:
       orcid: 0000-0001-7419-8978
       affiliations:
         - name: Aalto University
-          affiliation-url: https://research.cs.aalto.fi/pml/
+          affiliation-url: https://users.aalto.fi/~ave/group.html
           address: Otakaari 24, 02150
           city: Espoo
           country: Finland

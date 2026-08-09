@@ -2,6 +2,8 @@ engine: jupyter
 jupyter: python3
 
 format:
+  html:
+    output-file: exercises-python.html
   ipynb:
     output-file: exercises-python.ipynb
     jupyter:
