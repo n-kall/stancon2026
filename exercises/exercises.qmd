@@ -64,7 +64,7 @@ import arviz as az
 :::
 
 
-# Draws objects
+# Part 1: Draws objects
 
 For this set of exercises we will use draws from the classic eight schools model. These draws are included in both `posterior` and `ArviZ`.
 
@@ -287,9 +287,6 @@ az.thin(eight_schools_draws)
 :::
 
 
-##
-
-
 ## Summarising draws
 
 Extract the variable `mu` and summarise it via mean and sd.
@@ -348,7 +345,7 @@ Create a new variable that is the difference between school 1 and school 2 means
 
 ::: {.content-visible when-profile="r"}
 
-You can use the functions `mutate_variables()` and `quantile2()`
+You can use the functions `mutate_variables()`, `summarise_draws()` and `quantile2()`
 
 ```{r}
 # Your code here
@@ -416,8 +413,107 @@ Optionally you can use `.sel` and reference the school by name like `eight_schoo
 
 :::
 
+## Marginal posteriors
 
-# Convergence diagnostics
+Plot the marginal posteriors for the school means.
+
+::: {.content-visible when-profile="r"}
+
+You can use the functions `mcmc_intervals()` or `mcmc_areas()`.
+
+```{r}
+# Your code here
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="rsolutions"}
+
+
+```{r}
+eight_schools_draws |>
+  subset_draws(variable = "theta") |>
+  mcmc_intervals()
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="pythonsolutions"}
+
+```{python}
+az.plot_forest(eight_schools_draws, var_names=["theta"])
+```
+
+:::
+
+
+## Pairs plot
+
+Plot the variables `mu` and `tau` in an pairs plot.
+
+
+::: {.content-visible when-profile="r"}
+
+You can use the functions `mcmc_pairs()`
+
+```{r}
+# Your code here
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="rsolutions"}
+
+
+```{r}
+eight_schools_draws |>
+    subset_draws(variable = c("mu", "tau")) |>
+    mcmc_pairs()
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="pythonsolutions"}
+
+```{python}
+az.plot_pair(eight_schools_draws, var_names=["mu", "tau"])
+
+```
+
+:::
+
+
+# Part 2: Convergence diagnostics and uncertainty
 
 ## R-hat
 
@@ -664,108 +760,8 @@ eight_schools_draws.azstats.pareto_min_ss()
 
 :::
 
-# Plotting posterior draws
 
-## Marginal posteriors
-
-Plot the marginal posteriors for the school means.
-
-::: {.content-visible when-profile="r"}
-
-You can use the functions `mcmc_intervals()` or `mcmc_areas()`.
-
-```{r}
-# Your code here
-
-```
-
-:::
-
-
-
-::: {.content-visible when-profile="python"}
-
-```{python}
-# Your code here
-
-```
-
-:::
-
-
-::: {.content-visible when-profile="rsolutions"}
-
-
-```{r}
-eight_schools_draws |>
-  subset_draws(variable = "theta") |>
-  mcmc_intervals()
-
-```
-
-:::
-
-
-::: {.content-visible when-profile="pythonsolutions"}
-
-```{python}
-az.plot_forest(eight_schools_draws, var_names=["theta"])
-```
-
-:::
-
-
-## Pairs plot
-
-Plot the variables `mu` and `tau` in an pairs plot.
-
-
-::: {.content-visible when-profile="r"}
-
-You can use the functions `mcmc_pairs()`
-
-```{r}
-# Your code here
-
-```
-
-:::
-
-
-
-::: {.content-visible when-profile="python"}
-
-```{python}
-# Your code here
-
-```
-
-:::
-
-
-::: {.content-visible when-profile="rsolutions"}
-
-
-```{r}
-eight_schools_draws |>
-    subset_draws(variable = c("mu", "tau")) |>
-    mcmc_pairs()
-
-```
-
-:::
-
-
-::: {.content-visible when-profile="pythonsolutions"}
-
-```{python}
-az.plot_pair(eight_schools_draws, var_names=["mu", "tau"])
-
-```
-
-:::
-
-# Prior predictive check
+# Part 3: Model evaluation and critique
 
 We can generate prior predictions from the eight schools model, using the following function.
 
@@ -1059,3 +1055,8 @@ az.plot_psense_dist(dt, var_names=["mu", "tau"])
 
 ```
 :::
+
+# Part 4: Bringing it all together
+
+
+
