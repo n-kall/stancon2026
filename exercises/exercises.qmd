@@ -64,7 +64,7 @@ import arviz as az
 :::
 
 
-# Part 1: Draws objects
+# Part 1: Posterior draws objects
 
 For this set of exercises we will use draws from the classic eight schools model. These draws are included in both `posterior` and `ArviZ`.
 

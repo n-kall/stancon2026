@@ -10,7 +10,7 @@ The exercises are available in both Python and R:
 * This contains the exercises in different formats
 * Use your preferred editor to open the chosen notebook
 * The first chunk will install the required packages
-* Solutions are available here: [R](exercises/r-solutions.html), [Python](exercises/python-solutions.html)
+* Solutions are available here: [R](exercises/solutions-r.html), [Python](exercises/solutions-python.html)
 
 ## Slides
 

@@ -17,7 +17,7 @@ uv run quarto render exercises/exercises.qmd \
 uv run quarto render exercises/exercises.qmd \
     --profile rsolutions
 
-uv run quarto render exercises \
+uv run quarto render exercises/exercises.qmd \
    --profile pythonsolutions
 
 mkdir -p docs
@@ -43,6 +43,9 @@ zip --junk-paths docs/exercises/workflow_exercises.zip \
 
 cp exercises/rendered/exercises-r.html docs/exercises/
 cp exercises/rendered/exercises-python.html docs/exercises/
+cp exercises/rendered/solutions-r.html docs/exercises/
+cp exercises/rendered/solutions-python.html docs/exercises/
+
 
 # Render slides
 uv run quarto render slides/slides.qmd
@@ -50,4 +53,4 @@ cp slides/slides.html docs/slides/
 cp -r slides/slides_files docs/slides/
 
 uv run quarto render book
-mv book/docs docs
+rsync -r book/docs/ docs/
