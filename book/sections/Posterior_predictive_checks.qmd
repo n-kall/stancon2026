@@ -543,7 +543,13 @@ az.plot_loo_pit(dt);
 #| fig-cap: "Posterior predictive check with LOO-PIT-ECDF."
 psis_result <- psis(-data$log_likelihood)
 lw <- psis_result$log_weights
-ppc_loo_pit_ecdf(data$observed_data, data$posterior_predictive, lw, method = "correlated", plot_diff = TRUE)
+ppc_loo_pit_ecdf(
+  data$observed_data,
+  data$posterior_predictive,
+  lw,
+  method = "correlated",
+  plot_diff = TRUE
+)
 ```
 :::
 
@@ -635,6 +641,7 @@ az.plot_ppc_pava(dt)
 ```
 ## R
 ```{r}
+# TODO: RCODE
 ```
 :::
 
@@ -646,29 +653,27 @@ A [categorical](https://en.wikipedia.org/wiki/Categorical_variable) variable can
 
 We can use `plot_ppc_pava` for categorical data, but not directly. We need to tell it that we have categorical data by passing `data_type="categorical"`.
 
-
-```{python}
-#| echo: false
-dt_cat = az.convert_to_datatree("../../models/prerun/dt_cat.nc")
-```
-
-```{r}
-#| echo: false
-
-```
-
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
+#| echo: false
+import arviz as az
+dt_cat = az.convert_to_datatree("../../models/prerun/dt_cat.nc")
+```
+
+```{python}
 #| fig-cap: "PAV-adjusted calibration plot for a categorical regression model."
+
 az.plot_ppc_pava(
     dt_cat,
     data_type="categorical",
     figure_kwargs={"figsize":(9, 3)},
     )
+
 ```
 ## R
 ```{r}
+# TODO: RCODE
 ```
 :::
 
@@ -699,6 +704,7 @@ az.plot_ppc_pava(
 ```
 ## R
 ```{r}
+# TODO: RCODE
 ```
 :::
 
@@ -722,11 +728,13 @@ cens <- readRDS("../../models/prerun/censored_cats.rds")
 
 ::: {.panel-tabset group="language"}
 ## Python
+
 ```{python}
 #| fig-cap: "Posterior predictive check for survival/censored data using Kaplan–Meier curves."
 dt_cens = az.load_arviz_data('censored_cats')
 az.plot_ppc_censored(dt_cens)
 ```
+
 ## R
 ```{r}
 #| fig-cap: "Posterior predictive check for survival/censored data using Kaplan–Meier curves."

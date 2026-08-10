@@ -18,8 +18,8 @@ book:
       url: XXXX
       orcid: 0000-0002-5249-348X
       affiliations:
-        - name: XXXX
-          affiliation-url: XXXX
+        - name: PyMC Labs
+          affiliation-url: pymc-labs.com
           address: XXXX
           city: XXXX
           country: Finland

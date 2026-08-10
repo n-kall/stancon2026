@@ -6,13 +6,15 @@ The material for this tutorial consists of the slides, exercises, and this book.
 
 The exercises are available in both Python and R:
 
-* Download and expand [the exercises](exercises/workflow_exercises.zip)
+* Download and expand [this zip file](exercises/workflow_exercises.zip)
 * This contains the exercises in different formats
 * Use your preferred editor to open the chosen notebook
 * The first chunk will install the required packages
-* Solutions are available here: [R](exercises/solutions-r.html), [Python](exercises/solutions-python.html)
 
-The exercise can also be viewed online: [R](exercises/exercises-r.html) or [Python](exercises-python.html)
+The exercise can also be viewed online: [R](exercises/exercises-r.html) or [Python](exercises/exercises-python.html)
+
+Solutions are available here: [R](exercises/solutions-r.html), [Python](exercises/solutions-python.html)
+
 
 ## Slides
 

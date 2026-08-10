@@ -1,9 +1,15 @@
 #!/bin/bash
 
+# clean up previous runs
+rm -r docs
+rm -r exercises/rendered
 # Render R exercises
 
 uv run quarto render exercises/exercises.qmd \
    --profile r
+
+uv run quarto render exercises/exercises.qmd \
+    --profile rsolutions
 
 uv run quarto convert exercises/rendered/exercises-r.ipynb \
    --output exercises/rendered/exercises-r.qmd
@@ -15,16 +21,18 @@ uv run quarto render exercises/exercises.qmd \
   --profile python
 
 uv run quarto render exercises/exercises.qmd \
-    --profile rsolutions
-
-uv run quarto render exercises/exercises.qmd \
    --profile pythonsolutions
+
+# Move to correct place
 
 mkdir -p docs
 mkdir -p docs/exercises
 mkdir -p docs/slides
 
-rm -f docs/exercises/workflow_exercises.zip
+(
+    cd exercises/rendered &&
+    Rscript prepare_env.R
+)
 
 zip --junk-paths docs/exercises/workflow_exercises.zip \
     exercises/stancon2026-workflow-tools.Rproj \
@@ -41,10 +49,8 @@ zip --junk-paths docs/exercises/workflow_exercises.zip \
     zip -r ../../docs/exercises/workflow_exercises.zip renv/activate.R
 )
 
-cp exercises/rendered/exercises-r.html docs/exercises/
-cp exercises/rendered/exercises-python.html docs/exercises/
-cp exercises/rendered/solutions-r.html docs/exercises/
-cp exercises/rendered/solutions-python.html docs/exercises/
+cp -r exercises/rendered/* docs/exercises/
+
 
 
 # Render slides
