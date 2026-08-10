@@ -367,7 +367,12 @@ p1 <- ppc_stat(y, yrep, stat = "median")
 p2 <- ppc_stat(y, yrep, stat = "mad")
 p3 <- ppc_stat(y, yrep, stat = "IQR")
 
-bayesplot_grid(p1, p2, p3, grid_args = list(nrow = 1))
+
+patchwork::wrap_plots(c(p1, p2, p3), nrow = 3)
+
+# or alternatively only bayesplot:
+# bayesplot_grid(p1, p2, p3, grid_args = list(nrow = 1))
+
 ```
 :::
 
@@ -434,7 +439,12 @@ az.plot_ppc_pit(dt);
 ## R
 ```{r}
 #| fig-cap: "Posterior predictive check for the model of heights using marginal Bayesian p-values, also know as u-values."
-ppc_pit_ecdf(data$observed_data, data$posterior_predictive, method = "correlated", plot_diff = TRUE)
+ppc_pit_ecdf(
+  data$observed_data,
+  data$posterior_predictive,
+  method = "correlated",
+  plot_diff = TRUE
+)
 ```
 :::
 
@@ -532,8 +542,14 @@ az.plot_loo_pit(dt);
 ```{r}
 #| fig-cap: "Posterior predictive check with LOO-PIT-ECDF."
 psis_result <- psis(-data$log_likelihood)
-lw = psis_result$log_weights
-ppc_loo_pit_ecdf(data$observed_data, data$posterior_predictive, lw, method = "correlated", plot_diff = TRUE)
+lw <- psis_result$log_weights
+ppc_loo_pit_ecdf(
+  data$observed_data,
+  data$posterior_predictive,
+  lw,
+  method = "correlated",
+  plot_diff = TRUE
+)
 ```
 :::
 
@@ -625,6 +641,7 @@ az.plot_ppc_pava(dt)
 ```
 ## R
 ```{r}
+# TODO: RCODE
 ```
 :::
 
@@ -636,25 +653,27 @@ A [categorical](https://en.wikipedia.org/wiki/Categorical_variable) variable can
 
 We can use `plot_ppc_pava` for categorical data, but not directly. We need to tell it that we have categorical data by passing `data_type="categorical"`.
 
-
-```{python}
-#| echo: false
-dt_cat = az.convert_to_datatree("../../models/prerun/dt_cat.nc")
-```
-
-
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
+#| echo: false
+import arviz as az
+dt_cat = az.convert_to_datatree("../../models/prerun/dt_cat.nc")
+```
+
+```{python}
 #| fig-cap: "PAV-adjusted calibration plot for a categorical regression model."
+
 az.plot_ppc_pava(
     dt_cat,
     data_type="categorical",
     figure_kwargs={"figsize":(9, 3)},
     )
+
 ```
 ## R
 ```{r}
+# TODO: RCODE
 ```
 :::
 
@@ -685,6 +704,7 @@ az.plot_ppc_pava(
 ```
 ## R
 ```{r}
+# TODO: RCODE
 ```
 :::
 
@@ -708,11 +728,13 @@ cens <- readRDS("../../models/prerun/censored_cats.rds")
 
 ::: {.panel-tabset group="language"}
 ## Python
+
 ```{python}
 #| fig-cap: "Posterior predictive check for survival/censored data using Kaplan–Meier curves."
 dt_cens = az.load_arviz_data('censored_cats')
 az.plot_ppc_censored(dt_cens)
 ```
+
 ## R
 ```{r}
 #| fig-cap: "Posterior predictive check for survival/censored data using Kaplan–Meier curves."
