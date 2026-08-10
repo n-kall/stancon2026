@@ -367,7 +367,12 @@ p1 <- ppc_stat(y, yrep, stat = "median")
 p2 <- ppc_stat(y, yrep, stat = "mad")
 p3 <- ppc_stat(y, yrep, stat = "IQR")
 
-bayesplot_grid(p1, p2, p3, grid_args = list(nrow = 1))
+
+patchwork::wrap_plots(c(p1, p2, p3), nrow = 3)
+
+# or alternatively only bayesplot:
+# bayesplot_grid(p1, p2, p3, grid_args = list(nrow = 1))
+
 ```
 :::
 
@@ -434,7 +439,12 @@ az.plot_ppc_pit(dt);
 ## R
 ```{r}
 #| fig-cap: "Posterior predictive check for the model of heights using marginal Bayesian p-values, also know as u-values."
-ppc_pit_ecdf(data$observed_data, data$posterior_predictive, method = "correlated", plot_diff = TRUE)
+ppc_pit_ecdf(
+  data$observed_data,
+  data$posterior_predictive,
+  method = "correlated",
+  plot_diff = TRUE
+)
 ```
 :::
 
@@ -532,7 +542,7 @@ az.plot_loo_pit(dt);
 ```{r}
 #| fig-cap: "Posterior predictive check with LOO-PIT-ECDF."
 psis_result <- psis(-data$log_likelihood)
-lw = psis_result$log_weights
+lw <- psis_result$log_weights
 ppc_loo_pit_ecdf(data$observed_data, data$posterior_predictive, lw, method = "correlated", plot_diff = TRUE)
 ```
 :::
@@ -642,6 +652,10 @@ We can use `plot_ppc_pava` for categorical data, but not directly. We need to te
 dt_cat = az.convert_to_datatree("../../models/prerun/dt_cat.nc")
 ```
 
+```{r}
+#| echo: false
+
+```
 
 ::: {.panel-tabset group="language"}
 ## Python

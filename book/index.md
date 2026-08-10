@@ -12,6 +12,8 @@ The exercises are available in both Python and R:
 * The first chunk will install the required packages
 * Solutions are available here: [R](exercises/solutions-r.html), [Python](exercises/solutions-python.html)
 
+The exercise can also be viewed online: [R](exercises/exercises-r.html) or [Python](exercises-python.html)
+
 ## Slides
 
 The slides are available [here](slides/slides.html)
