@@ -1,10 +1,3 @@
-
-```{python}
-#| echo : false
-#| warning: false
-import arviz as az
-```
-
 ```{r}
 #| echo: false
 #| warning: false
@@ -18,11 +11,42 @@ theme_set(bayesplot::theme_default(base_family = "sans", base_size = 14))
 library(tinytable)
 ```
 
-## Sponsors
+## Thanks to
 
 - Bayesian Workflow group at Aalto University
 - EnvStat at University of Helsinki
 - PyMC Labs
+
+<br>
+
+:::: {.columns}
+
+::: {.column width="15%"}
+![](img/aalto.png){.plain fig-align="r" width="100%"}
+:::
+
+::: {.column width="15%"}
+![](img/helsinki.png){.plain fig-align="r" width="100%"}
+:::
+
+::: {.column width="15%"}
+![](img/envstat.png){.plain fig-align="r" width="100%"}
+:::
+
+
+::: {.column width="15%"}
+![](img/rec.png){.plain fig-align="r" width="100%"}
+:::
+
+::: {.column width="15%"}
+![](img/erc.png){.plain fig-align="r" width="100%"}
+:::
+
+::: {.column width="15%"}
+![](img/aka.jpg){.plain fig-align="r" width="100%"}
+:::
+
+::::
 
 ## Outline
 
@@ -30,46 +54,45 @@ library(tinytable)
 - Convergence and uncertainty (9:50-10:55)
 - Model evaluation and critique (11:00-12:00)
 
-::: {style="text-align: center;"}
-[Course materials](https://n-kall.github.io/stancon2026-workflow-tools)
+<div style="display:flex;  justify-content:center; font-size: 1.25em; font-family: 'IBM Plex Mono';">
+  n-kall.github.io/stancon2026
+</div>
 
-![](img/workbook_qr.svg)
-:::
+<div style="display:flex; justify-content:center;">
+{{< qrcode https://n-kall.github.io/stancon2026 width=200 height=200 >}}
+</div>
 
 # Tools
 
 ## R
-
+::: {.incremental}
 - [posterior](https://mc-stan.org/posterior/): Conversion, manipulation, and summarization of draws from posterior and prior distributions.
 - [bayesplot](https://mc-stan.org/bayesplot/): Visual checks and summaries.
 - [loo](https://mc-stan.org/loo/): Model comparison using leave-one-out cross-validation and related methods.
 - [priorsense](https://n-kall.github.io/priorsense/): Prior diagnostics and sensitivity analysis.
 
+:::
+
 ## Python
+::: {.incremental}
 - [arviz-base](https://python.arviz.org/projects/base/en/latest/): Data related functionality, including converters from different PPLs.
 - [arviz-stats](https://python.arviz.org/projects/stats/en/latest/): Statistical functions and diagnostics.
 - [arviz-plots](https://python.arviz.org/projects/plots/en/latest/): Visual checks and summaries built on top of arviz-stats and arviz-base.
 - [arviz](https://python.arviz.org/en/latest/): a meta-package that imports all the above and provides a single namespace for users.
 
+:::
+
 # Posterior objects
 
-`posterior` provides objects for draws that mimic built-in types `matrix`,
-`array` `data.frame`, `list`
+## Data structures
+::: {.incremental}
 
-`arviz` uses xarray's `DataTree` object for posterior draws (and other related data, like posterior predictive draws and observed data).
+- `posterior` provides objects for draws that mimic built-in types: `matrix`, `array`, `data.frame`, `list`
+- `arviz` uses xarray's `DataTree` object for posterior draws (and other related data, like posterior predictive draws and observed data).
 
-## Example
-
+:::
+## Data structures
 ::: {.panel-tabset}
-
-### Python
-
-```{python}
-#| echo: false
-dt = az.load_arviz_data("centered_eight")
-dt
-```
-
 ### R
 
 ```{r}
@@ -79,29 +102,52 @@ posterior::example_draws() |> posterior::as_draws_df()
 
 ```
 
+
+### Python
+
+```{python}
+#| echo: false
+import arviz as az
+dt = az.load_arviz_data("centered_eight")
+for group in dt.groups:
+    print(f"{group:<20} {dict(dt[group].sizes)}")
+```
+
+
 :::
 
-# MCMC diagnostics
+## Exercise time
+
+<div style="display:flex;  justify-content:center; font-size: 1.25em; font-family: 'IBM Plex Mono';">
+  n-kall.github.io/stancon2026
+</div>
+
+<div style="display:flex; justify-content:center;">
+{{< qrcode https://n-kall.github.io/stancon2026 width=400 height=400 >}}
+</div>
+
+# Convergence and uncertainty
 
 ## R-hat
-
+::: {.incremental}
 - Convergence diagnostic
 - Measure of ratio between within-chain and between-chain variance
 - R-hat > 1.01 indicates lack of convergence
-
+:::
+## R-hat
 ```{r}
 sample <- readRDS("../models/prerun/sample.rds")
 summarise_draws(sample, rhat) |>
-tt() |>
-format_tt(j = "rhat", fn = function(x) sprintf("%.3f", x))
+tt(digits = 3)
 ```
 
 ## Nested R-hat
-
+::: {.incremental}
 - Convergence diagnostic when using many short chains
 - Chains are grouped into superchains (sharing initialization)
 - Classic R-hat may wrongly indicate lack of convergence, but nested R-hat does not
-
+:::
+## Nested R-hat
 ```{r}
 #| echo: false
 many_short_chains <- readRDS("../models/prerun/many_short_chains.rds")
@@ -118,13 +164,15 @@ format_tt(digits = 3, num_fmt = "decimal")
 
 ## Effective Sample Size
 
+::: {.incremental}
+
 - Measures how much *independent* information the draws contain
 - Accounts for autocorrelation between samples
 - `ess_bulk`: precision for mean/median (central distribution)
 - `ess_tail`: precision for interval estimates (5%/95% quantiles)
 - Rule of thumb: at least 400 total (100 per chain x 4 chains) for both
-
-## 
+:::
+## Effective Sample Size
 ```{r}
 summarise_draws(sample, ess_bulk, ess_tail) |>
   tt() |>
@@ -132,12 +180,16 @@ summarise_draws(sample, ess_bulk, ess_tail) |>
   style_tt(j = c("ess_bulk", "ess_tail"), align = "r")
 ```
 
+
 ## Monte Carlo Standard Error
+
+::: {.incremental}
 
 - Standard error of a posterior estimate (e.g. the mean), accounting for autocorrelation
 - Related to ESS: $\text{MCSE} = \frac{\hat\sigma}{\sqrt{\text{ESS}}}$
 - Tells us [how many digits](https://avehtari.github.io/Bayesian-Workflow/digits/digits.html) of a reported estimate we can trust
-
+:::
+## Monte Carlo Standard Error
 ```{r}
 summarise_draws(sample, mcse_mean) |>
   tt() |>
@@ -145,14 +197,19 @@ summarise_draws(sample, mcse_mean) |>
   style_tt(j = c("mcse_mean"), align = "r")
 ```
 
+
 ## Pareto-$\hat{k}$
+
+::: {.incremental}
 
 - Quantifies whether the tails are too heavy to trust the mean/MCSE
 - Fits a generalized Pareto distribution to the tail, $\hat k$ estimates tail heaviness
 - Converts to a minimum sample size to trust MCSE: $10^{1 / (1 - \max(0, \hat{k}))}$
 - If $\hat{k} \geq 1$: the mean doesn't exist (no amount of sampling helps)
 
-##
+:::
+
+## Pareto-$\hat{k}$
 ```{r}
 drt <- readRDS("../models/prerun/drt.rds")
 summarise_draws(drt, mcse_mean, ess_mean, min_ss = pareto_min_ss) |> 
@@ -163,18 +220,30 @@ summarise_draws(drt, mcse_mean, ess_mean, min_ss = pareto_min_ss) |>
 
 ```
 
-## Predictive checks
+## Exercise time
 
+<div style="display:flex;  justify-content:center; font-size: 1.25em; font-family: 'IBM Plex Mono';">
+  n-kall.github.io/stancon2026
+</div>
+
+<div style="display:flex; justify-content:center;">
+{{< qrcode https://n-kall.github.io/stancon2026 width=400 height=400 >}}
+</div>
+
+# Model evaluation and critique
+
+# Predictive checks
+::: {.incremental}
 - Models are simplifications — judge them by their predictions
 - Four ways to check predictions: prior knowledge, observed data, unobserved data, other models
 - Two types of predictions: **prior predictive** (before seeing data) and **posterior predictive** (after seeing data)
-
+:::
 ## Prior predictive checks
-
+::: {.incremental}
 - Generate synthetic data from the prior, *before* looking at observed data
 - Algorithm: sample $\theta \sim p(\theta)$ → simulate $y \sim p(y \mid \theta)$ → compare to domain knowledge
 - Judged against domain knowledge, **not** observed data
-
+:::
 
 ## 
 ```{r}
@@ -185,11 +254,11 @@ ppd_dens_overlay(data$prior_predictive) +
 ```
 
 ## Weakly informative priors
-
+::: {.incremental}
 - Vague priors can produce implausible predictions (e.g. negative heights)
 - Weakly informative priors: little/no mass in impossible regions, but not overly restrictive
 - Benefits: guards against implausible results, can improve sampling efficiency, easier to elicit than fully informative priors
-
+:::
 
 ## 
 ```{r}
@@ -201,11 +270,11 @@ ppd_dens_overlay(data$prior_predictive) +
 
 
 ## Posterior predictive checks
-
+::: {.incremental}
 - Generate synthetic data from the posterior, *after* fitting the model
 - Algorithm: sample $\theta \sim p(\theta \mid y)$ → simulate $\tilde y \sim p(\tilde y \mid \theta)$ → compare to **observed** data
 - A more stringent test than prior predictive checks
-
+:::
 ## 
 ```{r}
 #| fig-cap: "Posterior predictive check: observed data (black) vs. predictive draws (blue)."
@@ -215,10 +284,10 @@ ppc_dens_overlay(data$observed_data, data$posterior_predictive[1:200, ])
 
 
 ## Posterior predictive checks: summary statistics
-
+::: {.incremental}
 - Compare observed vs. predicted **test statistics** (median, MAD, IQR, ...) instead of full densities
 - Choose statistics orthogonal to model parameters (e.g. avoid the mean for a location-parameter model - it's trivially recovered)
-
+:::
 ## 
 ```{r}
 #| fig-cap: "Posterior predictive check using median, MAD, and IQR as test statistics."
@@ -233,18 +302,18 @@ bayesplot_grid(p1, p2, p3, grid_args = list(nrow = 1))
 ```
 
 ## Posterior predictive p-values
-
+::: {.incremental}
 - $p(T_{\text{sim}} \leq T_{\text{obs}} \mid \tilde y)$ - proportion of simulated statistics below the observed one
 - 0.5 = predictions split evenly around the observation
 - Not uniform under the null - tend to concentrate near 0.5
 - Used as a **diagnostic**, not a significance test
-
+:::
 ## PIT-ECDFs
-
+::: {.incremental}
 - Marginal p-value: $p(\tilde y_i \leq y_i \mid y)$, computed per observation
 - By the Probability Integral Transform, this should be **standard Uniform** if model and data agree
 - Compare the empirical CDF of these values to the diagonal line
-
+:::
 ## 
 ```{r}
 #| fig-cap: "PIT-ECDF (Δ-ECDF) for the heights model."
@@ -253,21 +322,21 @@ ppc_pit_ecdf(data$observed_data, data$posterior_predictive,
 ```
 
 ## PIT-ECDF: why the Δ version?
-
+::: {.incremental}
 - Plain ECDF vs. diagonal wastes space — all the signal sits near the line
 - **Δ-ECDF**: plot the *difference* from the uniform CDF instead
 - Ideal Δ-ECDF: flat line at zero; deviations show as peaks/valleys
 - Complement with a uniformity test to judge if deviations exceed what's expected by chance
-
+:::
 ## PIT-ECDF quartet
-
+::: {.incremental}
 - Four miscalibration patterns, compared via KDE (left) vs. PIT-ECDF (right)
   - Predictions shifted right → overprediction
   - Predictions shifted left → underprediction
   - Predictions too spread out → overdispersed
   - Predictions too narrow → overconfident
 - PIT-ECDF is more sensitive to subtle miscalibration than KDEs/histograms
-
+:::
 ## 
 ```{r}
 #| fig-cap: "KDE and PIT-ECDF comparison across four miscalibration scenarios."
@@ -288,11 +357,11 @@ patchwork::wrap_plots(plots, ncol = 2, axes = "collect", guides = "collect")
 ```
 
 ## Avoiding double-dipping
-
+::: {.incremental}
 - So far: data used twice (fit *and* check) - generally fine, but a more stringent test exists
 - Leave-one-out: $p(\tilde y_i \leq y_i \mid y_{-i})$ instead of $p(\tilde y_i \leq y_i \mid y)$
 - Exact LOO-CV is expensive ($n$ refits) → approximate with **Pareto-smoothed importance sampling (PSIS)**
-
+:::
 
 # 
 ```{r}
@@ -305,17 +374,18 @@ ppc_loo_pit_ecdf(data$observed_data, data$posterior_predictive, lw,
 XXX: THIS SHOULD LOOK OK
 
 ## Predictive checks for discrete data
-
+::: {.incremental}
 - KDEs don't work well for discrete data (unless enough distinct values to treat as continuous)
 - Histograms (one bin per value) and ECDFs still apply
 - Some tools are purpose-built per data type: **count**, **binary**, **categorical**, **ordinal**, **censored**
-
+:::
 ## Count data: rootograms
-
+::: {.incremental}
 - Rootograms compare observed vs. predicted counts, on a **square-root** y-axis (easier to compare low frequencies)
 - Points = predictions with uncertainty intervals; markers = observed counts
+:::
 
-##
+## 
 ```{r}
 #| fig-cap: "Rootogram for the Poisson model of crab satellites."
 crabs_poisson <- readRDS("../models/prerun/crabs_poisson.rds")
@@ -331,37 +401,37 @@ ppc_rootogram(crabs_hurdle_nb$observed_data, crabs_hurdle_nb$posterior_predictiv
 ```
 
 ## Binary data: calibration plots
-
+::: {.incremental}
 - Bar plots don't work - even trivial models can match the observed proportion
 - Bin predicted probabilities → compare to observed frequency per bin (traditional calibration plot)
 - Binning is arbitrary and unstable → prefer a binning-free method (Dimitriadis et al.)
 - Ideal plot: diagonal line. Above diagonal = underestimating; below = overestimating
-
+:::
 <!-- We need new unreleased version of bayesplot -->
 
 ## Categorical data
-
+::: {.incremental}
 - One-vs-others strategy: pick one category, compare it to "everything else" — repeat per category
 - Manageable for few categories; use a confusion matrix or scalar miscalibration summary to triage which categories to inspect visually when there are many
-
+:::
 <!-- We need new unreleased version of bayesplot -->
 
 
 ## Ordinal data
-
+::: {.incremental}
 - Categories have a natural order, but unknown distances between them
 - Must account for order: compute **cumulative** conditional event probabilities
 - Yields one fewer plot than the number of categories
-
+:::
 <!-- We need new unreleased version of bayesplot -->
 
 
 ## Censored data
-
+::: {.incremental}
 - Survival/time-to-event models: some events not yet observed at data-collection time
 - Naively discarding censored cases biases the estimate
 - Replace raw observations with **Kaplan–Meier** estimates for posterior predictive checks
-
+:::
 ## 
 ```{r}
 #| fig-cap: "Posterior predictive check for cat adoption times using Kaplan–Meier curves."
@@ -370,10 +440,42 @@ ppc_km_overlay(cens$observed_data, cens$posterior_predictive[1:50, ],
                status_y = cens$constant_data)
 ```
 
-# Model comparison
+# Sensitivity checks
+## Power-scaling sensitivity
+::: {.incremental}
+- What would happen if the prior was weaker or stronger?
 
-## Leave-one-out cross-validation
+- $p(\theta \mid y) \propto p(\theta)^{\alpha} p(y \mid \theta)$
 
-# Sensitivity checking
+- What about the likelihood?
 
-## Power-scaling sensitivity checks
+- $p(\theta \mid y) \propto p(\theta) p(y \mid \theta)^{\alpha}$
+:::
+
+## Visual checks
+```{r}
+#| echo: false
+theme_set(bayesplot::theme_default(base_family = "sans", base_size = 14))
+norm_ps <- example_powerscale_model()$draws
+
+powerscale_plot_dens(norm_ps, component = "prior", variable = "mu", help_text = FALSE)
+
+```
+
+## Numerical checks
+Values > 0.05 indicate sensitivity
+```{r}
+powerscale_sensitivity(norm_ps, prior_selection = "mu") |>
+tt(digits = 1)
+
+```
+
+## Exercise time
+
+<div style="display:flex;  justify-content:center; font-size: 1.25em; font-family: 'IBM Plex Mono';">
+  n-kall.github.io/stancon2026
+</div>
+
+<div style="display:flex; justify-content:center;">
+{{< qrcode https://n-kall.github.io/stancon2026 width=400 height=400 >}}
+</div>

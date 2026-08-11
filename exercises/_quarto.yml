@@ -7,3 +7,5 @@ format:
 
 execute:
   enabled: false
+  cache: true
+  freeze: auto

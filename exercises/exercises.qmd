@@ -3,6 +3,46 @@ title: "Exercises"
 
 ---
 
+::: {.content-visible when-format="org"}
+
+```{=org}
+#+PROPERTY: header-args:R :session *stancon-r* :results output :exports both
+```
+
+:::
+
+::: {.content-visible when-profile="r"}
+First load the environment and install the required packages:
+```{r}
+renv::restore(prompt = FALSE)
+
+```
+
+:::
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+#| eval: false
+import shutil
+import subprocess
+
+if shutil.which("uv") is None:
+    raise RuntimeError(
+        "uv is not installed.\n"
+        "Install it from https://docs.astral.sh/uv/getting-started/installation/\n"
+        "Then restart the kernel and run this cell again."
+    )
+
+subprocess.run(["uv", "sync"], check=True)
+
+print("Environment created successfully.")
+print("Now change the kernel to uv: stancon2026-workflow-tools")
+```
+
+:::
+
+
 ::: {.content-visible when-profile="r"}
 
 ```{r}
@@ -19,13 +59,12 @@ library(bayesplot)
 
 ```{python}
 import arviz as az
-
 ```
 
 :::
 
 
-# Draws objects
+# Part 1: Posterior draws objects
 
 For this set of exercises we will use draws from the classic eight schools model. These draws are included in both `posterior` and `ArviZ`.
 
@@ -248,9 +287,6 @@ az.thin(eight_schools_draws)
 :::
 
 
-##
-
-
 ## Summarising draws
 
 Extract the variable `mu` and summarise it via mean and sd.
@@ -309,7 +345,7 @@ Create a new variable that is the difference between school 1 and school 2 means
 
 ::: {.content-visible when-profile="r"}
 
-You can use the functions `mutate_variables()` and `quantile2()`
+You can use the functions `mutate_variables()`, `summarise_draws()` and `quantile2()`
 
 ```{r}
 # Your code here
@@ -376,256 +412,6 @@ result
 Optionally you can use `.sel` and reference the school by name like `eight_schools_draws["theta"].sel(school="Choate")`
 
 :::
-
-
-# Convergence diagnostics
-
-## R-hat
-
-Calculate the R-hat for all the variables in the model. Which variables have high R-hat (> 1.01)?
-
-::: {.content-visible when-profile="r"}
-
-You can use the functions `summarise_draws()` and `rhat`
-
-```{r}
-# Your code here
-
-```
-
-:::
-
-
-
-::: {.content-visible when-profile="python"}
-
-You can use the function `az.rhat()`
-
-
-```{python}
-# Your code here
-
-```
-
-:::
-
-::: {.content-visible when-profile="rsolutions"}
-
-```{r}
-eight_schools_draws |>
-  summarise_draws(rhat)
-
-```
-
-:::
-
-
-
-::: {.content-visible when-profile="pythonsolutions"}
-
-```{python}
-az.rhat(eight_schools_draws)
-```
-
-:::
-
-
-## Effective sample size (ESS)
-
-Calculate the bulk and tail ESS for all the variables in the model.
-
-::: {.content-visible when-profile="r"}
-
-You can use the functions `summarise_draws()` and `rhat()`
-
-```{r}
-# Your code here
-
-```
-
-:::
-
-
-
-::: {.content-visible when-profile="python"}
-
-```{python}
-# Your code here
-
-```
-
-:::
-
-
-::: {.content-visible when-profile="rsolutions"}
-
-```{r}
-eight_schools_draws |>
-  summarise_draws(ess_bulk, ess_tail)
-
-```
-
-:::
-
-
-
-::: {.content-visible when-profile="pythonsolutions"}
-
-```{python}
-az.summary(eight_schools_draws)[["ess_bulk", "ess_tail"]]
-
-```
-:::
-
-
-## Monte Carlo standard error
-
-Calculate the mean of each variable, and also the Monte Carlo standard error of the mean.
-
-::: {.content-visible when-profile="r"}
-
-You can use the functions `summarise_draws()` and `mcse_mean()`
-
-```{r}
-# Your code here
-
-```
-
-:::
-
-
-::: {.content-visible when-profile="python"}
-
-```{python}
-# Your code here
-
-```
-
-:::
-
-::: {.content-visible when-profile="rsolutions"}
-
-```{r}
-eight_schools_draws |>
-  summarise_draws(mean, mcse_mean)
-
-```
-
-:::
-
-
-::: {.content-visible when-profile="python"}
-
-```{python}
-az.summary(eight_schools_draws)[["mean", "mcse_mean"]]
-```
-
-:::
-
-
-Then do the same for the 0.05 and 0.95 quantiles. Think about how the Monte Carlo standard error might influence how you report the quantiles.
-
-::: {.content-visible when-profile="r"}
-
-You can use the functions `summarise_draws()` and `mcse_quantile()`
-
-```{r}
-# Your code here
-
-```
-
-:::
-
-
-::: {.content-visible when-profile="python"}
-
-```{python}
-# Your code here
-
-```
-
-:::
-
-
-::: {.content-visible when-profile="rsolutions"}
-
-```{r}
-eight_schools_draws |>
-  summarise_draws(quantile2, mcse_quantile)
-```
-
-:::
-
-
-::: {.content-visible when-profile="pythonsolutions"}
-
-```{python}
-mcse_q05 = az.mcse(eight_schools_draws, method="quantile", prob=0.05).ds.expand_dims(summary=["mcse_5%"])
-mcse_q95 = az.mcse(eight_schools_draws, method="quantile", prob=0.95).ds.expand_dims(summary=["mcse_95%"])
-
-eti_05 = (
-    az.eti(eight_schools_draws, prob=0.90)
-    .ds.rename({"ci_bound": "summary"})
-    .assign_coords(summary=["eti90_lb", "eti90_ub"])
-)
-
-summary = xr.concat([mcse_q05, mcse_q95, eti_05], dim="summary")
-
-az.dataset_to_dataframe(summary, sample_dims=["summary"]).T
-```
-
-:::
-
-
-
-## Pareto diagnostics
-
-Calculate the minimum sample size for stable estimates for each variable in the model. Which has the highest minimum sample size?
-
-::: {.content-visible when-profile="r"}
-
-You can use the functions `summarise_draws()` and `pareto_min_ss()`
-
-```{r}
-# Your code here
-
-```
-
-:::
-
-
-
-::: {.content-visible when-profile="python"}
-
-```{python}
-# Your code here
-
-```
-
-:::
-
-
-::: {.content-visible when-profile="rsolutions"}
-
-
-```{r}
-eight_schools_draws |>
-  summarise_draws(pareto_min_ss)
-
-```
-
-:::
-
-
-::: {.content-visible when-profile="pythonsolutions"}
-
-```{python}
-eight_schools_draws.azstats.pareto_min_ss()
-```
-
-:::
-
-# Plotting posterior draws
 
 ## Marginal posteriors
 
@@ -726,7 +512,256 @@ az.plot_pair(eight_schools_draws, var_names=["mu", "tau"])
 
 :::
 
-# Prior predictive check
+
+# Part 2: Convergence diagnostics and uncertainty
+
+## R-hat
+
+Calculate the R-hat for all the variables in the model. Which variables have high R-hat (> 1.01)?
+
+::: {.content-visible when-profile="r"}
+
+You can use the function `summarise_draws()` with `rhat`
+
+```{r}
+# Your code here
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+You can use the function `az.rhat()`
+
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+::: {.content-visible when-profile="rsolutions"}
+
+```{r}
+eight_schools_draws |>
+  summarise_draws(rhat)
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="pythonsolutions"}
+
+```{python}
+az.rhat(eight_schools_draws)
+```
+
+:::
+
+
+## Effective sample size (ESS)
+
+Calculate the bulk and tail ESS for all the variables in the model.
+
+::: {.content-visible when-profile="r"}
+
+You can use the function `summarise_draws()` with `ess_tail` and `ess_bulk`
+
+```{r}
+# Your code here
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="rsolutions"}
+
+```{r}
+eight_schools_draws |>
+  summarise_draws(ess_bulk, ess_tail)
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="pythonsolutions"}
+
+```{python}
+az.summary(eight_schools_draws)[["ess_bulk", "ess_tail"]]
+
+```
+:::
+
+
+## Monte Carlo standard error
+
+Calculate the mean of each variable, and also the Monte Carlo standard error of the mean.
+
+::: {.content-visible when-profile="r"}
+
+You can use the functions `summarise_draws()` with `mean` and `mcse_mean`
+
+```{r}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+::: {.content-visible when-profile="rsolutions"}
+
+```{r}
+eight_schools_draws |>
+  summarise_draws(mean, mcse_mean)
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="pythonsolutions"}
+
+```{python}
+az.summary(eight_schools_draws)[["mean", "mcse_mean"]]
+```
+
+:::
+
+
+Then do the same for the 0.05 and 0.95 quantiles. Think about how the Monte Carlo standard error might influence how you report the quantiles.
+
+::: {.content-visible when-profile="r"}
+
+You can use the functions `summarise_draws()` with `quantile2` and `mcse_quantile`
+
+```{r}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="rsolutions"}
+
+```{r}
+eight_schools_draws |>
+  summarise_draws(quantile2, mcse_quantile)
+```
+
+:::
+
+
+::: {.content-visible when-profile="pythonsolutions"}
+
+```{python}
+mcse_q05 = az.mcse(eight_schools_draws, method="quantile", prob=0.05).ds.expand_dims(summary=["mcse_5%"])
+mcse_q95 = az.mcse(eight_schools_draws, method="quantile", prob=0.95).ds.expand_dims(summary=["mcse_95%"])
+
+eti_05 = (
+    az.eti(eight_schools_draws, prob=0.90)
+    .ds.rename({"ci_bound": "summary"})
+    .assign_coords(summary=["eti90_lb", "eti90_ub"])
+)
+
+summary = xr.concat([mcse_q05, mcse_q95, eti_05], dim="summary")
+
+az.dataset_to_dataframe(summary, sample_dims=["summary"]).T
+```
+
+:::
+
+
+
+## Pareto diagnostics
+
+Calculate the minimum sample size for stable estimates for each variable in the model. Which has the highest minimum sample size?
+
+::: {.content-visible when-profile="r"}
+
+You can use the function `summarise_draws()` with `pareto_min_ss`
+
+```{r}
+# Your code here
+
+```
+
+:::
+
+
+
+::: {.content-visible when-profile="python"}
+
+```{python}
+# Your code here
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="rsolutions"}
+
+
+```{r}
+eight_schools_draws |>
+  summarise_draws(pareto_min_ss)
+
+```
+
+:::
+
+
+::: {.content-visible when-profile="pythonsolutions"}
+
+```{python}
+eight_schools_draws.azstats.pareto_min_ss()
+```
+
+:::
+
+
+# Part 3: Model evaluation and critique
 
 We can generate prior predictions from the eight schools model, using the following function.
 
@@ -776,7 +811,7 @@ def make_eight_schools_model(mu_prior_sd=1, tau_prior_sd=1, observe=False):
 def eight_schools_prior(ndraws=1000, mu_prior_sd=1, tau_prior_sd=1):
   model = make_eight_schools_model(mu_prior_sd=mu_prior_sd, tau_prior_sd=tau_prior_sd)
   with model:
-    prior_predictive_draws = pm.sample_prior_predictive(samples=ndraws)
+    prior_predictive_draws = pm.sample_prior_predictive(draws=ndraws)
   return prior_predictive_draws
 
 ```
@@ -792,8 +827,13 @@ Try with different `mu_prior_sd` and `tau_prior_sd` values (e.g. 1, 10, 100).
 You can use the `ppd_intervals` function.
 
 ```{r}
-prior_predictive_draws <- eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, tau_prior_sd = 1)
-# Continue the code
+prior_predictive_draws <- eight_schools_prior(
+  ndraws = 1000,
+  mu_prior_sd = 1,
+  tau_prior_sd = 1
+)
+
+# Your code here
 ```
 
 :::
@@ -803,8 +843,13 @@ prior_predictive_draws <- eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, ta
 ::: {.content-visible when-profile="python"}
 
 ```{python}
-prior_predictive_draws = eight_schools_prior(ndraws=1000, mu_prior_sd=1, tau_prior_sd=1)
+prior_predictive_draws = eight_schools_prior(
+  ndraws=1000,
+  mu_prior_sd=1,
+  tau_prior_sd=1
+)
 
+# Your code here
 ```
 
 :::
@@ -898,7 +943,7 @@ posterior_predictive_draws
 Plot the posterior predictions on top of the actual observations. Then use the PIT-ECDF plot.
 
 ::: {.content-visible when-profile="r"}
-You can use the `ppc_intervals()` function.
+You can use the `ppc_intervals()` and `ppc_pit_ecdf()` functions.
 ```{r}
 y <- c(28,  8, -3,  7, -1,  1, 18, 12)
 # Your code here
@@ -933,7 +978,7 @@ az.plot_ppc_pit(posterior_predictive_draws, var_names=["yrep"])
 
 ## Sensitivity checks
 
-Check for prior and likelihood sensitivity in the eight schools model. First check by power-scaling all priors, then select only the "mu" and only the "tau" prior separately.
+Check for prior and likelihood sensitivity in the eight schools model. First check by power-scaling all priors jointly, then select only the "mu" and only the "tau" prior separately.
 
 
 ::: {.content-visible when-profile="r"}
@@ -1007,6 +1052,88 @@ powerscale_plot_dens(eight_schools_draws_ps, variable = c("mu", "tau"), prior_se
 ```{python}
 
 az.plot_psense_dist(dt, var_names=["mu", "tau"])
+
+```
+:::
+
+# Part 4: Bringing it all together
+
+We have provided four sets of posterior draws from hierarchical models of observed migratory bird counts recorded between 2000 and 2020 at the [Hanko Bird Observatory (Halias)](https://halias.fi/tutkimus-ja-aineisto/).
+
+For species $j$,
+
+$y \sim \mathrm{Poisson}(\lambda_j)$
+
+or
+
+$y \sim \mathrm{NegativeBinomial}(\lambda_j, \phi).$
+
+The species-specific abundances are linked through a hierarchical prior,
+
+$\log(\lambda_j) \sim \mathrm{Normal}(\mu, \sigma)$
+
+where $\mu$ represents the average abundance across species and $\sigma$
+controls the amount of pooling between species.
+
+Your task is to explore the posterior draws and diagnostic outputs for the four
+fitted models.
+
+As you work through the diagnostics, try to identify which model corresponds to
+each of the following situations:
+
+- Convergence issues caused by poor chain mixing (for example, insufficient warmup).
+- Inadequate fit to the data caused by the choice of observation model, shown by posterior predictive checks.
+- Issues caused by priors in conflict with the likelihood.
+- No major issues, although there is still room for model improvement.
+
+Use posterior summaries, convergence diagnostics, posterior predictive checks,
+and sensitivity analyses to guide your investigation.
+
+You can also look at the Stan model (`birds_per_year.stan`) and consider how you might improve it.
+
+::: {.content-visible when-profile="r"}
+
+
+```{r}
+# Use the following as a starting point
+
+# Load the draws
+draws1 <- readRDS("data/draws1.rds")
+draws2 <- readRDS("data/draws2.rds")
+draws3 <- readRDS("data/draws3.rds")
+draws4 <- readRDS("data/draws4.rds")
+
+# Load the data fed to Stan
+stan_data <- readRDS("data/stan_data.rds")
+
+# Get the actual observations and the corresponding species
+y <- stan_data$count
+species <- stan_data$species # useful for grouped plots
+
+# Create yrep matrices for posterior predictive checks
+yrep1 <-  as_draws_matrix(subset_draws(draws1, "y_rep"))
+yrep2 <-  as_draws_matrix(subset_draws(draws2, "y_rep"))
+yrep3 <-  as_draws_matrix(subset_draws(draws3, "y_rep"))
+yrep4 <-  as_draws_matrix(subset_draws(draws4, "y_rep"))
+```
+
+:::
+
+::: {.content-visible when-profile="rsolutions"}
+```{r}
+
+```
+:::
+
+::: {.content-visible when-profile="python"}
+```{python}
+# Your code here
+```
+:::
+
+::: {.content-visible when-profile="pythonsolutions"}
+```{python}
+
 
 ```
 :::

@@ -18,8 +18,8 @@ book:
       url: XXXX
       orcid: 0000-0002-5249-348X
       affiliations:
-        - name: XXXX
-          affiliation-url: XXXX
+        - name: PyMC Labs
+          affiliation-url: pymc-labs.com
           address: XXXX
           city: XXXX
           country: Finland
@@ -29,7 +29,7 @@ book:
       orcid: 0000-0001-7419-8978
       affiliations:
         - name: Aalto University
-          affiliation-url: https://research.cs.aalto.fi/pml/
+          affiliation-url: https://users.aalto.fi/~ave/group.html
           address: Otakaari 24, 02150
           city: Espoo
           country: Finland
@@ -73,3 +73,6 @@ theme:
 
 bibliography: ../references.bib
 
+execute:
+  cache: true
+  freeze: auto

@@ -1,16 +1,35 @@
+# Material
 
-# Bayesian model diagnostics: Workflows and software tools
+The material for this tutorial consists of the slides, exercises, and this book.
 
-blah blah blah
+## Exercises
 
-## overview
+The exercises are available in both Python and R:
+
+* Download and expand [this zip file](exercises/workflow_exercises.zip)
+* This contains the exercises in different formats
+* Use your preferred editor to open the chosen notebook
+* The first chunk will install the required packages
+
+The exercise can also be viewed online: [R](exercises/exercises-r.html) or [Python](exercises/exercises-python.html)
+
+Solutions are available here: [R](exercises/solutions-r.html), [Python](exercises/solutions-python.html)
+
+
+## Slides
+
+The slides are available [here](slides/slides.html)
+
+## Web book
+Use the side bar to read further about any of the topics discussed.
+
+# Overview
 
 When working with Bayesian models, a range of related tasks must be addressed beyond inference itself. These include:
 
 * Diagnosing the quality of the inferencial method (MCMC, VI, ...). As we usually use numerical methods to perform inference.
 * Model checking and criticism, which includes posterior predictive checks, prior predictive checks, prior/likelihood sensitivity analysis.
 * Model comparison
-* etc...
 
 To simplify the workflow of performing these tasks, we can use some tools. The ones we are going to cover in this tutorial are: 
 
