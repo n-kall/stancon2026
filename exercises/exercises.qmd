@@ -1111,10 +1111,10 @@ y <- stan_data$count
 species <- stan_data$species # useful for grouped plots
 
 # Create yrep matrices for posterior predictive checks
-yrep_1 <-  as_draws_matrix(subset_draws(draws1, "y_rep"))
-yrep_2 <-  as_draws_matrix(subset_draws(draws1, "y_rep"))
-yrep_3 <-  as_draws_matrix(subset_draws(draws1, "y_rep"))
-yrep_4 <-  as_draws_matrix(subset_draws(draws1, "y_rep"))
+yrep1 <-  as_draws_matrix(subset_draws(draws1, "y_rep"))
+yrep2 <-  as_draws_matrix(subset_draws(draws2, "y_rep"))
+yrep3 <-  as_draws_matrix(subset_draws(draws3, "y_rep"))
+yrep4 <-  as_draws_matrix(subset_draws(draws4, "y_rep"))
 ```
 
 :::
