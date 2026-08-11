@@ -1058,5 +1058,78 @@ az.plot_psense_dist(dt, var_names=["mu", "tau"])
 
 # Part 4: Bringing it all together
 
+We have provided four sets of posterior draws from hierarchical models of observed migratory bird counts recorded between 2000 and 2020 at the [Hanko Bird Observatory (Halias)](https://halias.fi/tutkimus-ja-aineisto/).
+
+For species $j$,
+
+$y \sim \mathrm{Poisson}(\lambda_j)$
+
+or
+
+$y \sim \mathrm{NegativeBinomial}(\lambda_j, \phi).$
+
+The species-specific abundances are linked through a hierarchical prior,
+
+$\log(\lambda_j) \sim \mathrm{Normal}(\mu, \sigma)$
+
+where $\mu$ represents the average abundance across species and $\sigma$
+controls the amount of pooling between species.
+
+Your task is to explore the posterior draws and diagnostic outputs for the four
+fitted models.
+
+As you work through the diagnostics, try to identify which model corresponds to
+each of the following situations:
+
+- Convergence issues caused by poor chain mixing (for example, insufficient warmup).
+- Inadequate fit to the data caused by the choice of observation model, shown by posterior predictive checks.
+- Issues caused by priors in conflict with the likelihood.
+- No major issues, although there is still room for model improvement.
+
+Use posterior summaries, convergence diagnostics, posterior predictive checks,
+and sensitivity analyses to guide your investigation.
 
 
+::: {.content-visible when-profile="r"}
+
+
+```{r}
+# Use the following as a starting point
+
+# Load the draws
+draws1 <- readRDS("data/draws1.rds")
+draws2 <- readRDS("data/draws2.rds")
+draws3 <- readRDS("data/draws3.rds")
+draws4 <- readRDS("data/draws4.rds")
+
+# Load the observations and data fed to Stan
+obs_data <- read.csv("data/observed_data.csv")
+stan_data <- readRDS("data/stan_data.rds")
+
+# Create yrep matrices for posterior predictive checks
+yrep_1 <-  as_draws_matrix(subset_draws(draws1, "y_rep"))
+yrep_2 <-  as_draws_matrix(subset_draws(draws1, "y_rep"))
+yrep_3 <-  as_draws_matrix(subset_draws(draws1, "y_rep"))
+yrep_4 <-  as_draws_matrix(subset_draws(draws1, "y_rep"))
+```
+
+:::
+
+::: {.content-visible when-profile="rsolutions"}
+```{r}
+
+```
+:::
+
+::: {.content-visible when-profile="python"}
+```{python}
+# Your code here
+```
+:::
+
+::: {.content-visible when-profile="pythonsolutions"}
+```{python}
+
+
+```
+:::

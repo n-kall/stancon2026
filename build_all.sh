@@ -31,7 +31,7 @@ mkdir -p docs/slides
 
 (
     cd exercises/rendered &&
-    Rscript prepare_env.R
+        Rscript ../../prepare_env.R
 )
 
 zip --junk-paths docs/exercises/workflow_exercises.zip \
@@ -47,6 +47,11 @@ zip --junk-paths docs/exercises/workflow_exercises.zip \
 (
     cd exercises/rendered &&
     zip -r ../../docs/exercises/workflow_exercises.zip renv/activate.R
+)
+
+(
+    cd exercises
+    zip -r ../docs/exercises/workflow_exercises.zip data/
 )
 
 cp -r exercises/rendered/* docs/exercises/
