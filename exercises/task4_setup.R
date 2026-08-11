@@ -4,9 +4,9 @@ library(priorsense)
 library(bayesplot)
 library(posterior)
 
-clean_dat <- read_csv("data/observations.csv")
+clean_dat <- read_csv("data/bird_counts.csv")
 
-model <- cmdstan_model("stan/birds_per_year.stan")
+model <- cmdstan_model("birds_per_year.stan")
 
 stan_data <- list(
     N = nrow(clean_dat),

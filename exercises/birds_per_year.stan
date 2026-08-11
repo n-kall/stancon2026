@@ -9,7 +9,6 @@ data {
   // 2 = NegBin
   int<lower=1, upper=2> likelihood;
 
-  // controls pooling strength
   real<lower=0> sigma_prior;
   real<lower=0> mu_prior_sd;
   real<lower=0> mu_prior_mean;
@@ -29,7 +28,6 @@ model {
 
   sigma ~ exponential(1 / sigma_prior);
 
-  // hierarchical prior
   log_lambda ~ normal(mu, sigma);
 
   phi ~ exponential(1);

@@ -1089,6 +1089,7 @@ each of the following situations:
 Use posterior summaries, convergence diagnostics, posterior predictive checks,
 and sensitivity analyses to guide your investigation.
 
+You can also look at the Stan model (`birds_per_year.stan`) and consider how you might improve it.
 
 ::: {.content-visible when-profile="r"}
 
@@ -1102,9 +1103,12 @@ draws2 <- readRDS("data/draws2.rds")
 draws3 <- readRDS("data/draws3.rds")
 draws4 <- readRDS("data/draws4.rds")
 
-# Load the observations and data fed to Stan
-obs_data <- read.csv("data/observed_data.csv")
+# Load the data fed to Stan
 stan_data <- readRDS("data/stan_data.rds")
+
+# Get the actual observations and the corresponding species
+y <- stan_data$count
+species <- stan_data$species # useful for grouped plots
 
 # Create yrep matrices for posterior predictive checks
 yrep_1 <-  as_draws_matrix(subset_draws(draws1, "y_rep"))
