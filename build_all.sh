@@ -54,7 +54,8 @@ zip --junk-paths docs/exercises/workflow_exercises.zip \
     zip -r ../docs/exercises/workflow_exercises.zip data/
 )
 
-cp -r exercises/rendered/* docs/exercises/
+cp -r exercises/rendered/exercises-* docs/exercises/
+cp -r exercises/rendered/solutions-* docs/exercises/
 
 
 
