@@ -56,13 +56,14 @@ zip --junk-paths docs/exercises/workflow_exercises.zip \
 
 cp -r exercises/rendered/exercises-* docs/exercises/
 cp -r exercises/rendered/solutions-* docs/exercises/
-
+cp -r exercises/rendered/exercises_files docs/exercises/
 
 
 # Render slides
 uv run quarto render slides/slides.qmd
 cp slides/slides.html docs/slides/
 cp -r slides/slides_files docs/slides/
+cp -r slides/img docs/slides/
 
 uv run quarto render book
 rsync -r book/docs/ docs/
