@@ -28,7 +28,7 @@ library(tinytable)
 
 n-kall.github.io/stancon2026
 
-![](img/workbook_qr.svg)
+{{< qrcode n-kall.github.io/stancon2026 >}}
 :::
 
 # Tools
@@ -92,7 +92,7 @@ for group in dt.groups:
 
 n-kall.github.io/stancon2026
 
-![](img/workbook_qr.svg)
+{{< qrcode n-kall.github.io/stancon2026 >}}
 :::
 
 
@@ -197,7 +197,7 @@ summarise_draws(drt, mcse_mean, ess_mean, min_ss = pareto_min_ss) |>
 
 n-kall.github.io/stancon2026
 
-![](img/workbook_qr.svg)
+{{< qrcode n-kall.github.io/stancon2026 >}}
 :::
 
 # Model evaluation and critique
@@ -447,5 +447,5 @@ tt(digits = 1)
 
 n-kall.github.io/stancon2026
 
-![](img/workbook_qr.svg)
+{{< qrcode n-kall.github.io/stancon2026 >}}
 :::
