@@ -15,13 +15,14 @@
 * Python: ArviZ
 * R: posterior, bayesplot, loo, priorsense
 * General structure of draws objects / DataTree
+* Posterior manipulation and summaries
 ### Part 2: Covergence diagnostics and uncertainty quantification
-* Checking convergence
-  - rank-normalized R-hat
-  - pareto-k
-  - nested R-hat
-* Posterior summaries and uncertainty quantification
-  - mean, median, quantiles with MCSE
+* rank-normalized R-hat
+* nested R-hat
+* effective sample size
+* Monte Carlo standard error
+* pareto-k diagnostics
 ### Part 3: Model evaluation and critique
+* prior predictive checks
 * posterior predictive checks (PIT-ECDF, calibration)
 * prior and likelihood sensitivity (power-scaling)
