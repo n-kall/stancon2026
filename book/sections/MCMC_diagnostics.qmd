@@ -251,6 +251,12 @@ An advantage of the ESS is that it is scale-free: it does not matter whether a p
 
 The MCSE is essentially the standard error of a posterior estimate, like the mean, accounting for the autocorrelation in the draws. In fact, it is closely related to the ESS: $\text{MCSE} = \hat{\sigma} / \sqrt{\text{ESS}}$, where $\hat\sigma$ is the estimated posterior standard deviation. The MCSE should be small relative to the precision we want to report. For example, if the MCSE for a parameter mean is 0.1, then reporting that mean as 3.15 is misleading, the true value could plausibly be anywhere from about 3.0 to 3.3.
 
+```{python}
+#| echo: false
+import arviz as az
+sample = az.convert_to_datatree("../../models/prerun/sample.nc")
+```
+
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
