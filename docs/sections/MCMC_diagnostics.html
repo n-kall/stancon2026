@@ -450,7 +450,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 11, 2026</p>
+      <p class="date-modified">August 12, 2026</p>
     </div>
   </div>
     
@@ -1833,18 +1833,24 @@ Note
 </div>
 </div>
 <div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
-
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-label="1"></a><span class="co"># Not available in bayesplot</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </div>
 </div>
 </div>
 <p>A simple way to increase the ESS is to increase the number of samples, but it could be the case that the ESS grows very slowly with the number of samples, so even if we increased the number of samples 10 times we could still be very far from our target value. One way to estimate “how many more samples do we need” is to use <code>az.plot_ess_evolution(.)</code>. This graph shows us how the ESS changed with each iteration, which allows us to make predictions.</p>
 <p>From the next figure we can see that the ESS grows linearly with the number of samples for <code>good_sample</code>, and it does not grow at all for <code>bad_sample_0</code>. In the latter case, this is an indication that there is virtually no hope of improving the ESS simply by increasing the number of draws.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content" data-group="language">
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-label="1"></a>az.plot_ess_evolution(</span>
-<span id="cb21-2"><a href="#cb21-2" aria-label="2"></a>    sample,</span>
-<span id="cb21-3"><a href="#cb21-3" aria-label="3"></a>    var_names<span class="op">=</span>[<span class="st">"good_sample"</span>, <span class="st">"bad_sample_0"</span>],</span>
-<span id="cb21-4"><a href="#cb21-4" aria-label="4"></a>    col_wrap<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb21-5"><a href="#cb21-5" aria-label="5"></a>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-label="1"></a>az.plot_ess_evolution(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-label="2"></a>    sample,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-label="3"></a>    var_names<span class="op">=</span>[<span class="st">"good_sample"</span>, <span class="st">"bad_sample_0"</span>],</span>
+<span id="cb22-4"><a href="#cb22-4" aria-label="4"></a>    col_wrap<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-label="5"></a>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1854,16 +1860,24 @@ Note
 </div>
 </div>
 </div>
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-label="1"></a><span class="co"># Not available in bayesplot</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
 <section id="monte-carlo-standard-error-mcse" class="level3" data-number="3.4.1">
 <h3 data-number="3.4.1" class="anchored" data-anchor-id="monte-carlo-standard-error-mcse"><span class="header-section-number">3.4.1</span> Monte Carlo Standard Error (MCSE)</h3>
 <p>An advantage of the ESS is that it is scale-free: it does not matter whether a parameter varies between 0.1 and 0.2 or between 2000 and 0. An ESS of 400 has the same meaning in both cases. This makes it easy to quickly identify the most problematic parameters in a model with many variables. However, when reporting results it is not very informative to know whether the ESS was 1372 or 1501. What we really want to know is the magnitude of the error we are making when using MCMC samples to approximate a posterior quantity of interest. That is what the <strong>Monte Carlo standard error</strong> (MCSE) provides.</p>
 <p>The MCSE is essentially the standard error of a posterior estimate, like the mean, accounting for the autocorrelation in the draws. In fact, it is closely related to the ESS: <span class="math inline">\(\text{MCSE} = \hat{\sigma} / \sqrt{\text{ESS}}\)</span>, where <span class="math inline">\(\hat\sigma\)</span> is the estimated posterior standard deviation. The MCSE should be small relative to the precision we want to report. For example, if the MCSE for a parameter mean is 0.1, then reporting that mean as 3.15 is misleading, the true value could plausibly be anywhere from about 3.0 to 3.3.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false" href="">R</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
+<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-label="1"></a>az.mcse(sample)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-label="1"></a>az.mcse(sample)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
 <defs>
@@ -2413,13 +2427,13 @@ Group: /posterior
     Data variables:
         good_sample   float64 8B 0.004456
         bad_sample_0  float64 8B 0.1321
-        bad_sample_1  float64 8B 0.02211</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.DataTree</div><div class="xr-obj-name">'posterior'</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-66b2a0b9-b791-4710-b9f2-57fe4b8cfd15" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-66b2a0b9-b791-4710-b9f2-57fe4b8cfd15" class="xr-section-summary">Dimensions:</label><div class="xr-section-inline-details"></div></li><li class="xr-section-item"><input id="section-09092bd4-6e8f-4ef8-a72d-2b95f2a8ff61" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-09092bd4-6e8f-4ef8-a72d-2b95f2a8ff61" class="xr-section-summary" title="Expand/collapse section">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.004456</div><input id="attrs-77c3317c-aad5-4f82-b957-746705f99925" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-77c3317c-aad5-4f82-b957-746705f99925" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-758454d2-2ab4-46ea-94ec-fb78b6d6de24" class="xr-var-data-in" type="checkbox"><label for="data-758454d2-2ab4-46ea-94ec-fb78b6d6de24" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.00445599)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.1321</div><input id="attrs-8fbff31b-e9b7-48e8-a202-f29b76bd562a" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-8fbff31b-e9b7-48e8-a202-f29b76bd562a" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-32799a91-276e-4cdd-b247-93dd0a287506" class="xr-var-data-in" type="checkbox"><label for="data-32799a91-276e-4cdd-b247-93dd0a287506" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.1320602)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.02211</div><input id="attrs-8f2567e8-2838-4e55-abd4-07cceabdc6fa" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-8f2567e8-2838-4e55-abd4-07cceabdc6fa" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-cb9c6d93-a6a5-498b-a320-0d0a244de961" class="xr-var-data-in" type="checkbox"><label for="data-cb9c6d93-a6a5-498b-a320-0d0a244de961" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.02210513)</pre></div></li></ul></div></li></ul></div></div>
+        bad_sample_1  float64 8B 0.02211</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.DataTree</div><div class="xr-obj-name">'posterior'</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-72a4cf1e-05bc-449f-ab1c-affd53be8680" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-72a4cf1e-05bc-449f-ab1c-affd53be8680" class="xr-section-summary">Dimensions:</label><div class="xr-section-inline-details"></div></li><li class="xr-section-item"><input id="section-9edfb7b5-37ea-4a29-a6dc-bcc83971109a" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-9edfb7b5-37ea-4a29-a6dc-bcc83971109a" class="xr-section-summary" title="Expand/collapse section">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.004456</div><input id="attrs-5dd3282c-7358-4069-b6ff-2919fdb03179" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-5dd3282c-7358-4069-b6ff-2919fdb03179" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-64b23eec-c31e-4597-9c13-ff452c9ce07b" class="xr-var-data-in" type="checkbox"><label for="data-64b23eec-c31e-4597-9c13-ff452c9ce07b" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.00445599)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.1321</div><input id="attrs-bb9ab430-0425-4912-87a4-97e22bd939d2" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-bb9ab430-0425-4912-87a4-97e22bd939d2" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-d8db6ea7-3dbb-43da-b37f-5a60bd3a107d" class="xr-var-data-in" type="checkbox"><label for="data-d8db6ea7-3dbb-43da-b37f-5a60bd3a107d" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.1320602)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.02211</div><input id="attrs-dcb1b2ad-82a1-47c5-8c03-8c04ad39e4ee" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-dcb1b2ad-82a1-47c5-8c03-8c04ad39e4ee" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-8ee0d167-0080-4646-ac1b-f98af9c542cf" class="xr-var-data-in" type="checkbox"><label for="data-8ee0d167-0080-4646-ac1b-f98af9c542cf" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.02210513)</pre></div></li></ul></div></li></ul></div></div>
 </div>
 </div>
 </div>
-<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-label="1"></a><span class="fu">summarise_draws</span>(sample, mcse_mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-label="1"></a><span class="fu">summarise_draws</span>(sample, mcse_mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
   variable     mcse_mean
@@ -2444,22 +2458,22 @@ Group: /posterior
 \]</span></p>
 <p>If the actual sample size exceeds <code>min_ss</code>, Pareto-smoothed estimates can be considered reliable. If not, collecting more samples may help, but if <span class="math inline">\(\hat k \geq 1\)</span>, the mean does not exist and no amount of additional sampling will fix the problem.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false" href="">R</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
+<div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-label="1"></a>az.summary(sample, kind<span class="op">=</span><span class="st">"mc_diagnostics"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-label="1"></a>az.summary(sample, kind<span class="op">=</span><span class="st">"mc_diagnostics"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>             mcse_mean  ess_mean  min_ss
-good_sample     0.0045      3852      10
-bad_sample_0      0.13         4      10
-bad_sample_1     0.022       163      10</code></pre>
+<pre><code>             mcse_mean ess_mean min_ss
+good_sample     0.0045     3852     10
+bad_sample_0      0.13        4     10
+bad_sample_1     0.022      163     10</code></pre>
 </div>
 </div>
 </div>
-<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
+<div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-label="1"></a><span class="fu">summarise_draws</span>(sample, mcse_mean, ess_mean, <span class="at">min_ss =</span> pareto_min_ss)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-label="1"></a><span class="fu">summarise_draws</span>(sample, mcse_mean, ess_mean, <span class="at">min_ss =</span> pareto_min_ss)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 4
   variable     mcse_mean ess_mean min_ss
@@ -2475,40 +2489,40 @@ bad_sample_1     0.022       163      10</code></pre>
 <p>For <code>good_sample</code>, <code>bad_sample_0</code>, and <code>bad_sample_1</code>, the <code>min_ss</code> is around 10, meaning we need at least 10 samples to trust the MCSE. This is a low bar that all three variables easily clear, because all of them have finite variance and finite mean — even when sampling is poor, the underlying distribution is well-behaved.</p>
 <p>To see the diagnostic do more interesting work, we switch to an example with genuinely thick-tailed distributions. We generate MCMC draws using an AR(1) process with marginal <span class="math inline">\(\text{Normal}(0, 1)\)</span> distribution (<code>xn</code>), then transform those draws to obtain variables with marginal <span class="math inline">\(t_\nu\)</span> distributions for <span class="math inline">\(\nu \in \{3, 2.5, 2, 1.5, 1\}\)</span>. The <span class="math inline">\(t\)</span> distribution has finite variance only when <span class="math inline">\(\nu &gt; 2\)</span>, and finite mean only when <span class="math inline">\(\nu &gt; 1\)</span>. The <span class="math inline">\(t_1\)</span> distribution is the Cauchy, which has neither.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false" href="">R</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" role="tab" aria-controls="tabset-11-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
+<div id="tabset-11-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-11-1-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-label="1"></a>drt <span class="op">=</span> az.convert_to_datatree(<span class="st">"../../models/prerun/drt.nc"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-label="1"></a>drt <span class="op">=</span> az.convert_to_datatree(<span class="st">"../../models/prerun/drt.nc"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
+<div id="tabset-11-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-2-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-label="1"></a>drt <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"../../models/prerun/drt.rds"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-label="1"></a>drt <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"../../models/prerun/drt.rds"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 </div>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" role="tab" aria-controls="tabset-11-2" aria-selected="false" href="">R</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-12-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-1" role="tab" aria-controls="tabset-12-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-12-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-2" role="tab" aria-controls="tabset-12-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-11-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-11-1-tab">
+<div id="tabset-12-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-12-1-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-label="1"></a>az.summary(drt, kind<span class="op">=</span><span class="st">"mc_diagnostics"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-label="1"></a>az.summary(drt, kind<span class="op">=</span><span class="st">"mc_diagnostics"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>      mcse_mean  ess_mean  min_ss
-xn        0.021      2280      10
-xt3       0.033      2452      31
-xt2_5     0.039      2584      48
-xt2       0.054      2903     116
-xt1_5      0.13      3553    1745
-xt1         1.5      3975    &lt;NA&gt;</code></pre>
+<pre><code>      mcse_mean ess_mean min_ss
+xn        0.021     2280     10
+xt3       0.033     2452     31
+xt2_5     0.039     2584     48
+xt2       0.054     2903    116
+xt1_5      0.13     3553   1745
+xt1         1.5     3975    inf</code></pre>
 </div>
 </div>
 </div>
-<div id="tabset-11-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-2-tab">
+<div id="tabset-12-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-2-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-label="1"></a><span class="fu">summarise_draws</span>(drt, mcse_mean, ess_mean, <span class="at">min_ss =</span> pareto_min_ss)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-label="1"></a><span class="fu">summarise_draws</span>(drt, mcse_mean, ess_mean, <span class="at">min_ss =</span> pareto_min_ss)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
   variable mcse_mean ess_mean min_ss

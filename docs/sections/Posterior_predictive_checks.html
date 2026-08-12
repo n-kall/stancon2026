@@ -478,7 +478,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 11, 2026</p>
+      <p class="date-modified">August 12, 2026</p>
     </div>
   </div>
     
@@ -649,11 +649,12 @@ Be cautious when using it for prior predictive checks.
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-label="1"></a><span class="fu">ppd_dens_overlay</span>(data<span class="sc">$</span>prior_predictive) <span class="sc">+</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-label="2"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">182</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-2"><a href="#cb10-2" aria-label="2"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">182</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-label="3"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">45</span>, <span class="cn">NA</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-10-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption>The prior predictive check for the model of heights with a more narrower prior than previous figure. Predictions are closer to our domain knowledge about human heights.</figcaption>
 </figure>
 </div>
@@ -1080,11 +1081,13 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 </div>
 <div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-label="1"></a><span class="fu">ppc_rootogram</span>(crabs_poisson<span class="sc">$</span>observed_data, crabs_poisson<span class="sc">$</span>posterior_predictive)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-label="1"></a><span class="fu">ppc_rootogram</span>(crabs_poisson<span class="sc">$</span>observed_data,</span>
+<span id="cb30-2"><a href="#cb30-2" aria-label="2"></a>              crabs_poisson<span class="sc">$</span>posterior_predictive,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-label="3"></a>              <span class="at">style =</span> <span class="st">"discrete"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-30-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption>Rootogram showing the uncertainty in the predictions for a Poisson model.</figcaption>
 </figure>
 </div>
@@ -1113,11 +1116,13 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 </div>
 <div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-label="1"></a><span class="fu">ppc_rootogram</span>(crabs_hurdle_nb<span class="sc">$</span>observed_data, crabs_hurdle_nb<span class="sc">$</span>posterior_predictive)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-label="1"></a><span class="fu">ppc_rootogram</span>(crabs_hurdle_nb<span class="sc">$</span>observed_data,</span>
+<span id="cb32-2"><a href="#cb32-2" aria-label="2"></a>              crabs_hurdle_nb<span class="sc">$</span>posterior_predictive,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-label="3"></a>              <span class="at">style =</span> <span class="st">"discrete"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-32-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption>Rootogram showing the uncertainty in the predictions for a Hurdle Negative Binomial model.</figcaption>
 </figure>
 </div>
@@ -1138,8 +1143,7 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 <div class="tab-content" data-group="language">
 <div id="tabset-11-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-11-1-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-label="1"></a>dt <span class="op">=</span> az.load_arviz_data(<span class="st">'anes'</span>)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-label="2"></a>az.plot_ppc_pava(dt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-label="1"></a>az.plot_ppc_pava(anes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 
 <p>PAV-adjusted calibration plot for a logistic regression model.</p>
@@ -1147,7 +1151,7 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="683"></p>
+<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption>PAV-adjusted calibration plot for a logistic regression model.</figcaption>
 </figure>
 </div>
@@ -1156,7 +1160,17 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 </div>
 <div id="tabset-11-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-2-tab">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-label="1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: RCODE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-label="1"></a><span class="fu">ppc_calibration</span>(anes<span class="sc">$</span>observed_data,</span>
+<span id="cb34-2"><a href="#cb34-2" aria-label="2"></a>                anes<span class="sc">$</span>posterior_predictive,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-label="3"></a>                <span class="at">interval =</span> <span class="st">"consistency"</span>,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-label="4"></a>                )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-36-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1184,7 +1198,7 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="864"></p>
+<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="864"></p>
 <figcaption>PAV-adjusted calibration plot for a categorical regression model.</figcaption>
 </figure>
 </div>
@@ -1220,7 +1234,7 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="986"></p>
+<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="960"></p>
 <figcaption>PAV-adjusted calibration plot for an ordinal regression model.</figcaption>
 </figure>
 </div>
@@ -1255,7 +1269,7 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="683"></p>
+<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption>Posterior predictive check for survival/censored data using Kaplan–Meier curves.</figcaption>
 </figure>
 </div>
@@ -1272,7 +1286,7 @@ To display all posterior predictive draws, set `extrapolation_factor = Inf`.</co
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-43-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Posterior_predictive_checks_files/figure-html/unnamed-chunk-45-3.png" class="img-fluid figure-img" width="672"></p>
 <figcaption>Posterior predictive check for survival/censored data using Kaplan–Meier curves.</figcaption>
 </figure>
 </div>
