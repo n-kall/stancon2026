@@ -200,7 +200,8 @@ az.add_lines(pc, values=(50, 182))
 ```{r}
 #| fig-cap: "The prior predictive check for the model of heights with a more narrower prior than previous figure. Predictions are closer to our domain knowledge about human heights."
 ppd_dens_overlay(data$prior_predictive) +
-  geom_vline(xintercept = c(50, 182), linetype = "dashed")
+  geom_vline(xintercept = c(50, 182), linetype = "dashed") +
+  scale_x_continuous(limits = c(45, NA))
 ```
 :::
 
@@ -598,7 +599,9 @@ pc.viz.plot["satellite"].item().set_xlim(-0.5, 20);
 ## R
 ```{r}
 #| fig-cap: "Rootogram showing the uncertainty in the predictions for a Poisson model."
-ppc_rootogram(crabs_poisson$observed_data, crabs_poisson$posterior_predictive)
+ppc_rootogram(crabs_poisson$observed_data,
+              crabs_poisson$posterior_predictive,
+              style = "discrete")
 ```
 :::
 
@@ -615,7 +618,9 @@ pc.viz.plot["satellite"].item().set_xlim(-0.5, 20);
 ## R
 ```{r}
 #| fig-cap: "Rootogram showing the uncertainty in the predictions for a Hurdle Negative Binomial model."
-ppc_rootogram(crabs_hurdle_nb$observed_data, crabs_hurdle_nb$posterior_predictive)
+ppc_rootogram(crabs_hurdle_nb$observed_data,
+              crabs_hurdle_nb$posterior_predictive,
+              style = "discrete")
 ```
 :::
 
@@ -631,17 +636,30 @@ One solution to this challenge is to use the so call calibration or reliability 
 A more robust and simple to use method, that does not rely on binning the data has been proposed by @Dimitriadis_2021. Next figure shows one example of this method. As previously mentioned, the ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. If the line is above the diagonal, the model is underestimating the probabilities, and if the line is below the diagonal, the model is overestimating the probabilities. The confidence bands are computed using the method proposed by @Dimitriadis_2021.
 
 
+```{python}
+#| echo: false
+anes = az.load_arviz_data('anes')
+```
+
+```{r}
+#| echo: false
+anes <- readRDS("../../models/prerun/anes.rds")
+```
+
 
 ::: {.panel-tabset group="language"}
 ## Python
 ```{python}
 #| fig-cap: "PAV-adjusted calibration plot for a logistic regression model."
-dt = az.load_arviz_data('anes')
-az.plot_ppc_pava(dt)
+
+az.plot_ppc_pava(anes)
 ```
 ## R
 ```{r}
-# TODO: RCODE
+ppc_calibration(anes$observed_data,
+                anes$posterior_predictive,
+                interval = "consistency",
+                )
 ```
 :::
 
