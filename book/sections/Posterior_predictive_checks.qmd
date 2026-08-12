@@ -638,6 +638,7 @@ A more robust and simple to use method, that does not rely on binning the data h
 
 ```{python}
 #| echo: false
+import arviz as az
 anes = az.load_arviz_data('anes')
 ```
 
