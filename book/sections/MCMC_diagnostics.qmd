@@ -220,6 +220,7 @@ az.plot_ess(
 ```
 ## R
 ```{r}
+# Not available in bayesplot
 ```
 :::
 
@@ -228,6 +229,8 @@ A simple way to increase the ESS is to increase the number of samples, but it co
 
 From the next figure we can see that the ESS grows linearly with the number of samples for `good_sample`, and it does not grow at all for `bad_sample_0`. In the latter case, this is an indication that there is virtually no hope of improving the ESS simply by increasing the number of draws.
 
+::: {.panel-tabset group="language"}
+## Python
 ```{python}
 #| fig-cap: "ESS evolution plot for `good_sample` and `bad_sample_0`."
 az.plot_ess_evolution(
@@ -236,6 +239,11 @@ az.plot_ess_evolution(
     col_wrap=1,
 );
 ```
+## R
+```{r}
+# Not available in bayesplot
+```
+:::
 
 ### Monte Carlo Standard Error (MCSE)
 
