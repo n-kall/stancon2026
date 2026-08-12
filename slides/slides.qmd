@@ -13,7 +13,7 @@ library(tinytable)
 
 ## Thanks to
 
-- Bayesian Workflow group at Aalto University
+- Bayesian Workflow group at Aalto University and FCAI
 - EnvStat at University of Helsinki
 - PyMC Labs
 
@@ -21,29 +21,36 @@ library(tinytable)
 
 :::: {.columns}
 
-::: {.column width="15%"}
+::: {.column width="12%"}
 ![](img/aalto.png){.plain fig-align="r" width="100%"}
 :::
 
-::: {.column width="15%"}
+::: {.column width="12%"}
+![](img/fcai.png){.plain fig-align="r" width="100%"}
+:::
+
+::: {.column width="12%"}
 ![](img/helsinki.png){.plain fig-align="r" width="100%"}
 :::
 
-::: {.column width="15%"}
+::: {.column width="12%"}
 ![](img/envstat.png){.plain fig-align="r" width="100%"}
 :::
 
-
-::: {.column width="15%"}
+::: {.column width="12%"}
 ![](img/rec.png){.plain fig-align="r" width="100%"}
 :::
 
-::: {.column width="15%"}
+::: {.column width="12%"}
 ![](img/erc.png){.plain fig-align="r" width="100%"}
 :::
 
-::: {.column width="15%"}
+::: {.column width="12%"}
 ![](img/aka.jpg){.plain fig-align="r" width="100%"}
+:::
+
+::: {.column width="12%"}
+![](img/pymc_labs.svg){.plain fig-align="r" width="100%"}
 :::
 
 ::::
@@ -265,7 +272,8 @@ ppd_dens_overlay(data$prior_predictive) +
 #| fig-cap: "Prior predictive check with a tighter, weakly informative prior."
 data <- readRDS("../models/prerun/01.rds")
 ppd_dens_overlay(data$prior_predictive) +
-  geom_vline(xintercept = c(50, 182), linetype = "dashed")
+  geom_vline(xintercept = c(50, 182), linetype = "dashed") +
+  scale_x_continuous(limits = c(45, NA))
 ```
 
 
@@ -371,7 +379,6 @@ lw <- psis_result$log_weights
 ppc_loo_pit_ecdf(data$observed_data, data$posterior_predictive, lw,
                   method = "correlated", plot_diff = TRUE)
 ```
-XXX: THIS SHOULD LOOK OK
 
 ## Predictive checks for discrete data
 ::: {.incremental}
@@ -389,7 +396,8 @@ XXX: THIS SHOULD LOOK OK
 ```{r}
 #| fig-cap: "Rootogram for the Poisson model of crab satellites."
 crabs_poisson <- readRDS("../models/prerun/crabs_poisson.rds")
-ppc_rootogram(crabs_poisson$observed_data, crabs_poisson$posterior_predictive)
+ppc_rootogram(crabs_poisson$observed_data, crabs_poisson$posterior_predictive, style = "discrete") +
+coord_cartesian(xlim = c(0, 20))
 ```
 
 
@@ -397,7 +405,8 @@ ppc_rootogram(crabs_poisson$observed_data, crabs_poisson$posterior_predictive)
 ```{r}
 #| fig-cap: "Rootogram for the Hurdle Negative Binomial model of crab satellites."
 crabs_hurdle_nb <- readRDS("../models/prerun/crabs_hurdle_nb.rds")
-ppc_rootogram(crabs_hurdle_nb$observed_data, crabs_hurdle_nb$posterior_predictive)
+ppc_rootogram(crabs_hurdle_nb$observed_data, crabs_hurdle_nb$posterior_predictive, style = "discrete") +
+coord_cartesian(xlim = c(0, 20))
 ```
 
 ## Binary data: calibration plots
@@ -407,7 +416,16 @@ ppc_rootogram(crabs_hurdle_nb$observed_data, crabs_hurdle_nb$posterior_predictiv
 - Binning is arbitrary and unstable → prefer a binning-free method (Dimitriadis et al.)
 - Ideal plot: diagonal line. Above diagonal = underestimating; below = overestimating
 :::
-<!-- We need new unreleased version of bayesplot -->
+
+##
+```{r}
+#| fig-cap: "Calibration plot for the ANES model of voting behavior."
+anes <- readRDS("../models/prerun/anes.rds")
+ppc_calibration(anes$observed_data,
+                anes$posterior_predictive,
+                )
+```
+THIS DOES NOT LOOK AS EXPECTED
 
 ## Categorical data
 ::: {.incremental}
@@ -479,3 +497,15 @@ tt(digits = 1)
 <div style="display:flex; justify-content:center;">
 {{< qrcode https://n-kall.github.io/stancon2026 width=400 height=400 >}}
 </div>
+
+
+## More resources
+
+
+* Bayesian Workflow book
+  - With R [https://avehtari.github.io/Bayesian-Workflow/](https://avehtari.github.io/Bayesian-Workflow/)
+  - With Python [https://arviz-devs.github.io/bayesian-workflow/](https://arviz-devs.github.io/bayesian-workflow/)
+
+* Exploratory Analysis of Bayesian Models [https://arviz-devs.github.io/EABM/](https://arviz-devs.github.io/EABM/)
+
+* ???
