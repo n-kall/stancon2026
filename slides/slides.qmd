@@ -422,10 +422,11 @@ coord_cartesian(xlim = c(0, 20))
 #| fig-cap: "Calibration plot for the ANES model of voting behavior."
 anes <- readRDS("../models/prerun/anes.rds")
 ppc_calibration(anes$observed_data,
-                anes$posterior_predictive,
-                )
+                anes$posterior,
+                interval = "consistency"
+              )
 ```
-THIS DOES NOT LOOK AS EXPECTED
+
 
 ## Categorical data
 ::: {.incremental}
@@ -450,7 +451,9 @@ THIS DOES NOT LOOK AS EXPECTED
 - Naively discarding censored cases biases the estimate
 - Replace raw observations with **Kaplan–Meier** estimates for posterior predictive checks
 :::
+
 ## 
+
 ```{r}
 #| fig-cap: "Posterior predictive check for cat adoption times using Kaplan–Meier curves."
 cens <- readRDS("../models/prerun/censored_cats.rds")
@@ -471,6 +474,7 @@ ppc_km_overlay(cens$observed_data, cens$posterior_predictive[1:50, ],
 :::
 
 ## Visual checks
+
 ```{r}
 #| echo: false
 theme_set(bayesplot::theme_default(base_family = "sans", base_size = 14))
@@ -503,6 +507,7 @@ tt(digits = 1)
 
 
 * Bayesian Workflow book
+  - PDF: [https://users.aalto.fi/~ave/Bayesian-Workflow.pdf](https://users.aalto.fi/~ave/Bayesian-Workflow.pdf)
   - With R [https://avehtari.github.io/Bayesian-Workflow/](https://avehtari.github.io/Bayesian-Workflow/)
   - With Python [https://arviz-devs.github.io/bayesian-workflow/](https://arviz-devs.github.io/bayesian-workflow/)
 
