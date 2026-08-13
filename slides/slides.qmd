@@ -422,10 +422,11 @@ coord_cartesian(xlim = c(0, 20))
 #| fig-cap: "Calibration plot for the ANES model of voting behavior."
 anes <- readRDS("../models/prerun/anes.rds")
 ppc_calibration(anes$observed_data,
-                anes$posterior_predictive,
-                )
+                anes$posterior,
+                interval = "consistency"
+              )
 ```
-THIS DOES NOT LOOK AS EXPECTED
+
 
 ## Categorical data
 ::: {.incremental}
@@ -503,6 +504,7 @@ tt(digits = 1)
 
 
 * Bayesian Workflow book
+  - PDF: [https://users.aalto.fi/~ave/Bayesian-Workflow.pdf](https://users.aalto.fi/~ave/Bayesian-Workflow.pdf)
   - With R [https://avehtari.github.io/Bayesian-Workflow/](https://avehtari.github.io/Bayesian-Workflow/)
   - With Python [https://arviz-devs.github.io/bayesian-workflow/](https://arviz-devs.github.io/bayesian-workflow/)
 
