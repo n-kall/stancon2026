@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+Rscript -e 'renv::restore()'
+Rscript -e 'if (!requireNamespace("IRkernel", quietly = TRUE)) install.packages("IRkernel", repos = "https://cloud.r-project.org")'
+Rscript -e 'IRkernel::installspec(user = FALSE)'

@@ -460,7 +460,7 @@ eight_schools_draws |>
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
-az.plot_forest(eight_schools_draws, var_names=["theta"])
+az.plot_forest(eight_schools_draws, var_names=["theta"], combined=True)
 ```
 
 :::
@@ -973,9 +973,8 @@ y = np.array([28,  8, -3,  7, -1,  1, 18, 12])
 
 ::: {.content-visible when-profile="pythonsolutions"}
 ```{python}
-y = np.array([28,  8, -3,  7, -1,  1, 18, 12])
-posterior_predictive_draws["observed_data"]["yrep"] = xr.DataArray(y, dims=["school"])
-az.plot_ppc_pit(posterior_predictive_draws, var_names=["yrep"])
+az.plot_ppc_interval(dt)
+az.plot_ppc_pit(dt)
 ```
 :::
 
@@ -1007,13 +1006,9 @@ powerscale_sensitivity(eight_schools_draws_ps, variable = c("mu", "tau", "theta"
 
 ::: {.content-visible when-profile="python"}
 ```{python}
-eight_schools_draws
-with make_eight_schools_model(observe=True) as model:
-  pm.stats.compute_log_prior(
-    dt,
-    var_names=["mu", "tau", "theta"],
-  #  extend_inferencedata=False
-    )
+# we use this file as the one shipped with ArviZ, does not have
+# the log_prior group
+dt_nc = az.convert_to_datatree('data/non_centered_eight.nc')
 # Your code here
 ```
 :::
@@ -1021,7 +1016,7 @@ with make_eight_schools_model(observe=True) as model:
 ::: {.content-visible when-profile="pythonsolutions"}
 ```{python}
 
-az.psense_summary(dt)
+az.psense_summary(dt_nc)
 
 ```
 :::
@@ -1055,7 +1050,7 @@ powerscale_plot_dens(eight_schools_draws_ps, variable = c("mu", "tau"), prior_se
 ::: {.content-visible when-profile="pythonsolutions"}
 ```{python}
 
-az.plot_psense_dist(dt, var_names=["mu", "tau"])
+az.plot_psense_dist(dt_nc, var_names=["mu", "tau"])
 
 ```
 :::
