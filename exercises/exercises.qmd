@@ -68,6 +68,8 @@ import arviz as az
 
 For this set of exercises we will use draws from the classic eight schools model. These draws are included in both `posterior` and `ArviZ`.
 
+The eight schools model is a meta-analysis model of standardized test results in different schools. The values `theta[1]` to `theta[8]` are the mean results for each school. `mu` is the population level mean, `tau` is the standard deviation of the population distribution.
+
 ::: {.content-visible when-profile="r"}
 
 ```{r}
@@ -341,7 +343,7 @@ az.summary(eight_schools_draws, var_names=["mu"], kind="stats")[["mean", "sd"]]
 
 ## Creating new variables
 
-Create a new variable that is the difference between school 1 and school 2 means. Call it `diff_1_2`. Do the same with school 3 and school 4. Then summarise these new variables with median, 0.3 and 0.7 quantiles.
+Create a new variable that is the difference between school 1 (`theta[1]` and school 2 (`theta[2]`) means. Call it `diff_1_2`. Do the same with school 3 (`theta[3]`) and school 4 (`theta[4]`). Then summarise these new variables with median, 0.3 and 0.7 quantiles. You can specify variable names that include `[]` with `` ` `` e.g. `` `theta[1]` ``.
 
 ::: {.content-visible when-profile="r"}
 
@@ -432,6 +434,8 @@ You can use the functions `mcmc_intervals()` or `mcmc_areas()`.
 
 ::: {.content-visible when-profile="python"}
 
+You can use the function `az.plot_forest()`
+
 ```{python}
 # Your code here
 
@@ -517,7 +521,7 @@ az.plot_pair(eight_schools_draws, var_names=["mu", "tau"])
 
 ## R-hat
 
-Calculate the R-hat for all the variables in the model. Which variables have high R-hat (> 1.01)?
+Calculate the R-hat for all the variables in the draws object (`eight_schools_draws`). Which variables have high R-hat (> 1.01)?
 
 ::: {.content-visible when-profile="r"}
 
