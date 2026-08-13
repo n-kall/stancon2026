@@ -343,11 +343,11 @@ az.summary(eight_schools_draws, var_names=["mu"], kind="stats")[["mean", "sd"]]
 
 ## Creating new variables
 
-Create a new variable that is the difference between school 1 (`theta[1]` and school 2 (`theta[2]`) means. Call it `diff_1_2`. Do the same with school 3 (`theta[3]`) and school 4 (`theta[4]`). Then summarise these new variables with median, 0.3 and 0.7 quantiles. You can specify variable names that include `[]` with `` ` `` e.g. `` `theta[1]` ``.
-
+Create a new variable that is the difference between school 1 (`theta[1]` and school 2 (`theta[2]`) means. Call it `diff_1_2`. Do the same with school 3 (`theta[3]`) and school 4 (`theta[4]`). Then summarise these new variables with median, 0.3 and 0.7 quantiles. 
 ::: {.content-visible when-profile="r"}
 
-You can use the functions `mutate_variables()`, `summarise_draws()` and `quantile2()`
+You can use the functions `mutate_variables()`, `summarise_draws()` and `quantile2()`. You can specify variable names that include `[]` with `` ` `` e.g. `` `theta[1]` ``.
+
 
 ```{r}
 # Your code here
