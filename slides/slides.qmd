@@ -450,7 +450,9 @@ THIS DOES NOT LOOK AS EXPECTED
 - Naively discarding censored cases biases the estimate
 - Replace raw observations with **Kaplan–Meier** estimates for posterior predictive checks
 :::
+
 ## 
+
 ```{r}
 #| fig-cap: "Posterior predictive check for cat adoption times using Kaplan–Meier curves."
 cens <- readRDS("../models/prerun/censored_cats.rds")
@@ -471,6 +473,7 @@ ppc_km_overlay(cens$observed_data, cens$posterior_predictive[1:50, ],
 :::
 
 ## Visual checks
+
 ```{r}
 #| echo: false
 theme_set(bayesplot::theme_default(base_family = "sans", base_size = 14))
