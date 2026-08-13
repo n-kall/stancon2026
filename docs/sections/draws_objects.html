@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2026-07-03">
 
-<title>References – Bayesian model diagnostics: Workflows and software tools</title>
+<title>2&nbsp; Working with draws objects in R – Bayesian model diagnostics: Workflows and software tools</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -27,26 +27,42 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -56,7 +72,8 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../sections/Sensitivity_checks.html" rel="prev">
+<link href="../sections/DataTree.html" rel="next">
+<link href="../index.html" rel="prev">
 <link href="../favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -274,7 +291,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/References.html">References</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/draws_objects.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with draws objects in R</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -330,7 +347,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../sections/draws_objects.html" class="sidebar-item-text sidebar-link">
+  <a href="../sections/draws_objects.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with draws objects in R</span></span></a>
   </div>
 </li>
@@ -360,7 +377,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../sections/References.html" class="sidebar-item-text sidebar-link active">
+  <a href="../sections/References.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -378,7 +395,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">References</h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with draws objects in R</span></h1>
 </div>
 
 
@@ -407,77 +424,34 @@ div.csl-indent {
 </header>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
-<div id="ref-Ayer_1955" class="csl-entry" role="listitem">
-Ayer, Miriam, H. D. Brunk, G. M. Ewing, W. T. Reid, and Edward
-Silverman. 1955. <span>“<span class="nocase">An Empirical Distribution
-Function for Sampling with Incomplete Information</span>.”</span>
-<em>The Annals of Mathematical Statistics</em> 26 (4): 641–47. <a href="https://doi.org/10.1214/aoms/1177728423">https://doi.org/10.1214/aoms/1177728423</a>.
-</div>
-<div id="ref-Brockmann_1996" class="csl-entry" role="listitem">
-Brockmann, H. Jane. 1996. <span>“Satellite Male Groups in Horseshoe
-Crabs, Limulus Polyphemus.”</span> <em>Ethology</em> 102 (1): 1–21. <a href="https://doi.org/10.1111/j.1439-0310.1996.tb01099.x">https://doi.org/10.1111/j.1439-0310.1996.tb01099.x</a>.
-</div>
-<div id="ref-Dimitriadis_2021" class="csl-entry" role="listitem">
-Dimitriadis, Timo, Tilmann Gneiting, and Alexander I. Jordan. 2021.
-<span>“Stable Reliability Diagrams for Probabilistic
-Classifiers.”</span> <em>Proceedings of the National Academy of
-Sciences</em> 118 (8): e2016191118. <a href="https://doi.org/10.1073/pnas.2016191118">https://doi.org/10.1073/pnas.2016191118</a>.
-</div>
-<div id="ref-Gabry_2019" class="csl-entry" role="listitem">
-Gabry, Jonah, Daniel Simpson, Aki Vehtari, Michael Betancourt, and
-Andrew Gelman. 2019. <span>“Visualization in Bayesian Workflow.”</span>
-<em>Journal of the Royal Statistical Society Series A: Statistics in
-Society</em> 182 (2): 389–402. <a href="https://doi.org/10.1111/rssa.12378">https://doi.org/10.1111/rssa.12378</a>.
-</div>
-<div id="ref-Gelman_2013b" class="csl-entry" role="listitem">
-Gelman, Andrew. 2013. <span>“<span class="nocase">Two simple examples
-for understanding posterior p-values whose distributions are far from
-uniform</span>.”</span> <em>Electronic Journal of Statistics</em> 7
-(none): 2595–602. <a href="https://doi.org/10.1214/13-EJS854">https://doi.org/10.1214/13-EJS854</a>.
-</div>
-<div id="ref-Gelman_2013" class="csl-entry" role="listitem">
-Gelman, Andrew, John B. Carlin, Hal S. Stern, David B. Dunson, Aki
-Vehtari, and Donald B. Rubin. 2013. <em>Bayesian <span>Data</span>
-<span>Analysis</span></em>. Boca Raton. <a href="https://doi.org/10.1201/b16018">https://doi.org/10.1201/b16018</a>.
-</div>
-<div id="ref-xarray_2017" class="csl-entry" role="listitem">
-Hoyer, Stephan, and Joe Hamman. 2017. <span>“Xarray:
-<span>N</span>-<span>D</span> <span>Labeled</span> <span>Arrays</span>
-and <span>Datasets</span> in <span>Python</span>.”</span> <em>Journal of
-Open Research Software</em> 5 (1). <a href="https://doi.org/10.5334/jors.148">https://doi.org/10.5334/jors.148</a>.
-</div>
-<div id="ref-Kleiber_2016" class="csl-entry" role="listitem">
-Kleiber, Christian, and Achim Zeileis. 2016. <span>“Visualizing Count
-Data Regressions Using Rootograms.”</span> <em>The American
-Statistician</em> 70 (3): 296–303. <a href="https://doi.org/10.1080/00031305.2016.1173590">https://doi.org/10.1080/00031305.2016.1173590</a>.
-</div>
-<div id="ref-Meng_1994" class="csl-entry" role="listitem">
-Meng, Xiao-Li. 1994. <span>“<span>Posterior Predictive <span class="math inline"><em>p</em></span>-Values</span>.”</span> <em>The
-Annals of Statistics</em> 22 (3): 1142–60. <a href="https://doi.org/10.1214/aos/1176325622">https://doi.org/10.1214/aos/1176325622</a>.
-</div>
-<div id="ref-Säilynoja_2025" class="csl-entry" role="listitem">
-Säilynoja, Teemu, Andrew R. Johnson, Osvaldo A. Martin, and Aki Vehtari.
-2025. <em>Recommendations for Visual Predictive Checks in Bayesian
-Workflow</em>. <a href="https://arxiv.org/abs/2503.01509">https://arxiv.org/abs/2503.01509</a>.
-</div>
-<div id="ref-soch_2024" class="csl-entry" role="listitem">
-Soch, Joram, Thomas J Faulkenberry, Kenneth Petrykowski, and Carsten
-Allefeld. 2024. <em>The Book of Statistical Proofs</em>. <a href="https://doi.org/10.5281/ZENODO.4305949">https://doi.org/10.5281/ZENODO.4305949</a>.
-</div>
-<div id="ref-suorsa_2026" class="csl-entry" role="listitem">
-Suorsa, Saku, and Aki Vehtari. 2026. <em>Predictive Assessment and
-Comparison of Bayesian Survival Models for Cancer Recurrence</em>. <a href="https://arxiv.org/abs/2601.01662">https://arxiv.org/abs/2601.01662</a>.
-</div>
-<div id="ref-tesso_2026" class="csl-entry" role="listitem">
-Tesso, Herman, and Aki Vehtari. 2026. <em>LOO-PIT Predictive Model
-Checking</em>. <a href="https://arxiv.org/abs/2603.02928">https://arxiv.org/abs/2603.02928</a>.
-</div>
-<div id="ref-tukey_1977" class="csl-entry" role="listitem">
-Tukey, John W. 1977. <em>Exploratory <span>Data</span>
-<span>Analysis</span></em>. 1 edition. Pearson. <a href="https://archive.org/details/exploratorydataa0000tuke_7616/mode/2up">https://archive.org/details/exploratorydataa0000tuke_7616/mode/2up</a>.
+<p>The posterior package provides the <code>draws</code> object type. These are used for draws generated from sampling. The benefit of these objects is that chains, iterations and variables are all kept. The objects mirror common base R objects: <code>draws_df</code>, <code>draws_list</code>, <code>draws_array</code>, <code>draws_matrix</code>. You can transform from one type to another with <code>as_draws_*</code> functions. While the package is called “posterior”, the draws objects can contain draws from prior or posterior.</p>
+<p>Useful functions for summarising and manipulating draws are:</p>
+<ul>
+<li><code>summarise_draws()</code>: generate a summary of the draws based on some functions</li>
+<li><code>subset_draws()</code>: subset draws by variable, chain, iteration, draw</li>
+<li><code>mutate_variables()</code>: create new variables, which can reference existing ones</li>
+</ul>
+<p><code>summarise_draws()</code> takes as arguments summary functions, such as <code>mean</code>, <code>median</code> or covergence diagnostics such as <code>rhat</code> or <code>ess_bulk</code>. For example:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a>draws <span class="ot">&lt;-</span> <span class="fu">example_draws</span>()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a><span class="fu">summarise_draws</span>(draws, mean, sd, rhat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 4
+   variable  mean    sd  rhat
+   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1 mu        4.18  3.40  1.02
+ 2 tau       4.16  3.58  1.01
+ 3 theta[1]  6.75  6.30  1.01
+ 4 theta[2]  5.25  4.63  1.02
+ 5 theta[3]  3.04  6.80  1.01
+ 6 theta[4]  4.86  4.92  1.02
+ 7 theta[5]  3.22  5.08  1.01
+ 8 theta[6]  3.99  5.16  1.02
+ 9 theta[7]  6.50  5.26  1.00
+10 theta[8]  4.57  5.25  1.02</code></pre>
 </div>
 </div>
+<p>For further details, see the <a href="https://mc-stan.org/posterior">documentation for the package</a>.</p>
 
 
 
@@ -897,11 +871,14 @@ Tukey, John W. 1977. <em>Exploratory <span>Data</span>
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../sections/Sensitivity_checks.html" class="pagination-link" aria-label="Prior and likelihood sensitivity checks">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></span>
+      <a href="../index.html" class="pagination-link" aria-label="Material">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Material</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../sections/DataTree.html" class="pagination-link" aria-label="Working with DataTree">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

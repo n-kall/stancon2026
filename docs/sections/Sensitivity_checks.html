@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2026-07-03">
 
-<title>5&nbsp; Prior and likelihood sensitivity checks – Bayesian model diagnostics: Workflows and software tools</title>
+<title>6&nbsp; Prior and likelihood sensitivity checks – Bayesian model diagnostics: Workflows and software tools</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -320,7 +320,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/Sensitivity_checks.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/Sensitivity_checks.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -376,26 +376,32 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../sections/draws_objects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with draws objects in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../sections/DataTree.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sections/MCMC_diagnostics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sections/Posterior_predictive_checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sections/Sensitivity_checks.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -414,26 +420,26 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#prior-and-likelihood-sensitivity-via-power-scaling" id="toc-prior-and-likelihood-sensitivity-via-power-scaling" class="nav-link active" data-scroll-target="#prior-and-likelihood-sensitivity-via-power-scaling"><span class="header-section-number">5.1</span> Prior and likelihood sensitivity via power-scaling</a>
+  <li><a href="#prior-and-likelihood-sensitivity-via-power-scaling" id="toc-prior-and-likelihood-sensitivity-via-power-scaling" class="nav-link active" data-scroll-target="#prior-and-likelihood-sensitivity-via-power-scaling"><span class="header-section-number">6.1</span> Prior and likelihood sensitivity via power-scaling</a>
   <ul class="collapse">
-  <li><a href="#power-scaling" id="toc-power-scaling" class="nav-link" data-scroll-target="#power-scaling"><span class="header-section-number">5.1.1</span> Power-scaling</a></li>
-  <li><a href="#power-scaling-and-importance-sampling" id="toc-power-scaling-and-importance-sampling" class="nav-link" data-scroll-target="#power-scaling-and-importance-sampling"><span class="header-section-number">5.1.2</span> Power-scaling and importance sampling</a></li>
-  <li><a href="#diagnosing-sensitivity" id="toc-diagnosing-sensitivity" class="nav-link" data-scroll-target="#diagnosing-sensitivity"><span class="header-section-number">5.1.3</span> Diagnosing sensitivity</a></li>
+  <li><a href="#power-scaling" id="toc-power-scaling" class="nav-link" data-scroll-target="#power-scaling"><span class="header-section-number">6.1.1</span> Power-scaling</a></li>
+  <li><a href="#power-scaling-and-importance-sampling" id="toc-power-scaling-and-importance-sampling" class="nav-link" data-scroll-target="#power-scaling-and-importance-sampling"><span class="header-section-number">6.1.2</span> Power-scaling and importance sampling</a></li>
+  <li><a href="#diagnosing-sensitivity" id="toc-diagnosing-sensitivity" class="nav-link" data-scroll-target="#diagnosing-sensitivity"><span class="header-section-number">6.1.3</span> Diagnosing sensitivity</a></li>
   </ul></li>
-  <li><a href="#body-fat-example" id="toc-body-fat-example" class="nav-link" data-scroll-target="#body-fat-example"><span class="header-section-number">5.2</span> Body fat example</a>
+  <li><a href="#body-fat-example" id="toc-body-fat-example" class="nav-link" data-scroll-target="#body-fat-example"><span class="header-section-number">6.2</span> Body fat example</a>
   <ul class="collapse">
-  <li><a href="#adjusting-the-prior" id="toc-adjusting-the-prior" class="nav-link" data-scroll-target="#adjusting-the-prior"><span class="header-section-number">5.2.1</span> Adjusting the prior</a></li>
+  <li><a href="#adjusting-the-prior" id="toc-adjusting-the-prior" class="nav-link" data-scroll-target="#adjusting-the-prior"><span class="header-section-number">6.2.1</span> Adjusting the prior</a></li>
   </ul></li>
-  <li><a href="#non-interpretable-parameters-and-derived-quantities" id="toc-non-interpretable-parameters-and-derived-quantities" class="nav-link" data-scroll-target="#non-interpretable-parameters-and-derived-quantities"><span class="header-section-number">5.3</span> Non-interpretable parameters and derived quantities</a>
+  <li><a href="#non-interpretable-parameters-and-derived-quantities" id="toc-non-interpretable-parameters-and-derived-quantities" class="nav-link" data-scroll-target="#non-interpretable-parameters-and-derived-quantities"><span class="header-section-number">6.3</span> Non-interpretable parameters and derived quantities</a>
   <ul class="collapse">
-  <li><a href="#computing-derived-quantities" id="toc-computing-derived-quantities" class="nav-link" data-scroll-target="#computing-derived-quantities"><span class="header-section-number">5.3.1</span> Computing derived quantities</a></li>
+  <li><a href="#computing-derived-quantities" id="toc-computing-derived-quantities" class="nav-link" data-scroll-target="#computing-derived-quantities"><span class="header-section-number">6.3.1</span> Computing derived quantities</a></li>
   </ul></li>
-  <li><a href="#bacteria-treatment" id="toc-bacteria-treatment" class="nav-link" data-scroll-target="#bacteria-treatment"><span class="header-section-number">5.4</span> Bacteria treatment</a></li>
-  <li><a href="#interpreting-sensitivity-diagnostics-summary" id="toc-interpreting-sensitivity-diagnostics-summary" class="nav-link" data-scroll-target="#interpreting-sensitivity-diagnostics-summary"><span class="header-section-number">5.5</span> Interpreting sensitivity diagnostics: Summary</a>
+  <li><a href="#bacteria-treatment" id="toc-bacteria-treatment" class="nav-link" data-scroll-target="#bacteria-treatment"><span class="header-section-number">6.4</span> Bacteria treatment</a></li>
+  <li><a href="#interpreting-sensitivity-diagnostics-summary" id="toc-interpreting-sensitivity-diagnostics-summary" class="nav-link" data-scroll-target="#interpreting-sensitivity-diagnostics-summary"><span class="header-section-number">6.5</span> Interpreting sensitivity diagnostics: Summary</a>
   <ul class="collapse">
-  <li><a href="#diagnostic-value" id="toc-diagnostic-value" class="nav-link" data-scroll-target="#diagnostic-value"><span class="header-section-number">5.5.1</span> Diagnostic value</a></li>
-  <li><a href="#diagnostic-messages" id="toc-diagnostic-messages" class="nav-link" data-scroll-target="#diagnostic-messages"><span class="header-section-number">5.5.2</span> Diagnostic messages</a></li>
-  <li><a href="#what-to-do-with-the-diagnostics" id="toc-what-to-do-with-the-diagnostics" class="nav-link" data-scroll-target="#what-to-do-with-the-diagnostics"><span class="header-section-number">5.5.3</span> What to do with the diagnostics</a></li>
+  <li><a href="#diagnostic-value" id="toc-diagnostic-value" class="nav-link" data-scroll-target="#diagnostic-value"><span class="header-section-number">6.5.1</span> Diagnostic value</a></li>
+  <li><a href="#diagnostic-messages" id="toc-diagnostic-messages" class="nav-link" data-scroll-target="#diagnostic-messages"><span class="header-section-number">6.5.2</span> Diagnostic messages</a></li>
+  <li><a href="#what-to-do-with-the-diagnostics" id="toc-what-to-do-with-the-diagnostics" class="nav-link" data-scroll-target="#what-to-do-with-the-diagnostics"><span class="header-section-number">6.5.3</span> What to do with the diagnostics</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -444,7 +450,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></h1>
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></h1>
 </div>
 
 
@@ -462,7 +468,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 12, 2026</p>
+      <p class="date-modified">August 13, 2026</p>
     </div>
   </div>
     
@@ -477,12 +483,12 @@ window.Quarto = {
 <p>To perform the comparison we can use visual and numerical summaries as we already explained in <span class="quarto-unresolved-ref">?sec-ppc</span>. For instance, when working with ArviZ, we can use <code>plot_forest</code> or <code>plot_density</code> functions to compare multiple posteriors (or actually their marginals) in the same plot. Ideally, we should summarize and report the results of this analysis, so that others can also understand how robust the model is to different prior choices.</p>
 <p>The same procedure we use to assess the sensitivity of the prior can be used to compare how different likelihoods affect the posterior. So we can discuss the sensitivity of the posterior to the likelihood, the prior or both.</p>
 <p>In summary, the traditional approach to assess prior and likelihood sensitivity is to fit multiple models with different priors and/or likelihoods, and then compare the results. This approach is simple to understand, and should be straightforward to implement. However, in practice thinking about alternative priors, building alternative models and fitting them can be very time-consuming. In the chapter we discuss a more automated way to do this kind of analysis.</p>
-<section id="prior-and-likelihood-sensitivity-via-power-scaling" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="prior-and-likelihood-sensitivity-via-power-scaling"><span class="header-section-number">5.1</span> Prior and likelihood sensitivity via power-scaling</h2>
+<section id="prior-and-likelihood-sensitivity-via-power-scaling" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="prior-and-likelihood-sensitivity-via-power-scaling"><span class="header-section-number">6.1</span> Prior and likelihood sensitivity via power-scaling</h2>
 <p>The method we will discuss was presented by <span class="citation" data-cites="kallioinen_2023">(<a href="References.html#ref-kallioinen_2023" role="doc-biblioref"><strong>kallioinen_2023?</strong></a>)</span>, and offers visual and numerical diagnostics that can alert us of potential prior-data conflict or likelihood noninformativity. What makes this approach very practical is that we only need to fit a single model once, and without explicitly modifying the prior or likelihood, we can assess the effect of changing them. If you are eager to see how this method can be applied in practice, you can jump to the example section. If you want to understand the method in more detail, keep reading.</p>
-<section id="power-scaling" class="level3" data-number="5.1.1">
-<h3 data-number="5.1.1" class="anchored" data-anchor-id="power-scaling"><span class="header-section-number">5.1.1</span> Power-scaling</h3>
-<p>A key idea of the method is the concept of power-scaling. By power-scaling we mean raising a distribution to a power <span class="math inline">\(\alpha\)</span>. Why is this interesting? Because by power-scaling a distribution we can “stretch” it or “compress” it. <a href="#fig-beta-normal-power-scaling" class="quarto-xref">Figure&nbsp;<span>5.1</span></a> shows the effect of power-scaling on a Beta and a Normal distribution. Power-scaling is a very general transformation that work for any distribution, except for the uniform distribution. Notice this restriction also applies to a Beta(1, 1), which is uniform. This is a minor restriction, because the uniform distribution is hardly a useful prior, unless we are dealing with a very special case.</p>
+<section id="power-scaling" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="power-scaling"><span class="header-section-number">6.1.1</span> Power-scaling</h3>
+<p>A key idea of the method is the concept of power-scaling. By power-scaling we mean raising a distribution to a power <span class="math inline">\(\alpha\)</span>. Why is this interesting? Because by power-scaling a distribution we can “stretch” it or “compress” it. <a href="#fig-beta-normal-power-scaling" class="quarto-xref">Figure&nbsp;<span>6.1</span></a> shows the effect of power-scaling on a Beta and a Normal distribution. Power-scaling is a very general transformation that work for any distribution, except for the uniform distribution. Notice this restriction also applies to a Beta(1, 1), which is uniform. This is a minor restriction, because the uniform distribution is hardly a useful prior, unless we are dealing with a very special case.</p>
 <div id="cell-fig-beta-normal-power-scaling" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div id="fig-beta-normal-power-scaling" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -491,7 +497,7 @@ window.Quarto = {
 <img src="Sensitivity_checks_files/figure-html/fig-beta-normal-power-scaling-output-1.png" width="879" height="331" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-beta-normal-power-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.1: The effect of power-scaling on Beta and Normal distributions. α values larger than 1 ‘compress’ the distribution while values of α below 1 ‘stretch’ the distribution.
+Figure&nbsp;6.1: The effect of power-scaling on Beta and Normal distributions. α values larger than 1 ‘compress’ the distribution while values of α below 1 ‘stretch’ the distribution.
 </figcaption>
 </figure>
 </div>
@@ -502,7 +508,7 @@ Figure&nbsp;5.1: The effect of power-scaling on Beta and Normal distributions. �
 p(\theta \mid y)_{\alpha} \propto p(y \mid \theta)^\alpha \; p(\theta)
 \]</span></p>
 <p>Let’s take a moment to understand this expression. If we set <span class="math inline">\(\alpha=1\)</span> we recover the usual expression for Bayes’ theorem, the one that you may have seen many times. Setting <span class="math inline">\(\alpha=0\)</span> is equivalent to ignoring the likelihood, thus <span class="math inline">\(p(\theta \mid y)_{\alpha}\)</span> will be equal to the prior. We can then conclude that any number between 0 and 1 will have the effect of “weakening” the likelihood with respect to the prior. By the same token any number greater than 1 will “strength” the likelihood with respect to the prior.</p>
-<p>We can repeat this exercise for the prior and then we will be able to modulate the relative weights of the prior relative to the likelihood. <a href="#fig-posterior-power-scaling" class="quarto-xref">Figure&nbsp;<span>5.2</span></a> shows the effect on the posterior of power-scaling the prior for a fixed likelihood. The prior is a Beta distribution with parameters <span class="math inline">\(a=2\)</span> and <span class="math inline">\(b=5\)</span> and the likelihood is a Binomial distribution with parameters <span class="math inline">\(n=10\)</span> and <span class="math inline">\(p=0.7\)</span>. The posterior is computed using the prior and likelihood.</p>
+<p>We can repeat this exercise for the prior and then we will be able to modulate the relative weights of the prior relative to the likelihood. <a href="#fig-posterior-power-scaling" class="quarto-xref">Figure&nbsp;<span>6.2</span></a> shows the effect on the posterior of power-scaling the prior for a fixed likelihood. The prior is a Beta distribution with parameters <span class="math inline">\(a=2\)</span> and <span class="math inline">\(b=5\)</span> and the likelihood is a Binomial distribution with parameters <span class="math inline">\(n=10\)</span> and <span class="math inline">\(p=0.7\)</span>. The posterior is computed using the prior and likelihood.</p>
 <div id="cell-fig-posterior-power-scaling" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div id="fig-posterior-power-scaling" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -511,15 +517,15 @@ p(\theta \mid y)_{\alpha} \propto p(y \mid \theta)^\alpha \; p(\theta)
 <img src="Sensitivity_checks_files/figure-html/fig-posterior-power-scaling-output-1.png" width="758" height="383" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-posterior-power-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.2: The effect on the posterior when power-scaling the prior for a fixed likelihood.
+Figure&nbsp;6.2: The effect on the posterior when power-scaling the prior for a fixed likelihood.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="power-scaling-and-importance-sampling" class="level3" data-number="5.1.2">
-<h3 data-number="5.1.2" class="anchored" data-anchor-id="power-scaling-and-importance-sampling"><span class="header-section-number">5.1.2</span> Power-scaling and importance sampling</h3>
+<section id="power-scaling-and-importance-sampling" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="power-scaling-and-importance-sampling"><span class="header-section-number">6.1.2</span> Power-scaling and importance sampling</h3>
 <p>We can analytically compute the effect of power scaling a distribution. For instance, for a Normal distribution, <span class="math inline">\(\mathcal{N}(\theta \mid \mu, \sigma)\)</span> and power-scaling factor <span class="math inline">\(\alpha\)</span> we get <span class="math inline">\(\mathcal{N}(\theta \mid \mu, \sigma \; \alpha^{-1/2})\)</span>. In practice we usually work with MCMC samples and arbitrary distributions, thus a more convenient way to perform power-scaling is to use importance sampling. As discussed in <span class="quarto-unresolved-ref">?sec-model-comparison</span> importance sampling is a method to estimate the expected value of a function under a distribution different from the one we have samples from. <span class="citation" data-cites="kallioinen_2023">(<a href="References.html#ref-kallioinen_2023" role="doc-biblioref"><strong>kallioinen_2023?</strong></a>)</span> proposed to use Pareto smoothed importance sampling (PSIS), a method we also discussed in <span class="quarto-unresolved-ref">?sec-model-comparison</span> to estimate the ELPD.</p>
 <p>In the context of power-scaling perturbations, the proposal distribution is the posterior we computed using MCMC (<span class="math inline">\(p(\theta \mid y)\)</span>) and the target distribution is the perturbed posterior (<span class="math inline">\(p(\theta \mid y)_{\alpha}\)</span>). If the proposal and target distributions are expressed as the products of the prior <span class="math inline">\(p(\theta)\)</span> and likelihood <span class="math inline">\(p(y \mid \theta)\)</span>, with the prior raised to the power of <span class="math inline">\(\alpha\)</span>, then we can write the importance weights for the prior as:</p>
 <p><span class="math display">\[
@@ -536,8 +542,8 @@ w_{\alpha} = p(\theta)^{\alpha-1}
 <p>This resulta means that the importance sampling weights for the prior only depend on the density of the prior being power-scaled. This simplifies the computation of the weights. By the same logic the same applies to the likelihood.</p>
 <p>To summarize, the method proposed by <span class="citation" data-cites="kallioinen_2023">(<a href="References.html#ref-kallioinen_2023" role="doc-biblioref"><strong>kallioinen_2023?</strong></a>)</span> combines two key ideas, importance sampling and power-scaling. This combination allow us to approximate the sensitivity of the posterior to the prior and likelihood without the need to explicitly build and fit multiple models.</p>
 </section>
-<section id="diagnosing-sensitivity" class="level3" data-number="5.1.3">
-<h3 data-number="5.1.3" class="anchored" data-anchor-id="diagnosing-sensitivity"><span class="header-section-number">5.1.3</span> Diagnosing sensitivity</h3>
+<section id="diagnosing-sensitivity" class="level3" data-number="6.1.3">
+<h3 data-number="6.1.3" class="anchored" data-anchor-id="diagnosing-sensitivity"><span class="header-section-number">6.1.3</span> Diagnosing sensitivity</h3>
 <p>Once we have power-scaled the prior and likelihood we can visually inspect the effect of the perturbations, by plotting the marginal posterior distributions for the parameter of interest. KDEs, ECDFs and point-intervals allows easy comparison of several distributions. If the perturbations are small, the distributions should overlap. If the perturbations are large, the distributions will be separated.</p>
 <p>We can also compute numerical values based on distances (or divergences) between the unperturbed and perturbed posteriors. In <span class="quarto-unresolved-ref">?sec-model-comparison</span> we discussed the use of the Kullback-Leibler divergence to compare how similar two distributions are. <span class="citation" data-cites="kallioinen_2023">(<a href="References.html#ref-kallioinen_2023" role="doc-biblioref"><strong>kallioinen_2023?</strong></a>)</span> instead suggest using the cumulative Jensen–Shannon divergence (CJS) <span class="citation" data-cites="nguyen_2015">(<a href="References.html#ref-nguyen_2015" role="doc-biblioref"><strong>nguyen_2015?</strong></a>)</span>. This divergence has two good features, its symmetrised form is upper-bounded, which aids interpretation, and it can be computed from the ECDFs, which can be efficiently estimated from MCMC samples. Other methods requieres the estimation of the density of the distributions, which can be computationally expensive and sensible to the choice of the kernel and bandwidth.</p>
 <p>The authors suggest a cut-off value of 0.05 for the CJS. For a standard Normal this value corresponds to the mean being shifted by more than <span class="math inline">\(\approx 0.3\)</span> standard deviations, or the standard deviation differing by a factor greater than <span class="math inline">\(\approx 0.3\)</span>. This value is not set in stone, but it can be used as a reference to interpret the results of the sensitivity analysis.</p>
@@ -545,8 +551,8 @@ w_{\alpha} = p(\theta)^{\alpha-1}
 <p>In the next sections we are going to show two examples of on how to use this method in practice.</p>
 </section>
 </section>
-<section id="body-fat-example" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="body-fat-example"><span class="header-section-number">5.2</span> Body fat example</h2>
+<section id="body-fat-example" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="body-fat-example"><span class="header-section-number">6.2</span> Body fat example</h2>
 <p>Let’s see an example of prior-data conflict in a linear regression model. We will use the bodyfat data set <span class="citation" data-cites="johnson_1996">(<a href="References.html#ref-johnson_1996" role="doc-biblioref"><strong>johnson_1996?</strong></a>)</span>. The aim of the analysis is to predict an expensive and cumbersome water immersion measurement of body fat percentage (observed variable named <code>siri</code>) from a set of thirteen easier to measure characteristics, including age, height, weight, and circumferences of various body parts.</p>
 <p>Let’s start by loading the data and creating a <code>siri</code> variable for the response and a <code>body_fat</code> variable for the predictors. We center the predictors.</p>
 <div id="4192a341" class="cell" data-execution_count="4">
@@ -634,7 +640,7 @@ w_{\alpha} = p(\theta)^{\alpha-1}
 <div id="621b7ec0" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a>az.psense_summary(dt_bf_00, var_names<span class="op">=</span>[<span class="st">"~μ"</span>], round_to<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We can also evaluate the effect of power-scaling visually with the function <code>plot_psense_dist</code>. This function displays the posterior marginal for 3 values of <span class="math inline">\(\alpha\)</span>. By default 0.8 (red), 1 (black) and 1.25 (blue). <code>plot_psense_dist</code> allow as to choose different representations including KDEs and ECDFs. From <a href="#fig-posterior-sensitivity_bf_00" class="quarto-xref">Figure&nbsp;<span>5.3</span></a> we can see that the posterior is sensitive to both prior and likelihood power-scaling, and that it shifts right (towards zero) as the prior is strengthened, and left (away from zero) as the likelihood is strengthened.</p>
+<p>We can also evaluate the effect of power-scaling visually with the function <code>plot_psense_dist</code>. This function displays the posterior marginal for 3 values of <span class="math inline">\(\alpha\)</span>. By default 0.8 (red), 1 (black) and 1.25 (blue). <code>plot_psense_dist</code> allow as to choose different representations including KDEs and ECDFs. From <a href="#fig-posterior-sensitivity_bf_00" class="quarto-xref">Figure&nbsp;<span>6.3</span></a> we can see that the posterior is sensitive to both prior and likelihood power-scaling, and that it shifts right (towards zero) as the prior is strengthened, and left (away from zero) as the likelihood is strengthened.</p>
 <div id="fig-posterior-sensitivity_bf_00" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-posterior-sensitivity_bf_00-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -645,11 +651,11 @@ w_{\alpha} = p(\theta)^{\alpha-1}
 <span id="cb5-5"><a href="#cb5-5" aria-label="5"></a>                     )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-posterior-sensitivity_bf_00-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.3
+Figure&nbsp;6.3
 </figcaption>
 </figure>
 </div>
-<p>We can also use the <code>plot_psense_quantities</code> function to display quantities of interest like the mean, median, standard deviation, etc. We can then evaluate how much the quantities of interest change when we perturb the prior and likelihood. To get a reference for the relative effect size of the perturbations the function also shows the ±2 Monte Carlo standard errors (MCSE) of the base posterior quantity. From <a href="#fig-quantities_bf_00" class="quarto-xref">Figure&nbsp;<span>5.4</span></a> we can see that power-scaling the prior and likelihood pulls the posterior mean in opposite directions. This suggests there might be a potential mismatch or conflict between the prior and the likelihood.</p>
+<p>We can also use the <code>plot_psense_quantities</code> function to display quantities of interest like the mean, median, standard deviation, etc. We can then evaluate how much the quantities of interest change when we perturb the prior and likelihood. To get a reference for the relative effect size of the perturbations the function also shows the ±2 Monte Carlo standard errors (MCSE) of the base posterior quantity. From <a href="#fig-quantities_bf_00" class="quarto-xref">Figure&nbsp;<span>6.4</span></a> we can see that power-scaling the prior and likelihood pulls the posterior mean in opposite directions. This suggests there might be a potential mismatch or conflict between the prior and the likelihood.</p>
 <div id="fig-quantities_bf_00" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="9">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-quantities_bf_00-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -658,12 +664,12 @@ Figure&nbsp;5.3
 <span id="cb6-3"><a href="#cb6-3" aria-label="3"></a>                           coords<span class="op">=</span>{<span class="st">"covariates"</span>: [<span class="st">"wrist"</span>]})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-quantities_bf_00-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.4
+Figure&nbsp;6.4
 </figcaption>
 </figure>
 </div>
-<section id="adjusting-the-prior" class="level3" data-number="5.2.1">
-<h3 data-number="5.2.1" class="anchored" data-anchor-id="adjusting-the-prior"><span class="header-section-number">5.2.1</span> Adjusting the prior</h3>
+<section id="adjusting-the-prior" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="adjusting-the-prior"><span class="header-section-number">6.2.1</span> Adjusting the prior</h3>
 <p>As there is prior sensitivity arising from prior-data conflict, which is unexpected and unintentional as our priors were chosen to be weakly informative, we consider modifying the priors. On inspecting the raw data, we see that although the predictor variables are all measured on similar scales, the variances of the variables differ substantially. For example, the variance of wrist circumference is 0.83, while the variance of abdomen is 102.65. This leads to our chosen prior to be unintentionally informative for some of the regression coefficients, including wrist, while being weakly informative for others</p>
 <p>Now, let try with a different prior. We will use empirically scaled to the data, <span class="math inline">\(βk \sim \mathcal{N}(0, 2.5 \frac{s_y}{s_{xk}})\)</span>, where <span class="math inline">\(s_y\)</span> is the standard deviation of <span class="math inline">\(y\)</span> and <span class="math inline">\(s_{xk}\)</span> is the standard deviation of predictor variable <span class="math inline">\(xk\)</span>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="ppl">
@@ -693,7 +699,7 @@ Figure&nbsp;5.4
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a>az.psense_summary(dt_bf_01, var_names<span class="op">=</span>[<span class="st">"~μ"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can see that after changing the prior, the posterior mean for <code>wrist</code> changes from -1.45 to -1.86, indicating that the base prior was indeed unintentionally informative and in conflict with the data, pulling the estimate towards zero.</p>
-<p>As previously, we can also evaluate the effect of power-scaling visually with the function <code>plot_psense_dist</code>. From <a href="#fig-posterior-sensitivity_bf_01" class="quarto-xref">Figure&nbsp;<span>5.5</span></a> we can see a better overlap between the posterior distributions, compared to the original prior.</p>
+<p>As previously, we can also evaluate the effect of power-scaling visually with the function <code>plot_psense_dist</code>. From <a href="#fig-posterior-sensitivity_bf_01" class="quarto-xref">Figure&nbsp;<span>6.5</span></a> we can see a better overlap between the posterior distributions, compared to the original prior.</p>
 <div id="fig-posterior-sensitivity_bf_01" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="13">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-posterior-sensitivity_bf_01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -704,7 +710,7 @@ Figure&nbsp;5.4
 <span id="cb10-5"><a href="#cb10-5" aria-label="5"></a>                     )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-posterior-sensitivity_bf_01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.5
+Figure&nbsp;6.5
 </figcaption>
 </figure>
 </div>
@@ -715,23 +721,23 @@ Figure&nbsp;5.5
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a>az.plot_psense_quantities(dt_bf_01, var_names<span class="op">=</span>[<span class="st">"β"</span>], coords<span class="op">=</span>{<span class="st">"covariates"</span>: [<span class="st">"wrist"</span>]})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-quantities_bf_01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.6
+Figure&nbsp;6.6
 </figcaption>
 </figure>
 </div>
 <p>Overall, the power-scaling sensitivity analysis on the adjusted prior shows that there is no longer prior sensitivity, and there is appropriate likelihood sensitivity.</p>
 </section>
 </section>
-<section id="non-interpretable-parameters-and-derived-quantities" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="non-interpretable-parameters-and-derived-quantities"><span class="header-section-number">5.3</span> Non-interpretable parameters and derived quantities</h2>
+<section id="non-interpretable-parameters-and-derived-quantities" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="non-interpretable-parameters-and-derived-quantities"><span class="header-section-number">6.3</span> Non-interpretable parameters and derived quantities</h2>
 <p>In many cases, instead of looking at the posterior distribution of the model parameters, we will be interested in derived quantities. Some examples of derived quantities include, predictive performance measures, such as the Bayesian R² or the joint log-likelihood. Another example are predictions evaluated at specific values of the predictors, like the median of one or more predictors.</p>
 <p>Evaluating the sensitivity of derived quantities can be useful in at least two scenarios:</p>
 <ol type="1">
 <li><p>When the model parameters are not directly interpretable. For example, the coefficient for splines are not only not directly interpretable, they are not relevant <em>per se</em>, they are just an “intermediate step” to get a smooth and flexible function. The same applies to Gaussian processes (GPs), Bayesian additive regression trees (BART), polynomials, just to name a few. If the parameters are not directly interpretable, we can exclude them from these sensitivity checks, and instead focus on the derived quantities.</p></li>
 <li><p>When we are interested in a quantity that is more relevant or easier to explain to our audience. Sometimes we don’t care about the parameters of a model, irrespective of whether they are interpretable or not. This could happen if we are focused on a quantity that is of interest or easier to interpret for our audience, like the R². This could also be the case when our focus is on predictions. If those cases, we may decide to focus on the sensitivity checks for the derived quantities and, if they are ok, ignore the ones for the model parameters, even if they are interpretable. If the checks for the derived quantities are not ok, we may need to go back and check the model parameters, in particular if they are interpretable.</p></li>
 </ol>
-<section id="computing-derived-quantities" class="level3" data-number="5.3.1">
-<h3 data-number="5.3.1" class="anchored" data-anchor-id="computing-derived-quantities"><span class="header-section-number">5.3.1</span> Computing derived quantities</h3>
+<section id="computing-derived-quantities" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="computing-derived-quantities"><span class="header-section-number">6.3.1</span> Computing derived quantities</h3>
 <p>Let’s illustrate this with an example. We will use the same model we used in the previous section, but instead of looking at the posterior distribution of the parameters, we will focus on the following derived quantities:</p>
 <ul>
 <li>The Bayesian R².</li>
@@ -754,8 +760,8 @@ Figure&nbsp;5.6
 <p>We see no signs of data-conflict or likelihood noninformativity, we can visually check this as we did before, but given these values we should expect the distributions of the derived quantities to very similar across the different priors.</p>
 </section>
 </section>
-<section id="bacteria-treatment" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="bacteria-treatment"><span class="header-section-number">5.4</span> Bacteria treatment</h2>
+<section id="bacteria-treatment" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="bacteria-treatment"><span class="header-section-number">6.4</span> Bacteria treatment</h2>
 <p>Now we discuss and example of power-scaling sensitivity analysis for hierarchical models. The main motivation for this example is to show that for certain models we should selectively power-scaled the priors. To illustrate this, consider two forms of prior, a non-hierarchical prior with two independent parameters <span class="math inline">\(p(\theta)\)</span> and <span class="math inline">\(p(\phi)\)</span> and a hierarchical prior of the form <span class="math inline">\(p(\theta \mid \psi) p(\psi)\)</span>. In the first case, the appropriate power-scaling for the prior is <span class="math inline">\(p(\theta)^{\alpha} p(\phi)^{\alpha}\)</span>. This is what we did in the previous example. In the second case, for the hierarchical model, we only want to power-scale the top level prior, that is, <span class="math inline">\(p(\theta) p(\phi)^{\alpha}\)</span>.</p>
 <p>For this example we are going to use the bacteria data set <span class="citation" data-cites="venables_2002">(<a href="References.html#ref-venables_2002" role="doc-biblioref"><strong>venables_2002?</strong></a>)</span>.</p>
 <div id="214d92a1" class="cell" data-execution_count="18">
@@ -855,15 +861,15 @@ Figure&nbsp;5.6
 </div>
 <p>We see that everything looks fine. If you like to get potentials issues you could try running the model again with a prior like <code>σ = pm.HalfNormal('σ', sigma=1)</code>.</p>
 </section>
-<section id="interpreting-sensitivity-diagnostics-summary" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="interpreting-sensitivity-diagnostics-summary"><span class="header-section-number">5.5</span> Interpreting sensitivity diagnostics: Summary</h2>
+<section id="interpreting-sensitivity-diagnostics-summary" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="interpreting-sensitivity-diagnostics-summary"><span class="header-section-number">6.5</span> Interpreting sensitivity diagnostics: Summary</h2>
 <p>As with other diagnostics we need to interpret the results of the sensitivity analysis in the context of the model, the data and the problem we are trying to solve. Context and modelling purpose should always be part of an analysis.</p>
-<section id="diagnostic-value" class="level3" data-number="5.5.1">
-<h3 data-number="5.5.1" class="anchored" data-anchor-id="diagnostic-value"><span class="header-section-number">5.5.1</span> Diagnostic value</h3>
+<section id="diagnostic-value" class="level3" data-number="6.5.1">
+<h3 data-number="6.5.1" class="anchored" data-anchor-id="diagnostic-value"><span class="header-section-number">6.5.1</span> Diagnostic value</h3>
 <p>The sensitivity diagnostic value given by <code>psense</code> and <code>psense_summary</code> is based on a measure of how much the posterior would change if the prior or likelihood is changed. This value is provided for each marginal posterior specified in the <code>var_name</code> argument. In simple models with few parameters, it is reasonable to look at sensitivity for all the parameters. But as model complexity increases, and there are more parameters or strong posterior dependencies, it is better to focus on sensitivity of specific parameters with meaningful interpretations or on derived quantities of interest.</p>
 </section>
-<section id="diagnostic-messages" class="level3" data-number="5.5.2">
-<h3 data-number="5.5.2" class="anchored" data-anchor-id="diagnostic-messages"><span class="header-section-number">5.5.2</span> Diagnostic messages</h3>
+<section id="diagnostic-messages" class="level3" data-number="6.5.2">
+<h3 data-number="6.5.2" class="anchored" data-anchor-id="diagnostic-messages"><span class="header-section-number">6.5.2</span> Diagnostic messages</h3>
 <p>Sensitivity diagnostic values are given for both prior and likelihood sensitivity. These values should be considered and interpreted together. Based on the values, a diagnosis is also given. Currently, this is either “strong prior / weak likelihood” (if the prior sensitivity is higher than a threshold and the likelihood sensitivity is lower than a threshold) or “prior-data conflict” (if both types of sensitivity are higher than the threshold).</p>
 <p><strong>These diagnostic messages do not necessarily indicate problems with the model</strong>. They are informative messages that describe the interplay between the chosen prior and likelihood. If your prior is meant to be informative, influence on the posterior is desired and prior-data conflict may not be an issue. However, if you did not put much effort into choosing the priors, these messages can let you know if you should be more deliberate in your prior specification.</p>
 <ul>
@@ -878,8 +884,8 @@ Figure&nbsp;5.6
 </ul></li>
 </ul>
 </section>
-<section id="what-to-do-with-the-diagnostics" class="level3" data-number="5.5.3">
-<h3 data-number="5.5.3" class="anchored" data-anchor-id="what-to-do-with-the-diagnostics"><span class="header-section-number">5.5.3</span> What to do with the diagnostics</h3>
+<section id="what-to-do-with-the-diagnostics" class="level3" data-number="6.5.3">
+<h3 data-number="6.5.3" class="anchored" data-anchor-id="what-to-do-with-the-diagnostics"><span class="header-section-number">6.5.3</span> What to do with the diagnostics</h3>
 <p>Sensitivity analysis should be conducted with care, avoiding the repeated adjustment of priors solely to resolve discrepancies or diagnostic warnings. If a prior is modified to address a warning, the change must be justified based on domain expertise, data properties, or model assumptions. Conversely, choosing not to alter the model despite warnings can also be valid if there are compelling reasons to believe the model is sound. In such cases, it is essential to be transparent: report the diagnostic results and provide a clear rationale for disregarding the sensitivity diagnostics.</p>
 
 
@@ -1303,7 +1309,7 @@ Figure&nbsp;5.6
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../sections/Posterior_predictive_checks.html" class="pagination-link" aria-label="Prior and Posterior predictive checks">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

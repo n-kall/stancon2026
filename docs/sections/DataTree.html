@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2026-07-03">
 
-<title>2&nbsp; Working with DataTree – Bayesian model diagnostics: Workflows and software tools</title>
+<title>3&nbsp; Working with DataTree – Bayesian model diagnostics: Workflows and software tools</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -92,7 +92,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../sections/MCMC_diagnostics.html" rel="next">
-<link href="../index.html" rel="prev">
+<link href="../sections/draws_objects.html" rel="prev">
 <link href="../favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -342,7 +342,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/DataTree.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with DataTree</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/DataTree.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Working with DataTree</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -398,26 +398,32 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../sections/draws_objects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with draws objects in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../sections/DataTree.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sections/MCMC_diagnostics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sections/Posterior_predictive_checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sections/Sensitivity_checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -436,11 +442,11 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#get-the-dataset-corresponding-to-a-single-group" id="toc-get-the-dataset-corresponding-to-a-single-group" class="nav-link active" data-scroll-target="#get-the-dataset-corresponding-to-a-single-group"><span class="header-section-number">2.0.1</span> Get the dataset corresponding to a single group</a></li>
-  <li><a href="#get-coordinate-values" id="toc-get-coordinate-values" class="nav-link" data-scroll-target="#get-coordinate-values"><span class="header-section-number">2.0.2</span> Get coordinate values</a></li>
-  <li><a href="#get-a-subset-of-chains" id="toc-get-a-subset-of-chains" class="nav-link" data-scroll-target="#get-a-subset-of-chains"><span class="header-section-number">2.0.3</span> Get a subset of chains</a></li>
-  <li><a href="#combine-chains-and-draws" id="toc-combine-chains-and-draws" class="nav-link" data-scroll-target="#combine-chains-and-draws"><span class="header-section-number">2.0.4</span> Combine chains and draws</a></li>
-  <li><a href="#add-a-new-variable" id="toc-add-a-new-variable" class="nav-link" data-scroll-target="#add-a-new-variable"><span class="header-section-number">2.1</span> Add a new variable</a></li>
+  <li><a href="#get-the-dataset-corresponding-to-a-single-group" id="toc-get-the-dataset-corresponding-to-a-single-group" class="nav-link active" data-scroll-target="#get-the-dataset-corresponding-to-a-single-group"><span class="header-section-number">3.0.1</span> Get the dataset corresponding to a single group</a></li>
+  <li><a href="#get-coordinate-values" id="toc-get-coordinate-values" class="nav-link" data-scroll-target="#get-coordinate-values"><span class="header-section-number">3.0.2</span> Get coordinate values</a></li>
+  <li><a href="#get-a-subset-of-chains" id="toc-get-a-subset-of-chains" class="nav-link" data-scroll-target="#get-a-subset-of-chains"><span class="header-section-number">3.0.3</span> Get a subset of chains</a></li>
+  <li><a href="#combine-chains-and-draws" id="toc-combine-chains-and-draws" class="nav-link" data-scroll-target="#combine-chains-and-draws"><span class="header-section-number">3.0.4</span> Combine chains and draws</a></li>
+  <li><a href="#add-a-new-variable" id="toc-add-a-new-variable" class="nav-link" data-scroll-target="#add-a-new-variable"><span class="header-section-number">3.1</span> Add a new variable</a></li>
   </ul>
 </nav>
     </div>
@@ -450,7 +456,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-working-datatree" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span></h1>
+<h1 class="title"><span id="sec-working-datatree" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span></h1>
 </div>
 
 
@@ -468,7 +474,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 12, 2026</p>
+      <p class="date-modified">August 13, 2026</p>
     </div>
   </div>
     
@@ -1148,8 +1154,8 @@ Group: /
 <li><code>school</code> is problem-specific. The coordinates for <code>school</code> are the names of 8 schools, <code>['Choate', 'Deerfield', 'Phillips Andover', 'Phillips Exeter', 'Hotchkiss', 'Lawrenceville', "St. Paul's", 'Mt. Hermon']</code></li>
 </ul>
 <p>The dimensions <code>chain</code> and <code>draw</code> are common in MCMC sampling, and hence they are expected to be present in the posterior group of a DataTree generated from MCMC. The <code>school</code> dimension is specific to the model from which the posterior was generated, and it is not expected to be present in all DataTrees.</p>
-<section id="get-the-dataset-corresponding-to-a-single-group" class="level3" data-number="2.0.1">
-<h3 data-number="2.0.1" class="anchored" data-anchor-id="get-the-dataset-corresponding-to-a-single-group"><span class="header-section-number">2.0.1</span> Get the dataset corresponding to a single group</h3>
+<section id="get-the-dataset-corresponding-to-a-single-group" class="level3" data-number="3.0.1">
+<h3 data-number="3.0.1" class="anchored" data-anchor-id="get-the-dataset-corresponding-to-a-single-group"><span class="header-section-number">3.0.1</span> Get the dataset corresponding to a single group</h3>
 <p>We can access each group using a dictionary-like notation:</p>
 <div id="9a3c21af" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a>dt[<span class="st">"posterior"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2387,8 +2393,8 @@ Attributes: (6)</pre><div class="xr-wrap" style="display:none"><div class="xr-he
 </div>
 <p>This will return an immutable Dataset-like view. If you want a new Dataset do <code>dt["posterior"].to_dataset()</code>.</p>
 </section>
-<section id="get-coordinate-values" class="level3" data-number="2.0.2">
-<h3 data-number="2.0.2" class="anchored" data-anchor-id="get-coordinate-values"><span class="header-section-number">2.0.2</span> Get coordinate values</h3>
+<section id="get-coordinate-values" class="level3" data-number="3.0.2">
+<h3 data-number="3.0.2" class="anchored" data-anchor-id="get-coordinate-values"><span class="header-section-number">3.0.2</span> Get coordinate values</h3>
 <p>As we have seen, we have 8 schools with their names. If we want to programmatically access the names we can do</p>
 <div id="12821e71" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-label="1"></a>posterior.school</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2962,8 +2968,8 @@ Coordinates:
 </div>
 <p>Notice that we do not need to first obtain the NumPy array and then compute the length. When working with DataTree/sets/Arrays, you may feel tempted to reduce them to NumPy arrays, as you are more familiar with those. But for many problems that is not needed and for many other that is not even recommended as you may lose the benefit of working with labeled array-like structures.</p>
 </section>
-<section id="get-a-subset-of-chains" class="level3" data-number="2.0.3">
-<h3 data-number="2.0.3" class="anchored" data-anchor-id="get-a-subset-of-chains"><span class="header-section-number">2.0.3</span> Get a subset of chains</h3>
+<section id="get-a-subset-of-chains" class="level3" data-number="3.0.3">
+<h3 data-number="3.0.3" class="anchored" data-anchor-id="get-a-subset-of-chains"><span class="header-section-number">3.0.3</span> Get a subset of chains</h3>
 <p>Because we have labels for the names of the schools we can use them to access their associated information. Labels are usually much easier to remember than numerical indices. For instance, to access the posterior samples of the school <code>Choate</code> we can write:</p>
 <div id="cc1059c3" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a>posterior.sel(school<span class="op">=</span><span class="st">"Choate"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -6022,8 +6028,8 @@ Group: /
 </div>
 <p>If you check the object you will see that the groups <code>posterior</code>, <code>posterior_predictive</code>, <code>log_likelihood</code>, <code>sample_stats</code>, <code>prior</code>, and <code>prior_predictive</code> have now 400 draws compared to the original 500, while the group <code>observed_data</code> remains unaffected.</p>
 </section>
-<section id="combine-chains-and-draws" class="level3" data-number="2.0.4">
-<h3 data-number="2.0.4" class="anchored" data-anchor-id="combine-chains-and-draws"><span class="header-section-number">2.0.4</span> Combine chains and draws</h3>
+<section id="combine-chains-and-draws" class="level3" data-number="3.0.4">
+<h3 data-number="3.0.4" class="anchored" data-anchor-id="combine-chains-and-draws"><span class="header-section-number">3.0.4</span> Combine chains and draws</h3>
 <p>Our primary goal usually is to obtain posterior samples and thus we aren’t concerned with chains and draws. In those cases, we can use the <code>az.extract</code> function. This combines the <code>chain</code> and <code>draw</code> into a <code>sample</code> coordinate which can make further operations easier. By default, <code>az.extract</code> works on the posterior, but you can specify other groups using the <code>group</code> argument.</p>
 <div id="92226e2e" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-label="1"></a>az.extract(dt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -6617,8 +6623,8 @@ Attributes: (7)</pre><div class="xr-wrap" style="display:none"><div class="xr-he
 </div>
 <p>You can inspect the samples in the <code>posterior</code> and <code>ll</code> variables and see that they match.</p>
 </section>
-<section id="add-a-new-variable" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="add-a-new-variable"><span class="header-section-number">2.1</span> Add a new variable</h2>
+<section id="add-a-new-variable" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="add-a-new-variable"><span class="header-section-number">3.1</span> Add a new variable</h2>
 <p>We can add variables to existing groups. For instance, we may want to transform a parameter from the posterior. Like computing and adding the <span class="math inline">\(\log\)</span> of the parameter <span class="math inline">\(\tau\)</span> to the posterior group.</p>
 <div id="943132e0" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-label="1"></a>posterior[<span class="st">"log_tau"</span>] <span class="op">=</span> np.log(posterior[<span class="st">"tau"</span>])</span>
@@ -7708,13 +7714,13 @@ Hoyer, Stephan, and Joe Hamman. 2017. <span>“Xarray: <span>N</span>-<span>D</s
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../index.html" class="pagination-link" aria-label="Material">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Material</span></span>
+      <a href="../sections/draws_objects.html" class="pagination-link" aria-label="Working with draws objects in R">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with draws objects in R</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../sections/MCMC_diagnostics.html" class="pagination-link" aria-label="MCMC Diagnostics">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

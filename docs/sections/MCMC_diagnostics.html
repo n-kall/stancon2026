@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2026-07-03">
 
-<title>3&nbsp; MCMC Diagnostics – Bayesian model diagnostics: Workflows and software tools</title>
+<title>4&nbsp; MCMC Diagnostics – Bayesian model diagnostics: Workflows and software tools</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -320,7 +320,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/MCMC_diagnostics.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/MCMC_diagnostics.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -376,26 +376,32 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../sections/draws_objects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with draws objects in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../sections/DataTree.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sections/MCMC_diagnostics.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sections/Posterior_predictive_checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sections/Sensitivity_checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -414,15 +420,15 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#from-the-mcmc-theory-to-practical-diagnostics" id="toc-from-the-mcmc-theory-to-practical-diagnostics" class="nav-link active" data-scroll-target="#from-the-mcmc-theory-to-practical-diagnostics"><span class="header-section-number">3.1</span> From the MCMC theory to practical diagnostics</a></li>
-  <li><a href="#hat-r-r-hat" id="toc-hat-r-r-hat" class="nav-link" data-scroll-target="#hat-r-r-hat"><span class="header-section-number">3.2</span> <span class="math inline">\(\hat R\)</span> (R-hat)</a></li>
-  <li><a href="#nested-rhat" id="toc-nested-rhat" class="nav-link" data-scroll-target="#nested-rhat"><span class="header-section-number">3.3</span> Nested Rhat</a></li>
-  <li><a href="#effective-sample-size-ess" id="toc-effective-sample-size-ess" class="nav-link" data-scroll-target="#effective-sample-size-ess"><span class="header-section-number">3.4</span> Effective Sample Size (ESS)</a>
+  <li><a href="#from-the-mcmc-theory-to-practical-diagnostics" id="toc-from-the-mcmc-theory-to-practical-diagnostics" class="nav-link active" data-scroll-target="#from-the-mcmc-theory-to-practical-diagnostics"><span class="header-section-number">4.1</span> From the MCMC theory to practical diagnostics</a></li>
+  <li><a href="#hat-r-r-hat" id="toc-hat-r-r-hat" class="nav-link" data-scroll-target="#hat-r-r-hat"><span class="header-section-number">4.2</span> <span class="math inline">\(\hat R\)</span> (R-hat)</a></li>
+  <li><a href="#nested-rhat" id="toc-nested-rhat" class="nav-link" data-scroll-target="#nested-rhat"><span class="header-section-number">4.3</span> Nested Rhat</a></li>
+  <li><a href="#effective-sample-size-ess" id="toc-effective-sample-size-ess" class="nav-link" data-scroll-target="#effective-sample-size-ess"><span class="header-section-number">4.4</span> Effective Sample Size (ESS)</a>
   <ul class="collapse">
-  <li><a href="#monte-carlo-standard-error-mcse" id="toc-monte-carlo-standard-error-mcse" class="nav-link" data-scroll-target="#monte-carlo-standard-error-mcse"><span class="header-section-number">3.4.1</span> Monte Carlo Standard Error (MCSE)</a></li>
+  <li><a href="#monte-carlo-standard-error-mcse" id="toc-monte-carlo-standard-error-mcse" class="nav-link" data-scroll-target="#monte-carlo-standard-error-mcse"><span class="header-section-number">4.4.1</span> Monte Carlo Standard Error (MCSE)</a></li>
   </ul></li>
-  <li><a href="#pareto-hat-k-diagnostic" id="toc-pareto-hat-k-diagnostic" class="nav-link" data-scroll-target="#pareto-hat-k-diagnostic"><span class="header-section-number">3.5</span> Pareto-<span class="math inline">\(\hat k\)</span> diagnostic</a></li>
-  <li><a href="#what-to-do-when-diagnostics-are-bad" id="toc-what-to-do-when-diagnostics-are-bad" class="nav-link" data-scroll-target="#what-to-do-when-diagnostics-are-bad"><span class="header-section-number">3.6</span> What to do when diagnostics are bad?</a></li>
+  <li><a href="#pareto-hat-k-diagnostic" id="toc-pareto-hat-k-diagnostic" class="nav-link" data-scroll-target="#pareto-hat-k-diagnostic"><span class="header-section-number">4.5</span> Pareto-<span class="math inline">\(\hat k\)</span> diagnostic</a></li>
+  <li><a href="#what-to-do-when-diagnostics-are-bad" id="toc-what-to-do-when-diagnostics-are-bad" class="nav-link" data-scroll-target="#what-to-do-when-diagnostics-are-bad"><span class="header-section-number">4.6</span> What to do when diagnostics are bad?</a></li>
   </ul>
 </nav>
     </div>
@@ -432,7 +438,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-mcmc-diagnostics" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span></h1>
+<h1 class="title"><span id="sec-mcmc-diagnostics" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span></h1>
 </div>
 
 
@@ -450,7 +456,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 12, 2026</p>
+      <p class="date-modified">August 13, 2026</p>
     </div>
   </div>
     
@@ -470,8 +476,8 @@ window.Quarto = {
 <li>Monte Carlo Standard Error</li>
 <li>Minimum sample size for reliable MCSE (Pareto-<span class="math inline">\(\hat k\)</span> diagnostic)</li>
 </ul>
-<section id="from-the-mcmc-theory-to-practical-diagnostics" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="from-the-mcmc-theory-to-practical-diagnostics"><span class="header-section-number">3.1</span> From the MCMC theory to practical diagnostics</h2>
+<section id="from-the-mcmc-theory-to-practical-diagnostics" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="from-the-mcmc-theory-to-practical-diagnostics"><span class="header-section-number">4.1</span> From the MCMC theory to practical diagnostics</h2>
 <p>The theory describes certain behaviors of MCMCs methods, many diagnoses are based on evaluating whether the theoretical results are empirically verified. For example, MCMC theory says that:</p>
 <ul>
 <li>The initial value is irrelevant, we must always arrive at the same result</li>
@@ -505,8 +511,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="hat-r-r-hat" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="hat-r-r-hat"><span class="header-section-number">3.2</span> <span class="math inline">\(\hat R\)</span> (R-hat)</h2>
+<section id="hat-r-r-hat" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="hat-r-r-hat"><span class="header-section-number">4.2</span> <span class="math inline">\(\hat R\)</span> (R-hat)</h2>
 <p><span class="math inline">\(\hat R\)</span> is a numerical diagnostic that answers the question Did the chains mix properly? The central idea is to compare the variance between chains with the variance within each chain. The version implemented in <code>ArviZ</code> and in <code>posterior</code> is described in <span class="citation" data-cites="vehtari_2021">(<a href="References.html#ref-vehtari_2021" role="doc-biblioref"><strong>vehtari_2021?</strong></a>)</span>, which does several other things under the hood, but the main idea is the same.</p>
 <p><span class="math inline">\(\hat{R}\)</span> is a convergence diagnostic that asks: <em>have the chains converged to the same distribution?</em> The central idea is to compare the variance between chains with the variance within each chain. If the chains have converged, these two estimates should agree, and <span class="math inline">\(\hat R \to 1\)</span>. If one or more chains are in different regions of parameter space, with respect to the others, the between-chain variance will be inflated relative to the within-chain variance, and <span class="math inline">\(\hat R &gt; 1\)</span>.</p>
 <p>Formally, if we have <span class="math inline">\(M\)</span> chains each of length <span class="math inline">\(N\)</span>, we compute the within-chain variance <span class="math inline">\(W\)</span> (the average of the per-chain variances) and an estimate of the posterior variance <span class="math inline">\(\widehat{\mathrm{var}}^+\)</span> that combines <span class="math inline">\(W\)</span> with the between-chain variance <span class="math inline">\(B\)</span>. <span class="math inline">\(\hat R\)</span> is then the ratio</p>
@@ -1127,8 +1133,8 @@ bad_sample_1       187       247  1.02     0.022   0.023</code></pre>
 </div>
 <p>It’s important to keep in mind that <span class="math inline">\(\hat R\)</span> close to 1 is a <em>necessary but not sufficient</em> condition for convergence: it can still be fooled, for example if all chains happen to get stuck in the same region of a multimodal posterior, or fail to explore the tails in the same way. A low <span class="math inline">\(\hat R\)</span> tells you the chains agree with each other, but it says nothing about whether they’ve explored <em>enough</em> of the posterior to give you reliable estimates. That’s the question the effective sample size (ESS) answers next.</p>
 </section>
-<section id="nested-rhat" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="nested-rhat"><span class="header-section-number">3.3</span> Nested Rhat</h2>
+<section id="nested-rhat" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="nested-rhat"><span class="header-section-number">4.3</span> Nested Rhat</h2>
 <p>It is becoming more common to run many short chains rather than just a few longer chains. This allows for potentially large speed ups if running parallel. <span class="citation" data-cites="Margossian2024">(<a href="References.html#ref-Margossian2024" role="doc-biblioref"><strong>Margossian2024?</strong></a>)</span> has developed an updated R-hat diagnostic for use in this paradigm, called nested R-hat. The key difference is that chains are grouped into superchains. All chains within a superchain are initialized at the same point. Nested R-hat then quantifies the ratio between within super-chain and between superchain variances.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">R</a></li></ul>
@@ -1160,8 +1166,8 @@ bad_sample_1       187       247  1.02     0.022   0.023</code></pre>
 </div>
 </div>
 </section>
-<section id="effective-sample-size-ess" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="effective-sample-size-ess"><span class="header-section-number">3.4</span> Effective Sample Size (ESS)</h2>
+<section id="effective-sample-size-ess" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="effective-sample-size-ess"><span class="header-section-number">4.4</span> Effective Sample Size (ESS)</h2>
 <p><span class="math inline">\(\hat R\)</span> tells us whether the chains agree with each other, but it says nothing about how much <em>information</em> those chains actually contain. That’s the question the <strong>effective sample size</strong> (ESS) answers.</p>
 <p>Because MCMC draws are autocorrelated, a sample of size <span class="math inline">\(N\)</span> typically carries less information than <span class="math inline">\(N\)</span> independent draws would. Intuitively, each new draw contributes less than a full “unit” of information when it’s highly correlated with the previous ones, and close to a full unit when it’s nearly independent. The <strong>effective sample size</strong> (ESS) diagnostics formalizes this by adding up how much independent information the draws actually carry. We can interpret it as the size of an iid sample that would give us the same precision as our (autocorrelated) MCMC sample.</p>
 <p>The following figure illustrates this. It shows the error incurred when estimating the mean from samples of increasing size, under varying degrees of autocorrelation, averaged over 1000 repetitions. We can see tha the error shrinks as the sample size grows, but how fast it shrinks depends on the autocorrelation: the higher the autocorrelation, the more draws we need to reach a given precision.</p>
@@ -1868,8 +1874,8 @@ Note
 </div>
 </div>
 </div>
-<section id="monte-carlo-standard-error-mcse" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="monte-carlo-standard-error-mcse"><span class="header-section-number">3.4.1</span> Monte Carlo Standard Error (MCSE)</h3>
+<section id="monte-carlo-standard-error-mcse" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="monte-carlo-standard-error-mcse"><span class="header-section-number">4.4.1</span> Monte Carlo Standard Error (MCSE)</h3>
 <p>An advantage of the ESS is that it is scale-free: it does not matter whether a parameter varies between 0.1 and 0.2 or between 2000 and 0. An ESS of 400 has the same meaning in both cases. This makes it easy to quickly identify the most problematic parameters in a model with many variables. However, when reporting results it is not very informative to know whether the ESS was 1372 or 1501. What we really want to know is the magnitude of the error we are making when using MCMC samples to approximate a posterior quantity of interest. That is what the <strong>Monte Carlo standard error</strong> (MCSE) provides.</p>
 <p>The MCSE is essentially the standard error of a posterior estimate, like the mean, accounting for the autocorrelation in the draws. In fact, it is closely related to the ESS: <span class="math inline">\(\text{MCSE} = \hat{\sigma} / \sqrt{\text{ESS}}\)</span>, where <span class="math inline">\(\hat\sigma\)</span> is the estimated posterior standard deviation. The MCSE should be small relative to the precision we want to report. For example, if the MCSE for a parameter mean is 0.1, then reporting that mean as 3.15 is misleading, the true value could plausibly be anywhere from about 3.0 to 3.3.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
@@ -2449,8 +2455,8 @@ Group: /posterior
 <p>For a discussion of how many digits to report, check <a href="https://avehtari.github.io/Bayesian-Workflow/digits/digits.html">this guide using R</a>. <a href="https://arviz-devs.github.io/bayesian-workflow/digits/digits.html">this guide using Python</a>.</p>
 </section>
 </section>
-<section id="pareto-hat-k-diagnostic" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="pareto-hat-k-diagnostic"><span class="header-section-number">3.5</span> Pareto-<span class="math inline">\(\hat k\)</span> diagnostic</h2>
+<section id="pareto-hat-k-diagnostic" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="pareto-hat-k-diagnostic"><span class="header-section-number">4.5</span> Pareto-<span class="math inline">\(\hat k\)</span> diagnostic</h2>
 <p><span class="math inline">\(\hat R\)</span>, Bulk-ESS, and Tail-ESS are designed to be valid even for distributions with infinite variance <span class="citation" data-cites="vehtari_2021">(<a href="References.html#ref-vehtari_2021" role="doc-biblioref"><strong>vehtari_2021?</strong></a>)</span>, but MCSE and Basic-ESS assume finite variance. Thus if we sample from a distribution with infinite variance the MCSE will be overoptimistic. Even when variance is finite, the MCSE estimate can be unreliable if the tails are thick enough that higher moments are infinite, since in that case the empirical variance estimate itself is noisy and convergence is slow.</p>
 <p>The Pareto-<span class="math inline">\(\hat k\)</span> diagnostic was originally introduced in the context of Pareto smoothed importance sampling (PSIS) <span class="citation" data-cites="vehtari_2022">(<a href="References.html#ref-vehtari_2022" role="doc-biblioref"><strong>vehtari_2022?</strong></a>)</span>, where it was used to assess the reliability of importance sampling estimates. The key insight is that when estimating a mean from a finite sample, the reliability of the estimate depends on the tail behavior of the distribution: if the tails are too heavy, the variance, or even the mean itself, may not exist, and no amount of additional sampling will produce a reliable estimate. The Pareto-<span class="math inline">\(\hat k\)</span> statistic quantifies this by fitting a generalized Pareto distribution to the upper tail of the draws and using the estimated shape parameter <span class="math inline">\(\hat k\)</span> as a diagnostic. Although it was developed for importance sampling, it turns out to be useful more broadly, including for diagnosing MCMC samples <span class="citation" data-cites="vehtari_2024">(<a href="References.html#ref-vehtari_2024" role="doc-biblioref"><strong>vehtari_2024?</strong></a>)</span>. The Pareto-<span class="math inline">\(\hat k\)</span> estimate can be turned into a minimum sample size required to trust the MCSE:</p>
 <p><span class="math display">\[
@@ -2541,8 +2547,8 @@ xt1         1.5     3975    inf</code></pre>
 <p>As expected, <code>min_ss</code> is around 10 for <code>xn</code> (finite variance, well-behaved tails) and grows with tail thickness: moderate for <code>xt3</code> and <code>xt2_5</code> (both have finite variance since <span class="math inline">\(\nu &gt; 2\)</span>), and infinite for <code>xt2</code>, <code>xt1_5</code>, and <code>xt1</code>, where variance does not exist (<span class="math inline">\(\nu \leq 2\)</span>). For <code>xt1</code> (Cauchy), the mean itself does not exist either, so no finite sample can give us a reliable estimate of it.</p>
 <p>The practical takeaway is that if you are not estimating means of thick-tailed quantities and there are no sampling pathologies caused by heavy tails, you do not need to check Pareto-<span class="math inline">\(\hat k\)</span> for every parameter. However, Pareto smoothing can substantially reduce Monte Carlo error for mean and extreme quantile estimates when applicable.</p>
 </section>
-<section id="what-to-do-when-diagnostics-are-bad" class="level2" data-number="3.6">
-<h2 data-number="3.6" class="anchored" data-anchor-id="what-to-do-when-diagnostics-are-bad"><span class="header-section-number">3.6</span> What to do when diagnostics are bad?</h2>
+<section id="what-to-do-when-diagnostics-are-bad" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="what-to-do-when-diagnostics-are-bad"><span class="header-section-number">4.6</span> What to do when diagnostics are bad?</h2>
 <p><strong>Get more samples.</strong> Increasing the number of draws (or tuning steps) can help, but usually only when problems are minor (for instance when are close to the rule of thumb thresholds). If <span class="math inline">\(\hat R\)</span> is well above 1.01 or the ESS is extremely low, more samples are unlikely to save you.</p>
 <p><strong>Increase the target acceptance rate.</strong> Divergences in HMC/NUTS samplers can often be reduced by asking the sampler to take smaller, more careful steps — for example via <code>target_accept</code> in PyMC or <code>adapt_delta</code> in Stan. If you need to push this above ~0.98 or so and divergences persist, smaller steps alone won’t fix the underlying problem.</p>
 <p><strong>Reparameterize the model.</strong> Some models can be expressed in mathematically equivalent ways where some parameterizations are much more efficient to sample than others. The classic example is the centered vs.&nbsp;non-centered parameterization in hierarchical models.</p>
@@ -2971,12 +2977,12 @@ xt1         1.5     3975    inf</code></pre>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../sections/DataTree.html" class="pagination-link" aria-label="Working with DataTree">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../sections/Posterior_predictive_checks.html" class="pagination-link" aria-label="Prior and Posterior predictive checks">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

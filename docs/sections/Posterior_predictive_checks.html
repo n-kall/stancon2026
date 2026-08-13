@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2026-07-03">
 
-<title>4&nbsp; Prior and Posterior predictive checks – Bayesian model diagnostics: Workflows and software tools</title>
+<title>5&nbsp; Prior and Posterior predictive checks – Bayesian model diagnostics: Workflows and software tools</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -339,7 +339,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/Posterior_predictive_checks.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/Posterior_predictive_checks.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -395,26 +395,32 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../sections/draws_objects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with draws objects in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../sections/DataTree.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sections/MCMC_diagnostics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sections/Posterior_predictive_checks.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sections/Sensitivity_checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -433,23 +439,23 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#prior-predictive-checks" id="toc-prior-predictive-checks" class="nav-link active" data-scroll-target="#prior-predictive-checks"><span class="header-section-number">4.1</span> Prior predictive checks</a>
+  <li><a href="#prior-predictive-checks" id="toc-prior-predictive-checks" class="nav-link active" data-scroll-target="#prior-predictive-checks"><span class="header-section-number">5.1</span> Prior predictive checks</a>
   <ul class="collapse">
-  <li><a href="#a-final-note-about-priors" id="toc-a-final-note-about-priors" class="nav-link" data-scroll-target="#a-final-note-about-priors"><span class="header-section-number">4.1.1</span> A final note about priors</a></li>
+  <li><a href="#a-final-note-about-priors" id="toc-a-final-note-about-priors" class="nav-link" data-scroll-target="#a-final-note-about-priors"><span class="header-section-number">5.1.1</span> A final note about priors</a></li>
   </ul></li>
-  <li><a href="#posterior-predictive-checks" id="toc-posterior-predictive-checks" class="nav-link" data-scroll-target="#posterior-predictive-checks"><span class="header-section-number">4.2</span> Posterior predictive checks</a>
+  <li><a href="#posterior-predictive-checks" id="toc-posterior-predictive-checks" class="nav-link" data-scroll-target="#posterior-predictive-checks"><span class="header-section-number">5.2</span> Posterior predictive checks</a>
   <ul class="collapse">
-  <li><a href="#using-summary-statistics" id="toc-using-summary-statistics" class="nav-link" data-scroll-target="#using-summary-statistics"><span class="header-section-number">4.2.1</span> Using summary statistics</a></li>
-  <li><a href="#pit-ecdfs" id="toc-pit-ecdfs" class="nav-link" data-scroll-target="#pit-ecdfs"><span class="header-section-number">4.2.2</span> PIT-ECDFs</a></li>
-  <li><a href="#sec-avoid-double-dipping" id="toc-sec-avoid-double-dipping" class="nav-link" data-scroll-target="#sec-avoid-double-dipping"><span class="header-section-number">4.2.3</span> Avoiding double-dipping</a></li>
+  <li><a href="#using-summary-statistics" id="toc-using-summary-statistics" class="nav-link" data-scroll-target="#using-summary-statistics"><span class="header-section-number">5.2.1</span> Using summary statistics</a></li>
+  <li><a href="#pit-ecdfs" id="toc-pit-ecdfs" class="nav-link" data-scroll-target="#pit-ecdfs"><span class="header-section-number">5.2.2</span> PIT-ECDFs</a></li>
+  <li><a href="#sec-avoid-double-dipping" id="toc-sec-avoid-double-dipping" class="nav-link" data-scroll-target="#sec-avoid-double-dipping"><span class="header-section-number">5.2.3</span> Avoiding double-dipping</a></li>
   </ul></li>
-  <li><a href="#posterior-predictive-checks-for-discrete-data" id="toc-posterior-predictive-checks-for-discrete-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-discrete-data"><span class="header-section-number">4.3</span> Posterior predictive checks for discrete data</a>
+  <li><a href="#posterior-predictive-checks-for-discrete-data" id="toc-posterior-predictive-checks-for-discrete-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-discrete-data"><span class="header-section-number">5.3</span> Posterior predictive checks for discrete data</a>
   <ul class="collapse">
-  <li><a href="#posterior-predictive-checks-for-count-data" id="toc-posterior-predictive-checks-for-count-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-count-data"><span class="header-section-number">4.3.1</span> Posterior predictive checks for count data</a></li>
-  <li><a href="#posterior-predictive-checks-for-binary-data" id="toc-posterior-predictive-checks-for-binary-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-binary-data"><span class="header-section-number">4.3.2</span> Posterior predictive checks for binary data</a></li>
-  <li><a href="#posterior-predictive-checks-for-categorical-data" id="toc-posterior-predictive-checks-for-categorical-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-categorical-data"><span class="header-section-number">4.3.3</span> Posterior predictive checks for categorical data</a></li>
-  <li><a href="#posterior-predictive-checks-for-ordinal-data" id="toc-posterior-predictive-checks-for-ordinal-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-ordinal-data"><span class="header-section-number">4.3.4</span> Posterior predictive checks for ordinal data</a></li>
-  <li><a href="#posterior-predictive-checks-for-censored-data" id="toc-posterior-predictive-checks-for-censored-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-censored-data"><span class="header-section-number">4.3.5</span> Posterior predictive checks for censored data</a></li>
+  <li><a href="#posterior-predictive-checks-for-count-data" id="toc-posterior-predictive-checks-for-count-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-count-data"><span class="header-section-number">5.3.1</span> Posterior predictive checks for count data</a></li>
+  <li><a href="#posterior-predictive-checks-for-binary-data" id="toc-posterior-predictive-checks-for-binary-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-binary-data"><span class="header-section-number">5.3.2</span> Posterior predictive checks for binary data</a></li>
+  <li><a href="#posterior-predictive-checks-for-categorical-data" id="toc-posterior-predictive-checks-for-categorical-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-categorical-data"><span class="header-section-number">5.3.3</span> Posterior predictive checks for categorical data</a></li>
+  <li><a href="#posterior-predictive-checks-for-ordinal-data" id="toc-posterior-predictive-checks-for-ordinal-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-ordinal-data"><span class="header-section-number">5.3.4</span> Posterior predictive checks for ordinal data</a></li>
+  <li><a href="#posterior-predictive-checks-for-censored-data" id="toc-posterior-predictive-checks-for-censored-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-censored-data"><span class="header-section-number">5.3.5</span> Posterior predictive checks for censored data</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -460,7 +466,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and Posterior predictive checks</span></h1>
 </div>
 
 
@@ -478,7 +484,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 12, 2026</p>
+      <p class="date-modified">August 13, 2026</p>
     </div>
   </div>
     
@@ -503,8 +509,8 @@ window.Quarto = {
 </ul>
 <p>Additionally, for models like linear regression where we have a set of covariates, we can generate synthetic data evaluated at the observed covariates (our “Xs”) or at different values (“X_new”). If we do the first we call it in-sample predictions, and if we do the second we call it out-of-sample predictions.</p>
 <p>With so many options we can feel overwhelmed. Which ones we should use will depend on what we want to evaluate. We can use a combination of the previous options to evaluate models for different purposes. In the next sections, we will see how to implement some of these checks.</p>
-<section id="prior-predictive-checks" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="prior-predictive-checks"><span class="header-section-number">4.1</span> Prior predictive checks</h2>
+<section id="prior-predictive-checks" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="prior-predictive-checks"><span class="header-section-number">5.1</span> Prior predictive checks</h2>
 <p>The idea behind prior predictive checks is simple: if a Bayesian model is reasonable, it should be capable of generating data consistent with our prior knowledge. These are called <em>prior predictive</em> checks because the synthetic data is generated before observing the actual data.</p>
 <p>Consider a Bayesian model consisting of a data model</p>
 <p><span class="math display">\[
@@ -707,15 +713,15 @@ Be cautious when using it for prior predictive checks.
 </div>
 </div>
 </div>
-<section id="a-final-note-about-priors" class="level3" data-number="4.1.1">
-<h3 data-number="4.1.1" class="anchored" data-anchor-id="a-final-note-about-priors"><span class="header-section-number">4.1.1</span> A final note about priors</h3>
+<section id="a-final-note-about-priors" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="a-final-note-about-priors"><span class="header-section-number">5.1.1</span> A final note about priors</h3>
 <p>Before moving on to the next section, we would like to share one last thought on priors. If you have access to reliable prior knowledge, you should use it, there’s no good reason to discard valid information. But in many real-world scenarios, turning that knowledge into informative priors often require considerable effort and time. And in some cases, they may lead to results that are nearly indistinguishable from those produced using less carefully chosen priors.</p>
 <p>In practice weakly informative priors can offer meaningful advantages over both vague and informative priors. Even a modest amount of prior information is often better than none at all, as it helps guard against implausible or misleading results and it could provide computational benefits, such as improved sampling efficiency while being usually easier and less time-consuming to elicit than fully informative priors.</p>
 <p>Finally, one benefit that’s often underappreciated is that running prior predictive checks and <em>playing around</em> with different priors can give you valuable insights into your model and the problem you’re trying to solve, regardless of their impact on their direct impact on the posterior.</p>
 </section>
 </section>
-<section id="posterior-predictive-checks" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="posterior-predictive-checks"><span class="header-section-number">4.2</span> Posterior predictive checks</h2>
+<section id="posterior-predictive-checks" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="posterior-predictive-checks"><span class="header-section-number">5.2</span> Posterior predictive checks</h2>
 <p>The idea behind posterior predictive checks is simple: if a Bayesian model is reasonable, it should be capable of generating data resembling the observed data <span class="citation" data-cites="Gelman_2013">(<a href="References.html#ref-Gelman_2013" role="doc-biblioref">Gelman et al. 2013</a>)</span>. These are called <em>posterior predictive</em> checks because the synthetic data is generated after observing actual data.</p>
 <p>The posterior predictive distribution is obtained by combining the data model</p>
 <p><span class="math display">\[
@@ -807,8 +813,8 @@ p(\tilde y \mid y) = \int p(\tilde y \mid \theta)\, p(\theta \mid y)\, d\theta.
 </div>
 </div>
 <p>Other common visualizations to compare observed and predictive values are empirical CDFs, histograms and less often quantile dotplots. Like with other types of visualizations, you may want to try different options, to be sure visualizations are not misleading and you may also want to adapt the visualization to your audience.</p>
-<section id="using-summary-statistics" class="level3" data-number="4.2.1">
-<h3 data-number="4.2.1" class="anchored" data-anchor-id="using-summary-statistics"><span class="header-section-number">4.2.1</span> Using summary statistics</h3>
+<section id="using-summary-statistics" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="using-summary-statistics"><span class="header-section-number">5.2.1</span> Using summary statistics</h3>
 <p>Besides directly comparing observations and predictions in terms of their densities, we can do comparisons in terms of summary statistics, like the median, the interquartile range, the standard deviation etc. Which ones we decide to use can vary from one data-analysis problem to another, and ideally they should be informed by the data-analysis goals. As in posterior predictive checks we use the data twice, first for fitting the model and then for checking it. It is advisable to select test statistics that are orthogonal to the model parameters <span class="citation" data-cites="Gabry_2019">(<a href="References.html#ref-Gabry_2019" role="doc-biblioref">Gabry et al. 2019</a>)</span>. For example, in a Normal model with a location parameter, the mean should be easy to recover, so a posterior predictive check using the mean as a test statistic would not be a particularly stringent test. As in many common models there is a location parameter, then the mean is usually not a good test statistic.</p>
 <p>We can use the <code>plot_ppc_tstat</code> function to display the posterior predictive distribution of a test statistic. The function takes as input a DataTree with a <code>posterior_predictive</code> and <code>observed_data</code> groups and a name of the test statistic (custom function are also allowed), and it will compute the posterior predictive distribution of that statistic. The function also computes the observed value of the test statistic and plots it as a dot at the bottom of each subplot.</p>
 <p>The following figure shows a comparison in terms of the mean, median and interquartile range (IQR). The dots at the bottom of each subplots corresponds to the summary statistics computed for the observed data and the KDE is for the model’s predictions.</p>
@@ -874,8 +880,8 @@ p(T_{\text{sim}} \le T_{\text{obs}} \mid \tilde y)
 <p>A posterior predictive p-value of 0.5 indicates that half of the predictions are below the observed values and half above. Posterior predictive p-values do not in general have uniform distributions under the null hypothesis but instead tend to have distributions more concentrated near 0.5 <span class="citation" data-cites="Gelman_2013b">(<a href="References.html#ref-Gelman_2013b" role="doc-biblioref">Gelman 2013</a>)</span>. For instance, we already mentioned that the mean is easy to recover for many models and thus the posterior predictive p-value for the mean is often concentrated around 0.5.</p>
 <p>The term “Bayesian p-values” may sound like an oxymoron or paradoxical <span class="citation" data-cites="Meng_1994">(<a href="References.html#ref-Meng_1994" role="doc-biblioref">Meng 1994</a>)</span>. The Bayesian p-values are defined similar to their frequentist cousins and hence the name. But they are used in a very different way. We use posterior predictive p-values as a diagnostic tool to asses potential mismatches between model and data rather than as a measure of “statistical significance” or as a dichotomy decision tool. The null hypothesis is that the predictions from the model and the observed data are drawn from the same data-generating process, but in practice we are not interested in rejecting this hypothesis. We already know is not true! Instead, we are interested in understanding how well the model is doing at predicting the data, detecting potential problems, an if possible or desirable improving the model.</p>
 </section>
-<section id="pit-ecdfs" class="level3" data-number="4.2.2">
-<h3 data-number="4.2.2" class="anchored" data-anchor-id="pit-ecdfs"><span class="header-section-number">4.2.2</span> PIT-ECDFs</h3>
+<section id="pit-ecdfs" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="pit-ecdfs"><span class="header-section-number">5.2.2</span> PIT-ECDFs</h3>
 <p>Instead of using a summary statistics, as before, we can directly compare observations and predictions by computing: <span class="math display">\[
 p(\tilde y_i \le y_i \mid y)
 \]</span></p>
@@ -996,8 +1002,8 @@ F_Y(y) = \mathrm{Pr}(Y \leq y).
 </div>
 </div>
 </section>
-<section id="sec-avoid-double-dipping" class="level3" data-number="4.2.3">
-<h3 data-number="4.2.3" class="anchored" data-anchor-id="sec-avoid-double-dipping"><span class="header-section-number">4.2.3</span> Avoiding double-dipping</h3>
+<section id="sec-avoid-double-dipping" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="sec-avoid-double-dipping"><span class="header-section-number">5.2.3</span> Avoiding double-dipping</h3>
 <p>So far we have being using the data twice, first to fit the model and then to evaluate it. This is a common practice in Bayesian data analysis and it is not a problem as long as we are aware of it. The main goal is to understand how well the model is doing at predicting the data, detecting potential problems, and if possible or desirable improving the model <span class="citation" data-cites="Gelman_2013">(<a href="References.html#ref-Gelman_2013" role="doc-biblioref">Gelman et al. 2013</a>)</span>.</p>
 <p>Still, we may want to avoid double-dipping. So instead of computing:</p>
 <p><span class="math display">\[
@@ -1051,11 +1057,11 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 </div>
 </section>
 </section>
-<section id="posterior-predictive-checks-for-discrete-data" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="posterior-predictive-checks-for-discrete-data"><span class="header-section-number">4.3</span> Posterior predictive checks for discrete data</h2>
+<section id="posterior-predictive-checks-for-discrete-data" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="posterior-predictive-checks-for-discrete-data"><span class="header-section-number">5.3</span> Posterior predictive checks for discrete data</h2>
 <p>So far we have show examples with continuous data. Many of the tools can still be used for discrete data, while KDEs are not useful for discrete data (unless the number of discrete values is large enough to assume continuity), histograms with properly specified bins (like one bin per discrete value) and ECDFs can be used for discrete data. Still, there are some posterior predictive plots that has been specifically designed for discrete data. In the next sections we discuss some of them.</p>
-<section id="posterior-predictive-checks-for-count-data" class="level3" data-number="4.3.1">
-<h3 data-number="4.3.1" class="anchored" data-anchor-id="posterior-predictive-checks-for-count-data"><span class="header-section-number">4.3.1</span> Posterior predictive checks for count data</h3>
+<section id="posterior-predictive-checks-for-count-data" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="posterior-predictive-checks-for-count-data"><span class="header-section-number">5.3.1</span> Posterior predictive checks for count data</h3>
 <p>Count data is a type of discrete data that is very common in many fields. For instance, the number of iguanas per square meter in a rainforest, the number of bikes in a bike-sharing station, the number of calls to a call center, the number of emails you got last year, etc. When assessing the fit of a model to count data we need to consider the discreetness of the data and that we usually care about the amount of (over/under-)dispersion.</p>
 <p>Rootograms are a graphical tool to assess the fit of count data models <span class="citation" data-cites="tukey_1977 Kleiber_2016">(<a href="References.html#ref-tukey_1977" role="doc-biblioref">Tukey 1977</a>; <a href="References.html#ref-Kleiber_2016" role="doc-biblioref">Kleiber and Zeileis 2016</a>)</span>. There are a few variations of rootograms, but traditionally rootograms use bars for the predicted data, and lines (plus markers) for the observed data. Finally, instead of plotting the raw data, they show the square <em>root</em> of the observed and predicted counts, which explain the name of the plots. The reason to square root the data is to make easier to compare observed and expected frequencies even for low frequencies. Often the uncertainty in the predictions is omitted.</p>
 <p>Here we are going to discuss the rootograms presented by <span class="citation" data-cites="Säilynoja_2025">Säilynoja et al. (<a href="References.html#ref-Säilynoja_2025" role="doc-biblioref">2025</a>)</span>. These rootograms emphasize the discreteness of the data and predictions by using points. The uncertainty in the predictions is encoded using intervals. Instead of square-rooting the data, it set the y-axis on the square root scale, this makes easier to interpret the data, because we can directly read the frequencies from the y-axis (instead of reading the square roots) while keeping the advantage of being able to discriminate details at lower frequencies.</p>
@@ -1133,8 +1139,8 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 </div>
 <p>Both models predict more values in the tail than observed, even if with low probability. For both plots, we restrict the x-range to (0, 20).</p>
 </section>
-<section id="posterior-predictive-checks-for-binary-data" class="level3" data-number="4.3.2">
-<h3 data-number="4.3.2" class="anchored" data-anchor-id="posterior-predictive-checks-for-binary-data"><span class="header-section-number">4.3.2</span> Posterior predictive checks for binary data</h3>
+<section id="posterior-predictive-checks-for-binary-data" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="posterior-predictive-checks-for-binary-data"><span class="header-section-number">5.3.2</span> Posterior predictive checks for binary data</h3>
 <p>Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. We may be tempted to assess the fit of a binary model using a bar plot, or a plot similar to the rootogram we showed in the previous section, but this is not a good idea. The reason is that even a very simple model with one parameter for the proportion of one class (like an intercept), can perfectly model that proportion <span class="citation" data-cites="Säilynoja_2025">(<a href="References.html#ref-Säilynoja_2025" role="doc-biblioref">Säilynoja et al. 2025</a>)</span>. Then a bar plot will not be able to tell much about the quality of our model.</p>
 <p>One solution to this challenge is to use the so call calibration or reliability plots. To create this kind of plot we first bin the predicted probabilities (e.g., [0.0–0.1], [0.1–0.2], …, [0.9–1.0]) and then for each bin we compute the fraction of observed positive outcomes. In this way we can compare the predicted probabilities to the observed frequencies per bin. The ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. The problem with this approach is that in practice we don’t have good rules to select the bins and different bins can result in plots that look drastically different.</p>
 <p>A more robust and simple to use method, that does not rely on binning the data has been proposed by <span class="citation" data-cites="Dimitriadis_2021">Dimitriadis et al. (<a href="References.html#ref-Dimitriadis_2021" role="doc-biblioref">2021</a>)</span>. Next figure shows one example of this method. As previously mentioned, the ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. If the line is above the diagonal, the model is underestimating the probabilities, and if the line is below the diagonal, the model is overestimating the probabilities. The confidence bands are computed using the method proposed by <span class="citation" data-cites="Dimitriadis_2021">Dimitriadis et al. (<a href="References.html#ref-Dimitriadis_2021" role="doc-biblioref">2021</a>)</span>.</p>
@@ -1177,8 +1183,8 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 </div>
 <p>The y-axis of the previous figure is labeled as CEP, short for “conditional event probabilities.” A CEP represents the probability that an event occurs, given that the classifier assigned a particular predicted probability. These probabilities are computed using the pool adjacent violators algorithm <span class="citation" data-cites="Ayer_1955">(<a href="References.html#ref-Ayer_1955" role="doc-biblioref">Ayer et al. 1955</a>)</span>, also known as the PAV-adjusted method. This algorithm ensures that CEPs are monotonic: they either increase or remain constant as the predicted probabilities increase, but never decrease. This monotonicity assumption is reasonable for calibrated models, where higher predicted probabilities should correspond to higher actual event probabilities.</p>
 </section>
-<section id="posterior-predictive-checks-for-categorical-data" class="level3" data-number="4.3.3">
-<h3 data-number="4.3.3" class="anchored" data-anchor-id="posterior-predictive-checks-for-categorical-data"><span class="header-section-number">4.3.3</span> Posterior predictive checks for categorical data</h3>
+<section id="posterior-predictive-checks-for-categorical-data" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="posterior-predictive-checks-for-categorical-data"><span class="header-section-number">5.3.3</span> Posterior predictive checks for categorical data</h3>
 <p>A <a href="https://en.wikipedia.org/wiki/Categorical_variable">categorical</a> variable can take on one of a limited, and usually fixed, number of possible values. For categorical data, we can use the same approach used for binary data if we follow a “one vs others” strategy. That is, we select one category and we compare it to all the other categories. This will give as many plots as categories, which can be fine when the number of categories is relatively low, but unwieldy otherwise. In those other cases, we can first use a confusion matrix or some scalar miscallibration summary per category to help us filter out the cases that we want to inspect visually <span class="citation" data-cites="Säilynoja_2025">(<a href="References.html#ref-Säilynoja_2025" role="doc-biblioref">Säilynoja et al. 2025</a>)</span>.</p>
 <p>We can use <code>plot_ppc_pava</code> for categorical data, but not directly. We need to tell it that we have categorical data by passing <code>data_type="categorical"</code>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
@@ -1213,8 +1219,8 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 </div>
 </div>
 </section>
-<section id="posterior-predictive-checks-for-ordinal-data" class="level3" data-number="4.3.4">
-<h3 data-number="4.3.4" class="anchored" data-anchor-id="posterior-predictive-checks-for-ordinal-data"><span class="header-section-number">4.3.4</span> Posterior predictive checks for ordinal data</h3>
+<section id="posterior-predictive-checks-for-ordinal-data" class="level3" data-number="5.3.4">
+<h3 data-number="5.3.4" class="anchored" data-anchor-id="posterior-predictive-checks-for-ordinal-data"><span class="header-section-number">5.3.4</span> Posterior predictive checks for ordinal data</h3>
 <p><a href="https://en.wikipedia.org/wiki/Ordinal_data">Ordinal data</a> is a categorical, statistical data type where the variables have natural, ordered categories and the distances between the categories are not known. For ordinal data, we must account for the order when evaluating the calibration. Then we can compute the cumulative conditional event probabilities <span class="citation" data-cites="Säilynoja_2025">(<a href="References.html#ref-Säilynoja_2025" role="doc-biblioref">Säilynoja et al. 2025</a>)</span>, which will get us one plot less than the number of categories.</p>
 <p>With ordinal data, we can not directly use <code>plot_ppc_pava</code>; we have to pass <code>data_type="ordinal"</code>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
@@ -1249,8 +1255,8 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 </div>
 </div>
 </section>
-<section id="posterior-predictive-checks-for-censored-data" class="level3" data-number="4.3.5">
-<h3 data-number="4.3.5" class="anchored" data-anchor-id="posterior-predictive-checks-for-censored-data"><span class="header-section-number">4.3.5</span> Posterior predictive checks for censored data</h3>
+<section id="posterior-predictive-checks-for-censored-data" class="level3" data-number="5.3.5">
+<h3 data-number="5.3.5" class="anchored" data-anchor-id="posterior-predictive-checks-for-censored-data"><span class="header-section-number">5.3.5</span> Posterior predictive checks for censored data</h3>
 <p><a href="https://en.wikipedia.org/wiki/Survival_analysis">Survival models</a>, also known as time-to-event models, are statistical methods used to study the time until a specific event occurs. A key challenge in survival analysis is properly accounting for the fact that only some events of interest are observed, while others occur outside the observation period.</p>
 <p>To illustrate, imagine analyzing a group of recent graduates who all start searching for jobs at the same time. After three months, half of them have found employment. Using that data, we want to estimate the average time it takes to find a job. If we compute the estimate using only those who have already found jobs and discard those still searching, our estimate will be biased, as we would incorrectly conclude that everyone finds a job within three months or less. Instead, we need to account for the graduates who haven’t yet found jobs (but eventually will), as this correctly reflects that some people take longer than three months to get hired.</p>
 <p>For a full example of how to work with this type of data, you can check <a href="https://bambinos.github.io/bambi/notebooks/survival_model.html">Bambi’s documentation</a>. Even after correctly modeling this data, we still have a challenge when doing posterior predictive checks with censored data. Comparing predictions directly to the raw observed data can be misleading. Instead, we replace the raw observations with Kaplan–Meier estimates; a simple, non-parametric method for estimating the probability of survival (in this case, still searching for a job) over time.</p>
@@ -1759,12 +1765,12 @@ Tukey, John W. 1977. <em>Exploratory <span>Data</span> <span>Analysis</span></em
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../sections/MCMC_diagnostics.html" class="pagination-link" aria-label="MCMC Diagnostics">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../sections/Sensitivity_checks.html" class="pagination-link" aria-label="Prior and likelihood sensitivity checks">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Prior and likelihood sensitivity checks</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
