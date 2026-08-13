@@ -42,6 +42,7 @@ zip --junk-paths docs/exercises/workflow_exercises.zip \
     exercises/rendered/exercises-r.org \
     requirements.txt \
     pyproject.toml \
+    exercises/birds_per_year.stan \
     exercises/rendered/exercises-python.ipynb
 
 (

@@ -8,8 +8,9 @@ The exercises are available in both Python and R:
 
 * Download and expand [this zip file](exercises/workflow_exercises.zip)
 * This contains the exercises in different formats
-* Use your preferred editor to open the chosen notebook
-* The first chunk will install the required packages
+* For RStudio, first open the file `stancon2026-workflow-tools.Rproj`, then open `exercises-r.qmd`
+* For Python, use the `exercises-python.ipynb` file
+* The first chunk will install the required packages. For R: `bayesplot`, `posterior`, and `priorsense`; for Python: `arviz`
 
 The exercise can also be viewed online: [R](exercises/exercises-r.html) or [Python](exercises/exercises-python.html)
 
