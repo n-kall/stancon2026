@@ -1,6 +1,6 @@
 # Material
 
-The material for this tutorial consists of the slides, exercises, and this book.
+The material for this tutorial consists of the slides, exercises, and this web-book.
 
 ## Exercises
 
