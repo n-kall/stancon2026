@@ -37,6 +37,7 @@ book:
 
   chapters:
     - index.md
+    - sections/draws_objects.qmd
     - sections/DataTree.qmd
     - sections/MCMC_diagnostics.qmd
     - sections/Posterior_predictive_checks.qmd

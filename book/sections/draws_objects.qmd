@@ -1,0 +1,33 @@
+# Working with draws objects in R
+
+```{r}
+#| echo: false
+#| warning: false
+library(posterior)
+
+```
+
+The posterior package provides the `draws` object type. These are used for draws
+generated from sampling. The benefit of these objects is that chains, iterations
+and variables are all kept. The objects mirror common base R
+objects: `draws_df`, `draws_list`, `draws_array`, `draws_matrix`. You can
+transform from one type to another with `as_draws_*` functions. While the
+package is called "posterior", the draws objects can contain draws from prior or
+posterior.
+
+Useful functions for summarising and manipulating draws are:
+
+- `summarise_draws()`: generate a summary of the draws based on some functions
+- `subset_draws()`: subset draws by variable, chain, iteration, draw
+- `mutate_variables()`: create new variables, which can reference existing ones
+
+`summarise_draws()` takes as arguments summary functions, such as `mean`, `median` or covergence diagnostics such as `rhat` or `ess_bulk`. For example:
+
+```{r}
+draws <- example_draws()
+summarise_draws(draws, mean, sd, rhat)
+
+```
+
+For further details, see the [documentation for the
+package](https://mc-stan.org/posterior).
