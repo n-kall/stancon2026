@@ -40,6 +40,9 @@ print("Environment created successfully.")
 print("Now change the kernel to uv: stancon2026-workflow-tools")
 ```
 
+Once successfully installed, you will need to restart the notebook using the new environment. e.g. `uv run jupyter notebook` or select a different kernel in your editor.
+
+
 :::
 
 
@@ -343,7 +346,7 @@ az.summary(eight_schools_draws, var_names=["mu"], kind="stats")[["mean", "sd"]]
 
 ## Creating new variables
 
-Create a new variable that is the difference between school 1 (`theta[1]` and school 2 (`theta[2]`) means. Call it `diff_1_2`. Do the same with school 3 (`theta[3]`) and school 4 (`theta[4]`). Then summarise these new variables with median, 0.3 and 0.7 quantiles. 
+Create a new variable that is the difference between school 1 (`theta[1]` and school 2 (`theta[2]`) means. Call it `diff_1_2`. Do the same with school 3 (`theta[3]`) and school 4 (`theta[4]`). Then summarise these new variables with median, 0.3 and 0.7 quantiles.
 ::: {.content-visible when-profile="r"}
 
 You can use the functions `mutate_variables()`, `summarise_draws()` and `quantile2()`. You can specify variable names that include `[]` with `` ` `` e.g. `` `theta[1]` ``.
@@ -780,11 +783,11 @@ eight_schools_prior <- function(ndraws, mu_prior_sd = 1, tau_prior_sd = 1, sigma
   tau <- abs(rnorm(ndraws, 0, tau_prior_sd))
 
   theta <- sapply(1:J, \(j) rnorm(ndraws, mu, tau))
-  yrep <- sapply(1:J, \(j) rnorm(ndraws, theta[, j], sigma_obs[j])) 
-  
+  yrep <- sapply(1:J, \(j) rnorm(ndraws, theta[, j], sigma_obs[j]))
+
   prior_draws <- as_draws(yrep)
   variables(prior_draws) <- paste0("yrep[", 1:J, "]")
-  
+
   return(prior_draws)
 }
 ```
@@ -803,13 +806,13 @@ import pymc.dims as pmd
 def make_eight_schools_model(mu_prior_sd=1, tau_prior_sd=1, observe=False):
   coords = {"school": eight_schools_draws.coords["school"].values}
   sigma_obs=xr.DataArray(np.array([15, 10, 16, 11, 9, 11, 10, 18]), coords=coords, dims=("school"))
-  
+
   with pm.Model(coords=coords) as model:
     mu = pmd.Normal("mu", mu=0, sigma=mu_prior_sd)
     tau = pmd.HalfNormal("tau", sigma=tau_prior_sd)
     theta = pmd.Normal("theta", mu=mu, sigma=tau, dims=("school"))
     yrep = pmd.Normal("yrep", mu=theta, sigma=sigma_obs, dims=("school"), observed= dt["observed_data"]["obs"] if observe else None)
-    
+
   return model
 
 def eight_schools_prior(ndraws=1000, mu_prior_sd=1, tau_prior_sd=1):
@@ -872,7 +875,7 @@ eight_schools_prior(ndraws = 1000, mu_prior_sd = 100, tau_prior_sd = 1) |>
 
 eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, tau_prior_sd = 0.01) |>
   ppd_intervals()
-  
+
 eight_schools_prior(ndraws = 1000, mu_prior_sd = 1, tau_prior_sd = 100) |>
   ppd_intervals()
 ```
@@ -1022,18 +1025,16 @@ az.psense_summary(dt_nc)
 :::
 
 
-Next plot sensitivity using as density plots. Plot only the mu and tau variables.
+Next plot sensitivity using density plots. Plot only the mu and tau variables.
 
 ::: {.content-visible when-profile="r"}
-
-
+You can use `powerscale_plot_dens()`.
 ```{r}
 # Your code here
 ```
 :::
 
 ::: {.content-visible when-profile="rsolutions"}
-You can use `powerscale_plot_dens()`.
 ```{r}
 powerscale_plot_dens(eight_schools_draws_ps, variable = c("mu", "tau"))
 powerscale_plot_dens(eight_schools_draws_ps, variable = c("mu", "tau"), prior_selection = "mu")
