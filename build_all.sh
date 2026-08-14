@@ -5,7 +5,7 @@ rm -r docs
 rm -r exercises_source/rendered
 # Render R exercises
 
-uv run quarto render exercises_source/exercises.qmd \
+uv run quarto render exercises_source/exercises.qmd --no-execute \
    --profile r
 
 uv run quarto render exercises_source/exercises.qmd \
@@ -17,7 +17,7 @@ uv run quarto convert exercises_source/rendered/exercises-r.ipynb \
 
 # Render python exercises
     
-uv run quarto render exercises_source/exercises.qmd \
+uv run quarto render exercises_source/exercises.qmd --no-execute \
   --profile python
 
 uv run quarto render exercises_source/exercises.qmd \
