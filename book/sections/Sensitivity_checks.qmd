@@ -4,7 +4,6 @@
 import arviz as az
 import numpy as np
 import pandas as pd
-import preliz as pz
 import pymc as pm
 import matplotlib.pyplot as plt
 az.style.use("arviz-variat")
