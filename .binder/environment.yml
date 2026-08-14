@@ -8,3 +8,7 @@ dependencies:
   - r-base=4.4
   - r-essentials
   - r-renv
+  - libnetcdf
+  - netcdf4
+  - hdf5
+  - pkg-config

@@ -8,6 +8,6 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 
 Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv", repos = "https://cloud.r-project.org")'
-Rscript -e 'renv::consent(provided = TRUE); renv::restore(prompt = FALSE)'
+Rscript -e 'Sys.setenv(RENV_CONFIG_PPM_ENABLED = "FALSE", RENV_CONFIG_REPOS_OVERRIDE = "https://cloud.r-project.org"); options(renv.config.ppm.enabled = FALSE, pkgType = "source"); renv::consent(provided = TRUE); renv::restore(prompt = FALSE)'
 Rscript -e 'if (!requireNamespace("IRkernel", quietly = TRUE)) install.packages("IRkernel", repos = "https://cloud.r-project.org")'
 Rscript -e 'IRkernel::installspec(user = FALSE)'
