@@ -9,6 +9,8 @@ dependencies = [
     "h5netcdf==1.8.1",
     "jupyter==1.1.1",
     "jupyter-cache==1.0.1",
+    "matplotlib>=3.11.1",
     "netcdf4==1.7.4",
+    "preliz>=0.27.1",
     "pymc==6.3.0",
 ]

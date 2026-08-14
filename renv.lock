@@ -316,7 +316,7 @@
       "RemoteUsername": "stan-dev",
       "RemoteRepo": "bayesplot",
       "RemoteRef": "master",
-      "RemoteSha": "25baa42bb6f69d094eecefb386ddafc0b6f912bf",
+      "RemoteSha": "7bb4faf71caebd0c33361268f1e18b4938da2181",
       "RemoteHost": "api.github.com"
     },
     "bslib": {
