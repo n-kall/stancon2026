@@ -95,8 +95,7 @@ argument and `summarise_draws()`, specifying the functions.
 Create a new variable that is the difference between school 1
 (`theta[1]` and school 2 (`theta[2]`) means. Call it `diff_1_2`. Do the
 same with school 3 (`theta[3]`) and school 4 (`theta[4]`). Then
-summarise these new variables with median, 0.3 and 0.7 quantiles. :::
-{.content-visible when-profile=“r”}
+summarise these new variables with median, 0.3 and 0.7 quantiles.
 
 You can use the functions `mutate_variables()`, `summarise_draws()` and
 `quantile2()`. You can specify variable names that include `[]` with
@@ -105,8 +104,6 @@ You can use the functions `mutate_variables()`, `summarise_draws()` and
 ```{r}
 # Your code here
 ```
-
-:::
 
 ## Marginal posteriors
 
@@ -179,7 +176,7 @@ You can use the functions `summarise_draws()` with `quantile2` and
 Calculate the minimum sample size for stable estimates for each variable
 in the model. Which has the highest minimum sample size?
 
-You can use the function `summarise_draws()` with `pareto_min_ss`
+You can use the function `summarise_draws()` with `pareto_min_ss`.
 
 ```{r}
 # Your code here
@@ -199,11 +196,11 @@ eight_schools_prior <- function(ndraws, mu_prior_sd = 1, tau_prior_sd = 1, sigma
   tau <- abs(rnorm(ndraws, 0, tau_prior_sd))
 
   theta <- sapply(1:J, \(j) rnorm(ndraws, mu, tau))
-  yrep <- sapply(1:J, \(j) rnorm(ndraws, theta[, j], sigma_obs[j])) 
-  
+  yrep <- sapply(1:J, \(j) rnorm(ndraws, theta[, j], sigma_obs[j]))
+
   prior_draws <- as_draws(yrep)
   variables(prior_draws) <- paste0("yrep[", 1:J, "]")
-  
+
   return(prior_draws)
 }
 ```

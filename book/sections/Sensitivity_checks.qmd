@@ -5,6 +5,7 @@ import arviz as az
 import numpy as np
 import pandas as pd
 import pymc as pm
+import preliz as pz
 import matplotlib.pyplot as plt
 az.style.use("arviz-variat")
 plt.rcParams["figure.dpi"] = 75
