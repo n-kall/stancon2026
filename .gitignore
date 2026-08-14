@@ -2,7 +2,6 @@
 **/*.quarto_ipynb
 *_files/
 *#
-*.html
 .Rhistory
 *.save
 exercises/rendered/
