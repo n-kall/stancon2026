@@ -512,5 +512,3 @@ tt(digits = 1)
   - With Python [https://arviz-devs.github.io/bayesian-workflow/](https://arviz-devs.github.io/bayesian-workflow/)
 
 * Exploratory Analysis of Bayesian Models [https://arviz-devs.github.io/EABM/](https://arviz-devs.github.io/EABM/)
-
-* ???
