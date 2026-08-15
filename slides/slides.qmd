@@ -140,6 +140,9 @@ for group in dt.groups:
 - Convergence diagnostic
 - Measure of ratio between within-chain and between-chain variance
 - R-hat > 1.01 indicates lack of convergence
+<div class="paper-link">
+[Rank-Normalization, Folding, and Localization: An Improved R-hat for Assessing Convergence of MCMC](https://projecteuclid.org/journals/bayesian-analysis/volume-16/issue-2/Rank-Normalization-Folding-and-Localization--An-Improved-R%CB%86-for/10.1214/20-BA1221.full)
+</div>
 :::
 ## R-hat
 ```{r}
@@ -153,6 +156,9 @@ tt(digits = 3)
 - Convergence diagnostic when using many short chains
 - Chains are grouped into superchains (sharing initialization)
 - Classic R-hat may wrongly indicate lack of convergence, but nested R-hat does not
+<div class="paper-link">
+[Nested R-hat: Assessing the Convergence of Markov Chain Monte Carlo When Running Many Short Chains](https://projecteuclid.org/journals/bayesian-analysis/advance-publication/Nested-R%CB%86--Assessing-the-Convergence-of-Markov-Chain-Monte/10.1214/24-BA1453.full)
+</div>
 :::
 ## Nested R-hat
 ```{r}
@@ -173,11 +179,13 @@ format_tt(digits = 3, num_fmt = "decimal")
 
 ::: {.incremental}
 
-- Measures how much *independent* information the draws contain
-- Accounts for autocorrelation between samples
+- Measures how much *independent* information the draws contain, accounting for autocorrelation
 - `ess_bulk`: precision for mean/median (central distribution)
 - `ess_tail`: precision for interval estimates (5%/95% quantiles)
 - Rule of thumb: at least 400 total (100 per chain x 4 chains) for both
+<div class="paper-link">
+[Rank-Normalization, Folding, and Localization: An Improved R-hat for Assessing Convergence of MCMC](https://projecteuclid.org/journals/bayesian-analysis/volume-16/issue-2/Rank-Normalization-Folding-and-Localization--An-Improved-R%CB%86-for/10.1214/20-BA1221.full)
+</div>
 :::
 ## Effective Sample Size
 ```{r}
@@ -195,6 +203,9 @@ summarise_draws(sample, ess_bulk, ess_tail) |>
 - Standard error of a posterior estimate (e.g. the mean), accounting for autocorrelation
 - Related to ESS: $\text{MCSE} = \frac{\hat\sigma}{\sqrt{\text{ESS}}}$
 - Tells us [how many digits](https://avehtari.github.io/Bayesian-Workflow/digits/digits.html) of a reported estimate we can trust
+<div class="paper-link">
+[Rank-Normalization, Folding, and Localization: An Improved R-hat for Assessing Convergence of MCMC](https://projecteuclid.org/journals/bayesian-analysis/volume-16/issue-2/Rank-Normalization-Folding-and-Localization--An-Improved-R%CB%86-for/10.1214/20-BA1221.full)
+</div>
 :::
 ## Monte Carlo Standard Error
 ```{r}
@@ -320,7 +331,11 @@ bayesplot_grid(p1, p2, p3, grid_args = list(nrow = 1))
 ::: {.incremental}
 - Marginal p-value: $p(\tilde y_i \leq y_i \mid y)$, computed per observation
 - By the Probability Integral Transform, this should be **standard Uniform** if model and data agree
-- Compare the empirical CDF of these values to the diagonal line
+- Compare the empirical CDF of these values to the diagonal line, or to a flat line at zero for the Δ-ECDF.
+<div class="paper-link">
+[Graphical test for discrete uniformity and its applications in goodness-of-fit evaluation and multiple sample comparison](https://link.springer.com/article/10.1007/s11222-022-10090-6)
+[LOO-PIT predictive model checking](https://arxiv.org/abs/2603.02928)
+</div>
 :::
 ## 
 ```{r}
@@ -385,6 +400,9 @@ ppc_loo_pit_ecdf(data$observed_data, data$posterior_predictive, lw,
 - KDEs don't work well for discrete data (unless enough distinct values to treat as continuous)
 - Histograms (one bin per value) and ECDFs still apply
 - Some tools are purpose-built per data type: **count**, **binary**, **categorical**, **ordinal**, **censored**
+<div class="paper-link">
+[Recommendations for visual predictive checks in Bayesian workflow](https://teemusailynoja.github.io/visual-predictive-checks/)
+</div>
 :::
 ## Count data: rootograms
 ::: {.incremental}
@@ -450,6 +468,9 @@ ppc_calibration(anes$observed_data,
 - Survival/time-to-event models: some events not yet observed at data-collection time
 - Naively discarding censored cases biases the estimate
 - Replace raw observations with **Kaplan–Meier** estimates for posterior predictive checks
+<div class="paper-link">
+[Predictive Assessment and Comparison of Bayesian Survival Models for Cancer Recurrence](https://arxiv.org/abs/2601.01662)
+</div>
 :::
 
 ## 
@@ -471,6 +492,9 @@ ppc_km_overlay(cens$observed_data, cens$posterior_predictive[1:50, ],
 - What about the likelihood?
 
 - $p(\theta \mid y) \propto p(\theta) p(y \mid \theta)^{\alpha}$
+<div class="paper-link">
+[Detecting and diagnosing prior and likelihood sensitivity with power-scaling](https://link.springer.com/article/10.1007/s11222-023-10366-5)
+</div>
 :::
 
 ## Visual checks
