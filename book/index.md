@@ -12,7 +12,9 @@ The exercises are available in both Python and R:
 * For Python, use the `exercises-python.ipynb` file
 * The first chunk will install the required packages. For R: `bayesplot`, `posterior`, and `priorsense`; for Python: `arviz`
 
-The exercise can also be viewed online: [R](exercises/exercises-r.html) or [Python](exercises/exercises-python.html)
+The exercises can also be viewed online: [R](exercises/exercises-r.html) or [Python](exercises/exercises-python.html)
+
+An online environment is available here: [binder](https://mybinder.org/v2/gh/n-kall/stancon2026-exercises/main)
 
 Solutions are available here: [R](exercises/solutions-r.html), [Python](exercises/solutions-python.html)
 
