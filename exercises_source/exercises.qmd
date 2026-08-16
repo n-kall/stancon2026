@@ -1149,6 +1149,25 @@ yrep4 <-  as_draws_matrix(subset_draws(draws4, "y_rep"))
 ::: {.content-visible when-profile="python"}
 
 ```{python}
+# Use the following as a starting point
+
+# Load the draws
+draws1 = az.from_netcdf('data/draws1.nc')
+draws2 = az.from_netcdf('data/draws2.nc')
+draws3 = az.from_netcdf('data/draws3.nc')
+draws4 = az.from_netcdf('data/draws4.nc')
+
+# Get the actual observations and the corresponding species
+y = draws1.observed_data['count'].values
+species = draws1.constant_data['species'].values  # useful for grouped plots
+
+# Create yrep arrays for posterior predictive checks
+# (ArviZ convention: posterior_predictive variable matches observed_data name)
+yrep1 = draws1.posterior_predictive['count']
+yrep2 = draws2.posterior_predictive['count']
+yrep3 = draws3.posterior_predictive['count']
+yrep4 = draws4.posterior_predictive['count']
+
 # Your code here
 ```
 
@@ -1165,6 +1184,25 @@ yrep4 <-  as_draws_matrix(subset_draws(draws4, "y_rep"))
 ::: {.content-visible when-profile="pythonsolutions"}
 
 ```{python}
+# Use the following as a starting point
+
+# Load the draws
+draws1 = az.from_netcdf('data/draws1.nc')
+draws2 = az.from_netcdf('data/draws2.nc')
+draws3 = az.from_netcdf('data/draws3.nc')
+draws4 = az.from_netcdf('data/draws4.nc')
+
+# Get the actual observations and the corresponding species
+y = draws1.observed_data['count'].values
+species = draws1.constant_data['species'].values  # useful for grouped plots
+
+# Create yrep arrays for posterior predictive checks
+# (ArviZ convention: posterior_predictive variable matches observed_data name)
+yrep1 = draws1.posterior_predictive['count']
+yrep2 = draws2.posterior_predictive['count']
+yrep3 = draws3.posterior_predictive['count']
+yrep4 = draws4.posterior_predictive['count']
+
 # Your code here
 ```
 
