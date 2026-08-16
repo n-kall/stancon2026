@@ -125,20 +125,31 @@ data <- readRDS("../../models/prerun/00.rds")
 
 The figure below displays samples from the prior predictive distribution (shown as solid blue lines). To aid interpretation, we have included two reference values: the average length/height of a newborn (approximately 50 cm) and the average height of adult males in the Netherlands (around 182 cm). Reference values are meaningful benchmarks derived from domain knowledge—not from the observed data—and help assess whether predictions are on a reasonable scale. While there are no strict rules for selecting reference values, different analysts might choose different benchmarks based on context
 
+```{python}
+#| echo: false
+import arviz as az
+dt = az.convert_to_datatree("../../models/prerun/prior_predictive_00.nc")
+```
+
 ::: {.panel-tabset group="language"}
 
 ## Python
+
 ```{python}
+#| warning: false
 #| fig-cap: "The prior predictive check for the model of heights. We can see that the bulk of the samples are outside the reference values."
 pc = az.plot_ppc_dist(dt, group="prior_predictive")
 az.add_lines(pc, values=(50, 182));
 ```
+
 ## R
+
 ```{r}
 #| fig-cap: "The prior predictive check for the model of heights. We can see that the bulk of the samples are outside the reference values."
 ppd_dens_overlay(data$prior_predictive) +
   geom_vline(xintercept = c(50, 182), linetype = "dashed")
 ```
+
 :::
 
 We can see that our model is bananas the bulk of the prior predictive distribution is outside of our reference values and the model is predicting values below 0. This is a clear indication that the model is not a good representation of our prior knowledge.
@@ -189,19 +200,25 @@ data <- readRDS("../../models/prerun/01.rds")
 We repeat the prior predictive checks with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is within the reference values.
 
 ::: {.panel-tabset group="language"}
+
 ## Python
+
 ```{python}
 #| fig-cap: "The prior predictive check for the model of heights with a more narrower prior than previous figure. Predictions are closer to our domain knowledge about human heights."
+#| warning: false
 pc = az.plot_ppc_dist(dt, group="prior_predictive")
 az.add_lines(pc, values=(50, 182))
 ```
+
 ## R
+
 ```{r}
 #| fig-cap: "The prior predictive check for the model of heights with a more narrower prior than previous figure. Predictions are closer to our domain knowledge about human heights."
 ppd_dens_overlay(data$prior_predictive) +
   geom_vline(xintercept = c(50, 182), linetype = "dashed") +
   scale_x_continuous(limits = c(45, NA))
 ```
+
 :::
 
 You are free to pick other priors and other reference values and make new prior predictive checks. Maybe you can use the historical record for the taller and shorter persons in the world as reference values.
@@ -210,18 +227,24 @@ When plotting many distributions, where each one spans a narrow range of values 
 
 
 ::: {.panel-tabset group="language"}
+
 ## Python
+
 ```{python}
 #| fig-cap: "The prior predictive check for the model of heights. Same as previous figure, but using empirical CDFs instead of KDEs."
+#| warning: false
 pc = az.plot_ppc_dist(dt, group="prior_predictive", kind="ecdf")
 az.add_lines(pc, values=(50, 182))
 ```
+
 ## R
+
 ```{r}
 #| fig-cap: "The prior predictive check for the model of heights. Same as previous figure, but using empirical CDFs instead of KDEs."
 ppd_ecdf_overlay(data$prior_predictive) +
   geom_vline(xintercept = c(50, 182), linetype = "dashed")
 ```
+
 :::
 
 ### A final note about priors
@@ -321,16 +344,22 @@ And then visualize the comparison. We can see that the model is doing a good job
 
 
 ::: {.panel-tabset group="language"}
+
 ## Python
+
 ```{python}
 #| fig-cap: "Posterior predictive check for the model of heights."
+#| warning: false
 az.plot_ppc_dist(dt, num_samples=200);
 ```
+
 ## R
+
 ```{r}
 #| fig-cap: "Posterior predictive check for the model of heights."
 ppc_dens_overlay(data$observed_data, data$posterior_predictive[1:200, ])
 ```
+
 :::
 
 Other common visualizations to compare observed and predictive values are empirical CDFs, histograms and less often quantile dotplots. Like with other types of visualizations, you may want to try different options, to be sure visualizations are not misleading and you may also want to adapt the visualization to your audience.
@@ -344,9 +373,11 @@ We can use the `plot_ppc_tstat` function to display the posterior predictive dis
 The following figure shows a comparison in terms of the mean, median and interquartile range (IQR). The dots at the bottom of each subplots corresponds to the summary statistics computed for the observed data and the KDE is for the model's predictions.
 
 ::: {.panel-tabset group="language"}
+
 ## Python
 ```{python}
 #| fig-cap: "Posterior predictive check for the model of heights using summary statistics."
+#| warning: false
 pc = az.combine_plots(dt,
                  plots=[
                   (az.plot_ppc_tstat, {"t_stat":"median"}),
@@ -374,6 +405,7 @@ patchwork::wrap_plots(c(p1, p2, p3), nrow = 3)
 # bayesplot_grid(p1, p2, p3, grid_args = list(nrow = 1))
 
 ```
+
 :::
 
 
@@ -431,12 +463,16 @@ The disadvantage of "diagonal line" is precisely that all the "action" is close 
 Another potential issue is the difficulty to interpret the magnitude of the deviations from uniformity. Due to finite sample size we should expect deviations from uniformity even if the model is a good one, so how can we know if a deviation from uniformity is larger than expected? One way to address this is to complement the visualization with a uniformity test. This test can help us determine when a deviation from uniformity is larger than expected, and sometimes it can also help us identify which points contribute the most to the rejection of the null hypothesis.
 
 ::: {.panel-tabset group="language"}
+
 ## Python
+
 ```{python}
 #| fig-cap: "Posterior predictive check for the model of heights using marginal Bayesian p-values, also know as u-values."
 az.plot_ppc_pit(dt);
 ```
+
 ## R
+
 ```{r}
 #| fig-cap: "Posterior predictive check for the model of heights using marginal Bayesian p-values, also know as u-values."
 ppc_pit_ecdf(
@@ -446,6 +482,7 @@ ppc_pit_ecdf(
   plot_diff = TRUE
 )
 ```
+
 :::
 
 
@@ -480,12 +517,17 @@ data_i <- readRDS("../../models/prerun/pit_ecdf_quartet.rds")
 
 
 ::: {.panel-tabset group="language"}
+
 ## Python
+
 ```{python}
 #| fig-cap: "Posterior predictive check with KDEs, ECDFs, and PIT-ECDFs showing four alternative scenarios."
+#| warning: false
 az.plot_ppc_dist_pit(dt_i);
 ```
+
 ## R
+
 ```{r}
 #| fig-cap: "Posterior predictive check with KDEs, ECDFs, and PIT-ECDFs showing four alternative scenarios."
 vars <- c("y0", "y1", "y2", "y3")
@@ -507,6 +549,7 @@ patchwork::wrap_plots(plots, ncol = 2, axes = "collect", guides = "collect")
 # or alternatively only bayesplot:
 # bayesplot_grid(plots = plots, grid_args = list(ncol = 2))
 ```
+
 :::
 
 
@@ -533,12 +576,16 @@ This is a more stringent test, as we are not using the $i$-th observation to com
 In principle computing this will be too costly, as we need to compute the posterior predictive distribution $n$ times, where $n$ is the number of observations. However, we can use a method called Pareto-smoothed importance sampling (PSIS) to approximate the LOO-CV from a single posterior computation.
 
 ::: {.panel-tabset group="language"}
+
 ## Python
+
 ```{python}
 #| fig-cap: "Posterior predictive check with LOO-PIT-ECDF."
 az.plot_loo_pit(dt);
 ```
+
 ## R
+
 ```{r}
 #| fig-cap: "Posterior predictive check with LOO-PIT-ECDF."
 psis_result <- psis(-data$log_likelihood)
@@ -551,6 +598,7 @@ ppc_loo_pit_ecdf(
   plot_diff = TRUE
 )
 ```
+
 :::
 
 ## Posterior predictive checks for discrete data
@@ -589,38 +637,48 @@ counts from 6 onward are also underpredicted. This pattern is an indication of o
 
 
 ::: {.panel-tabset group="language"}
+
 ## Python
+
 ```{python}
 #| fig-cap: "Rootogram showing the uncertainty in the predictions for a Poisson model."
 pc = az.plot_ppc_rootogram(crabs_poisson)
 pc.viz.plot["satellite"].item().set_xlim(-0.5, 20);
 ```
+
 ## R
+
 ```{r}
 #| fig-cap: "Rootogram showing the uncertainty in the predictions for a Poisson model."
 ppc_rootogram(crabs_poisson$observed_data,
               crabs_poisson$posterior_predictive,
               style = "discrete")
 ```
+
 :::
 
 Now we will check the fit for the hurdle model. As expected for a hurdle model we get a perfect fit for the zeros. For the positive values, we still get some deviations, but the fit is better than with the Poisson model.
 
 
 ::: {.panel-tabset group="language"}
+
 ## Python
+
 ```{python}
 #| fig-cap: "Rootogram showing the uncertainty in the predictions for a Hurdle Negative Binomial model."
 pc = az.plot_ppc_rootogram(crabs_hurdle_nb)
 pc.viz.plot["satellite"].item().set_xlim(-0.5, 20);
 ```
+
 ## R
+
 ```{r}
 #| fig-cap: "Rootogram showing the uncertainty in the predictions for a Hurdle Negative Binomial model."
 ppc_rootogram(crabs_hurdle_nb$observed_data,
               crabs_hurdle_nb$posterior_predictive,
               style = "discrete")
 ```
+
 :::
 
 Both models predict more values in the tail than observed, even if with low probability. For both plots, we restrict the x-range to (0, 20).
@@ -648,19 +706,24 @@ anes <- readRDS("../../models/prerun/anes.rds")
 
 
 ::: {.panel-tabset group="language"}
+
 ## Python
+
 ```{python}
 #| fig-cap: "PAV-adjusted calibration plot for a logistic regression model."
 
 az.plot_ppc_pava(anes)
 ```
+
 ## R
+
 ```{r}
 ppc_calibration(anes$observed_data,
                 anes$posterior_predictive,
                 interval = "consistency",
                 )
 ```
+
 :::
 
 The y-axis of the previous figure is labeled as CEP, short for "conditional event probabilities." A CEP represents the probability that an event occurs, given that the classifier assigned a particular predicted probability. These probabilities are computed using the pool adjacent violators algorithm [@Ayer_1955], also known as the PAV-adjusted method. This algorithm ensures that CEPs are monotonic: they either increase or remain constant as the predicted probabilities increase, but never decrease. This monotonicity assumption is reasonable for calibrated models, where higher predicted probabilities should correspond to higher actual event probabilities.
@@ -672,7 +735,9 @@ A [categorical](https://en.wikipedia.org/wiki/Categorical_variable) variable can
 We can use `plot_ppc_pava` for categorical data, but not directly. We need to tell it that we have categorical data by passing `data_type="categorical"`.
 
 ::: {.panel-tabset group="language"}
+
 ## Python
+
 ```{python}
 #| echo: false
 import arviz as az
@@ -689,10 +754,13 @@ az.plot_ppc_pava(
     )
 
 ```
+
 ## R
+
 ```{r}
 # TODO: RCODE
 ```
+
 :::
 
 
@@ -702,16 +770,15 @@ az.plot_ppc_pava(
 
 With ordinal data, we can not directly use `plot_ppc_pava`; we have to pass `data_type="ordinal"`.
 
-
 ```{python}
 #| echo: false
 dt_ord = az.convert_to_datatree("../../models/prerun/dt_ord.nc")
 ```
 
-
-
 ::: {.panel-tabset group="language"}
+
 ## Python
+
 ```{python}
 #| fig-cap: "PAV-adjusted calibration plot for an ordinal regression model."
 az.plot_ppc_pava(
@@ -720,10 +787,13 @@ az.plot_ppc_pava(
     figure_kwargs={"figsize":(10, 4)},
     )
 ```
+
 ## R
+
 ```{r}
 # TODO: RCODE
 ```
+
 :::
 
 
@@ -737,14 +807,13 @@ For a full example of how to work with this type of data, you can check [Bambi's
 
 The following example is from a model of cat adoption. We record how many months pass until each cat is adopted, but at the time of data collection, some cats have not yet been adopted.
 
-
 ```{r}
 #| echo: false
 cens <- readRDS("../../models/prerun/censored_cats.rds")
 ```
 
-
 ::: {.panel-tabset group="language"}
+
 ## Python
 
 ```{python}
@@ -754,10 +823,12 @@ az.plot_ppc_censored(dt_cens)
 ```
 
 ## R
+
 ```{r}
 #| fig-cap: "Posterior predictive check for survival/censored data using Kaplan–Meier curves."
 ppc_km_overlay(cens$observed_data, cens$posterior_predictive[1:50,], status_y = cens$constant_data)
 ```
+
 :::
 
 To keep predictions within a meaningful range we limit the predictive data relative to the maximum observed duration, preventing the survival curves from extending too far beyond the observed data. You can change this with the argument `extrapolation_factor`, which defaults to 1.2, meaning up to a 20% larger that the maximum observation. For more recommendations on how to perform predictive assessment for survival model you can read [@suorsa_2026].
