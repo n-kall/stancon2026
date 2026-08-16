@@ -62,7 +62,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -468,7 +487,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 14, 2026</p>
+      <p class="date-modified">August 16, 2026</p>
     </div>
   </div>
     
@@ -480,16 +499,16 @@ window.Quarto = {
 
 
 <p>Determining the sensitivity of the posterior to perturbations of the prior is an important part of building Bayesian models. The traditional way to assess the prior sensitivity is to compare the posterior obtained using a reference prior against the posterior obtained using one or more alternative priors. The reference prior can be the default prior in packages like <a href="https://bambinos.github.io/bambi/">Bambi</a> or some other “template” prior from literature or previous analysis of a similar dataset/problem. But it can also be the prior obtained after a more careful elicitation process. The “alternative” priors can be prior that for some reason we also consider relevant, or deviations from the reference prior that we consider important to evaluate.</p>
-<p>To perform the comparison we can use visual and numerical summaries as we already explained in <span class="quarto-unresolved-ref">?sec-ppc</span>. For instance, when working with ArviZ, we can use <code>plot_forest</code> or <code>plot_density</code> functions to compare multiple posteriors (or actually their marginals) in the same plot. Ideally, we should summarize and report the results of this analysis, so that others can also understand how robust the model is to different prior choices.</p>
+<p>To perform the comparison we can use visual and numerical summaries as we already explained in <a href="Posterior_predictive_checks.html" class="quarto-xref"><span>Chapter 4</span></a>. For instance, when working with ArviZ, we can use <code>plot_forest</code> or <code>plot_density</code> functions to compare multiple posteriors (or actually their marginals) in the same plot. Ideally, we should summarize and report the results of this analysis, so that others can also understand how robust the model is to different prior choices.</p>
 <p>The same procedure we use to assess the sensitivity of the prior can be used to compare how different likelihoods affect the posterior. So we can discuss the sensitivity of the posterior to the likelihood, the prior or both.</p>
 <p>In summary, the traditional approach to assess prior and likelihood sensitivity is to fit multiple models with different priors and/or likelihoods, and then compare the results. This approach is simple to understand, and should be straightforward to implement. However, in practice thinking about alternative priors, building alternative models and fitting them can be very time-consuming. In the chapter we discuss a more automated way to do this kind of analysis.</p>
 <section id="prior-and-likelihood-sensitivity-via-power-scaling" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="prior-and-likelihood-sensitivity-via-power-scaling"><span class="header-section-number">5.1</span> Prior and likelihood sensitivity via power-scaling</h2>
-<p>The method we will discuss was presented by <span class="citation" data-cites="kallioinen_2023">(<a href="References.html#ref-kallioinen_2023" role="doc-biblioref"><strong>kallioinen_2023?</strong></a>)</span>, and offers visual and numerical diagnostics that can alert us of potential prior-data conflict or likelihood noninformativity. What makes this approach very practical is that we only need to fit a single model once, and without explicitly modifying the prior or likelihood, we can assess the effect of changing them. If you are eager to see how this method can be applied in practice, you can jump to the example section. If you want to understand the method in more detail, keep reading.</p>
+<p>The method we will discuss was presented by <span class="citation" data-cites="kallioinen_2023">Kallioinen et al. (<a href="References.html#ref-kallioinen_2023" role="doc-biblioref">2024</a>)</span>, and offers visual and numerical diagnostics that can alert us of potential prior-data conflict or likelihood noninformativity. What makes this approach very practical is that we only need to fit a single model once, and without explicitly modifying the prior or likelihood, we can assess the effect of changing them. If you are eager to see how this method can be applied in practice, you can jump to the example section. If you want to understand the method in more detail, keep reading.</p>
 <section id="power-scaling" class="level3" data-number="5.1.1">
 <h3 data-number="5.1.1" class="anchored" data-anchor-id="power-scaling"><span class="header-section-number">5.1.1</span> Power-scaling</h3>
 <p>A key idea of the method is the concept of power-scaling. By power-scaling we mean raising a distribution to a power <span class="math inline">\(\alpha\)</span>. Why is this interesting? Because by power-scaling a distribution we can “stretch” it or “compress” it. <a href="#fig-beta-normal-power-scaling" class="quarto-xref">Figure&nbsp;<span>5.1</span></a> shows the effect of power-scaling on a Beta and a Normal distribution. Power-scaling is a very general transformation that work for any distribution, except for the uniform distribution. Notice this restriction also applies to a Beta(1, 1), which is uniform. This is a minor restriction, because the uniform distribution is hardly a useful prior, unless we are dealing with a very special case.</p>
-<div id="cell-fig-beta-normal-power-scaling" class="cell" data-execution_count="2">
+<div id="cell-fig-beta-normal-power-scaling" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div id="fig-beta-normal-power-scaling" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -509,7 +528,7 @@ p(\theta \mid y)_{\alpha} \propto p(y \mid \theta)^\alpha \; p(\theta)
 \]</span></p>
 <p>Let’s take a moment to understand this expression. If we set <span class="math inline">\(\alpha=1\)</span> we recover the usual expression for Bayes’ theorem, the one that you may have seen many times. Setting <span class="math inline">\(\alpha=0\)</span> is equivalent to ignoring the likelihood, thus <span class="math inline">\(p(\theta \mid y)_{\alpha}\)</span> will be equal to the prior. We can then conclude that any number between 0 and 1 will have the effect of “weakening” the likelihood with respect to the prior. By the same token any number greater than 1 will “strength” the likelihood with respect to the prior.</p>
 <p>We can repeat this exercise for the prior and then we will be able to modulate the relative weights of the prior relative to the likelihood. <a href="#fig-posterior-power-scaling" class="quarto-xref">Figure&nbsp;<span>5.2</span></a> shows the effect on the posterior of power-scaling the prior for a fixed likelihood. The prior is a Beta distribution with parameters <span class="math inline">\(a=2\)</span> and <span class="math inline">\(b=5\)</span> and the likelihood is a Binomial distribution with parameters <span class="math inline">\(n=10\)</span> and <span class="math inline">\(p=0.7\)</span>. The posterior is computed using the prior and likelihood.</p>
-<div id="cell-fig-posterior-power-scaling" class="cell" data-execution_count="3">
+<div id="cell-fig-posterior-power-scaling" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div id="fig-posterior-power-scaling" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -526,7 +545,7 @@ Figure&nbsp;5.2: The effect on the posterior when power-scaling the prior for a 
 </section>
 <section id="power-scaling-and-importance-sampling" class="level3" data-number="5.1.2">
 <h3 data-number="5.1.2" class="anchored" data-anchor-id="power-scaling-and-importance-sampling"><span class="header-section-number">5.1.2</span> Power-scaling and importance sampling</h3>
-<p>We can analytically compute the effect of power scaling a distribution. For instance, for a Normal distribution, <span class="math inline">\(\mathcal{N}(\theta \mid \mu, \sigma)\)</span> and power-scaling factor <span class="math inline">\(\alpha\)</span> we get <span class="math inline">\(\mathcal{N}(\theta \mid \mu, \sigma \; \alpha^{-1/2})\)</span>. In practice we usually work with MCMC samples and arbitrary distributions, thus a more convenient way to perform power-scaling is to use importance sampling. As discussed in <span class="quarto-unresolved-ref">?sec-model-comparison</span> importance sampling is a method to estimate the expected value of a function under a distribution different from the one we have samples from. <span class="citation" data-cites="kallioinen_2023">(<a href="References.html#ref-kallioinen_2023" role="doc-biblioref"><strong>kallioinen_2023?</strong></a>)</span> proposed to use Pareto smoothed importance sampling (PSIS), a method we also discussed in <span class="quarto-unresolved-ref">?sec-model-comparison</span> to estimate the ELPD.</p>
+<p>We can analytically compute the effect of power scaling a distribution. For instance, for a Normal distribution, <span class="math inline">\(\mathcal{N}(\theta \mid \mu, \sigma)\)</span> and power-scaling factor <span class="math inline">\(\alpha\)</span> we get <span class="math inline">\(\mathcal{N}(\theta \mid \mu, \sigma \; \alpha^{-1/2})\)</span>. In practice we usually work with MCMC samples and arbitrary distributions, thus a more convenient way to perform power-scaling is to use importance sampling. Importance sampling is a method to estimate the expected value of a function under a distribution different from the one we have samples from. <span class="citation" data-cites="kallioinen_2023">Kallioinen et al. (<a href="References.html#ref-kallioinen_2023" role="doc-biblioref">2024</a>)</span> proposed to use Pareto smoothed importance sampling (PSIS).</p>
 <p>In the context of power-scaling perturbations, the proposal distribution is the posterior we computed using MCMC (<span class="math inline">\(p(\theta \mid y)\)</span>) and the target distribution is the perturbed posterior (<span class="math inline">\(p(\theta \mid y)_{\alpha}\)</span>). If the proposal and target distributions are expressed as the products of the prior <span class="math inline">\(p(\theta)\)</span> and likelihood <span class="math inline">\(p(y \mid \theta)\)</span>, with the prior raised to the power of <span class="math inline">\(\alpha\)</span>, then we can write the importance weights for the prior as:</p>
 <p><span class="math display">\[
 w_{\alpha} = \frac{p(\theta)^{\alpha} \; p(y \mid \theta)}{p(\theta) \;\; p(y \mid \theta)}
@@ -540,12 +559,12 @@ w_{\alpha} = \frac{p(\theta)^{\alpha}}{p(\theta)}
 w_{\alpha} = p(\theta)^{\alpha-1}
 \]</span></p>
 <p>This resulta means that the importance sampling weights for the prior only depend on the density of the prior being power-scaled. This simplifies the computation of the weights. By the same logic the same applies to the likelihood.</p>
-<p>To summarize, the method proposed by <span class="citation" data-cites="kallioinen_2023">(<a href="References.html#ref-kallioinen_2023" role="doc-biblioref"><strong>kallioinen_2023?</strong></a>)</span> combines two key ideas, importance sampling and power-scaling. This combination allow us to approximate the sensitivity of the posterior to the prior and likelihood without the need to explicitly build and fit multiple models.</p>
+<p>To summarize, the method proposed by <span class="citation" data-cites="kallioinen_2023">Kallioinen et al. (<a href="References.html#ref-kallioinen_2023" role="doc-biblioref">2024</a>)</span> combines two key ideas, importance sampling and power-scaling. This combination allow us to approximate the sensitivity of the posterior to the prior and likelihood without the need to explicitly build and fit multiple models.</p>
 </section>
 <section id="diagnosing-sensitivity" class="level3" data-number="5.1.3">
 <h3 data-number="5.1.3" class="anchored" data-anchor-id="diagnosing-sensitivity"><span class="header-section-number">5.1.3</span> Diagnosing sensitivity</h3>
 <p>Once we have power-scaled the prior and likelihood we can visually inspect the effect of the perturbations, by plotting the marginal posterior distributions for the parameter of interest. KDEs, ECDFs and point-intervals allows easy comparison of several distributions. If the perturbations are small, the distributions should overlap. If the perturbations are large, the distributions will be separated.</p>
-<p>We can also compute numerical values based on distances (or divergences) between the unperturbed and perturbed posteriors. In <span class="quarto-unresolved-ref">?sec-model-comparison</span> we discussed the use of the Kullback-Leibler divergence to compare how similar two distributions are. <span class="citation" data-cites="kallioinen_2023">(<a href="References.html#ref-kallioinen_2023" role="doc-biblioref"><strong>kallioinen_2023?</strong></a>)</span> instead suggest using the cumulative Jensen–Shannon divergence (CJS) <span class="citation" data-cites="nguyen_2015">(<a href="References.html#ref-nguyen_2015" role="doc-biblioref"><strong>nguyen_2015?</strong></a>)</span>. This divergence has two good features, its symmetrised form is upper-bounded, which aids interpretation, and it can be computed from the ECDFs, which can be efficiently estimated from MCMC samples. Other methods requieres the estimation of the density of the distributions, which can be computationally expensive and sensible to the choice of the kernel and bandwidth.</p>
+<p>We can also compute numerical values based on distances (or divergences) between the unperturbed and perturbed posteriors. <span class="citation" data-cites="kallioinen_2023">Kallioinen et al. (<a href="References.html#ref-kallioinen_2023" role="doc-biblioref">2024</a>)</span> instead suggest using the cumulative Jensen–Shannon divergence (CJS) <span class="citation" data-cites="nguyen_2015">(<a href="References.html#ref-nguyen_2015" role="doc-biblioref">Nguyen and Vreeken 2015</a>)</span> to compare posterior distributions. This divergence has two good features, its symmetrised form is upper-bounded, which aids interpretation, and it can be computed from the ECDFs, which can be efficiently estimated from MCMC samples. Other methods requieres the estimation of the density of the distributions, which can be computationally expensive and sensible to the choice of the kernel and bandwidth.</p>
 <p>The authors suggest a cut-off value of 0.05 for the CJS. For a standard Normal this value corresponds to the mean being shifted by more than <span class="math inline">\(\approx 0.3\)</span> standard deviations, or the standard deviation differing by a factor greater than <span class="math inline">\(\approx 0.3\)</span>. This value is not set in stone, but it can be used as a reference to interpret the results of the sensitivity analysis.</p>
 <p>If the value of CJS when power-scaling the prior and likelihood is larger than the threshold, we have a potential prior-data conflict. If the value of CJS is larger than the threshold but the value for the likelihood is smaller than the threshold, we potentially have a strong prior and weak likelihood.</p>
 <p>In the next sections we are going to show two examples of on how to use this method in practice.</p>
@@ -553,9 +572,9 @@ w_{\alpha} = p(\theta)^{\alpha-1}
 </section>
 <section id="body-fat-example" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="body-fat-example"><span class="header-section-number">5.2</span> Body fat example</h2>
-<p>Let’s see an example of prior-data conflict in a linear regression model. We will use the bodyfat data set <span class="citation" data-cites="johnson_1996">(<a href="References.html#ref-johnson_1996" role="doc-biblioref"><strong>johnson_1996?</strong></a>)</span>. The aim of the analysis is to predict an expensive and cumbersome water immersion measurement of body fat percentage (observed variable named <code>siri</code>) from a set of thirteen easier to measure characteristics, including age, height, weight, and circumferences of various body parts.</p>
+<p>Let’s see an example of prior-data conflict in a linear regression model. We will use the bodyfat data set <span class="citation" data-cites="johnson_1996">(<a href="References.html#ref-johnson_1996" role="doc-biblioref">Johnson 1996</a>)</span>. The aim of the analysis is to predict an expensive and cumbersome water immersion measurement of body fat percentage (observed variable named <code>siri</code>) from a set of thirteen easier to measure characteristics, including age, height, weight, and circumferences of various body parts.</p>
 <p>Let’s start by loading the data and creating a <code>siri</code> variable for the response and a <code>body_fat</code> variable for the predictors. We center the predictors.</p>
-<div id="6876e926" class="cell" data-execution_count="4">
+<div id="6876e926" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a>body_fat <span class="op">=</span> pd.read_csv(<span class="st">"../data/bodyfat.csv"</span>, sep<span class="op">=</span><span class="st">";"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-label="2"></a>siri <span class="op">=</span> body_fat.pop(<span class="st">"siri"</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-label="3"></a>body_fat <span class="op">=</span> body_fat <span class="op">-</span> body_fat.mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -575,7 +594,7 @@ w_{\alpha} = p(\theta)^{\alpha-1}
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="" aria-current="page">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Stan</a></li></ul>
 <div class="tab-content" data-group="ppl">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="0985d839" class="cell" data-execution_count="5">
+<div id="0985d839" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a><span class="cf">with</span> pm.Model(coords<span class="op">=</span>{<span class="st">"covariates"</span>: body_fat.columns}) <span class="im">as</span> model_bf_00:</span>
 <span id="cb2-2"><a href="#cb2-2" aria-label="2"></a>    β_0 <span class="op">=</span> pm.StudentT(<span class="st">"β_0"</span>, nu<span class="op">=</span><span class="dv">3</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="fl">9.2</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-label="3"></a>    β <span class="op">=</span> pm.Normal(<span class="st">"β"</span>, <span class="dv">0</span>, <span class="dv">1</span>, dims<span class="op">=</span><span class="st">"covariates"</span>)</span>
@@ -637,11 +656,11 @@ w_{\alpha} = p(\theta)^{\alpha-1}
 </div>
 <p>We can now use the <code>psense_summary</code> function from ArviZ to perform a numerical sensitivity analysis. This function returns a four-column DataFrame. The first column is the name of the variables, the second is the value of CJS when power-scaling the prior, then the value of CJS when power-scaling the likelihood and the last one is a textual description of the results.</p>
 <p>For the <span class="math inline">\(\beta\)</span> coefficient <code>wrist</code> we can see that we may have prior-sensitivity (CJS&gt;0.05) and likelihood-sensitivity (CJS&gt;0.05). Thus, we may have a case of prior-data conflict for the <code>wrist</code> variable.</p>
-<div id="b40542c3" class="cell" data-execution_count="7">
+<div id="b40542c3" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a>az.psense_summary(dt_bf_00, var_names<span class="op">=</span>[<span class="st">"~μ"</span>], round_to<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can also evaluate the effect of power-scaling visually with the function <code>plot_psense_dist</code>. This function displays the posterior marginal for 3 values of <span class="math inline">\(\alpha\)</span>. By default 0.8 (red), 1 (black) and 1.25 (blue). <code>plot_psense_dist</code> allow as to choose different representations including KDEs and ECDFs. From <a href="#fig-posterior-sensitivity_bf_00" class="quarto-xref">Figure&nbsp;<span>5.3</span></a> we can see that the posterior is sensitive to both prior and likelihood power-scaling, and that it shifts right (towards zero) as the prior is strengthened, and left (away from zero) as the likelihood is strengthened.</p>
-<div id="fig-posterior-sensitivity_bf_00" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
+<div id="fig-posterior-sensitivity_bf_00" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="9">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-posterior-sensitivity_bf_00-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a>az.plot_psense_dist(dt_bf_00,</span>
@@ -656,7 +675,7 @@ Figure&nbsp;5.3
 </figure>
 </div>
 <p>We can also use the <code>plot_psense_quantities</code> function to display quantities of interest like the mean, median, standard deviation, etc. We can then evaluate how much the quantities of interest change when we perturb the prior and likelihood. To get a reference for the relative effect size of the perturbations the function also shows the ±2 Monte Carlo standard errors (MCSE) of the base posterior quantity. From <a href="#fig-quantities_bf_00" class="quarto-xref">Figure&nbsp;<span>5.4</span></a> we can see that power-scaling the prior and likelihood pulls the posterior mean in opposite directions. This suggests there might be a potential mismatch or conflict between the prior and the likelihood.</p>
-<div id="fig-quantities_bf_00" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="9">
+<div id="fig-quantities_bf_00" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="10">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-quantities_bf_00-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a>az.plot_psense_quantities(dt_bf_00,</span>
@@ -676,7 +695,7 @@ Figure&nbsp;5.4
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Stan</a></li></ul>
 <div class="tab-content" data-group="ppl">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="b04c4ddd" class="cell" data-execution_count="10">
+<div id="b04c4ddd" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a><span class="cf">with</span> pm.Model(coords<span class="op">=</span>{<span class="st">"covariates"</span>: body_fat.columns}) <span class="im">as</span> model_bf_01:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-label="2"></a>    β_0 <span class="op">=</span> pm.StudentT(<span class="st">"β_0"</span>, nu<span class="op">=</span><span class="dv">3</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="fl">9.2</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-label="3"></a>    β <span class="op">=</span> pm.Normal(<span class="st">"β"</span>, <span class="dv">0</span>, <span class="fl">2.5</span> <span class="op">*</span> siri.std() <span class="op">/</span> body_fat.std(), dims<span class="op">=</span><span class="st">"covariates"</span>)</span>
@@ -695,12 +714,12 @@ Figure&nbsp;5.4
 </div>
 </div>
 <p>Now we can perform the sensitivity analysis again. We can see that we managed to remove the warning!</p>
-<div id="35792dd4" class="cell" data-execution_count="12">
+<div id="35792dd4" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a>az.psense_summary(dt_bf_01, var_names<span class="op">=</span>[<span class="st">"~μ"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can see that after changing the prior, the posterior mean for <code>wrist</code> changes from -1.45 to -1.86, indicating that the base prior was indeed unintentionally informative and in conflict with the data, pulling the estimate towards zero.</p>
 <p>As previously, we can also evaluate the effect of power-scaling visually with the function <code>plot_psense_dist</code>. From <a href="#fig-posterior-sensitivity_bf_01" class="quarto-xref">Figure&nbsp;<span>5.5</span></a> we can see a better overlap between the posterior distributions, compared to the original prior.</p>
-<div id="fig-posterior-sensitivity_bf_01" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="13">
+<div id="fig-posterior-sensitivity_bf_01" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="14">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-posterior-sensitivity_bf_01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-label="1"></a>az.plot_psense_dist(dt_bf_01,</span>
@@ -715,7 +734,7 @@ Figure&nbsp;5.5
 </figure>
 </div>
 <p>In terms or the mean for <code>βwrist</code>, we can see that there is no longer prior or likelihood sensitivity, indicating no prior-data conflict. For the standard deviation, likelihood sensitivity remains, indicating that the likelihood is informative.</p>
-<div id="fig-quantities_bf_01" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="14">
+<div id="fig-quantities_bf_01" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="15">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-quantities_bf_01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a>az.plot_psense_quantities(dt_bf_01, var_names<span class="op">=</span>[<span class="st">"β"</span>], coords<span class="op">=</span>{<span class="st">"covariates"</span>: [<span class="st">"wrist"</span>]})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -745,16 +764,16 @@ Figure&nbsp;5.6
 </ul>
 <p>We are going to start by computing predictions at <code>new_data</code>, as you may already know how to do this from other examples. To do that we need to create a new DataFrame with the values of the predictors we want to use for prediction. In this case, we will use the median, min, and max values of each covariate. For your particular use case, you may want to use different values, like quantiles of any other specific values of interest.</p>
 <p>We can ask ArviZ, to compute the Bayesian R² for us, we need to specify which variables represent the posterior mean (or location parameter) and standard deviation (or variance).</p>
-<div id="e2cedb1c" class="cell" data-execution_count="15">
+<div id="e2cedb1c" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-label="1"></a>r2_da <span class="op">=</span> az.ndarray_to_dataarray(az.bayesian_r2(dt_bf_01, pred_mean<span class="op">=</span><span class="st">"μ"</span>, scale<span class="op">=</span><span class="st">"σ"</span>, summary<span class="op">=</span><span class="va">False</span>).reshape(<span class="dv">4</span>, <span class="dv">2000</span>), var_name<span class="op">=</span><span class="st">"r2"</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-label="2"></a>dt_bf_01.posterior[<span class="st">"r2"</span>] <span class="op">=</span> r2_da</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>To compute the joint log-likelihood we just sum the poin-twise log-likelihood evaluations along the observations. In other words we compute one log-likelihood value per MCMC step.</p>
-<div id="e4c91d42" class="cell" data-execution_count="16">
+<div id="e4c91d42" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a>dt_bf_01.posterior[<span class="st">"log_score"</span>] <span class="op">=</span> dt_bf_01.log_likelihood.<span class="bu">sum</span>(<span class="st">"y_dim_0"</span>)[<span class="st">"y"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Once we have added the derived quantities we just need to call <code>psense_summary</code> (or the others <code>psense_*</code> functions) as usual:</p>
-<div id="e4133343" class="cell" data-execution_count="17">
+<div id="e4133343" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-label="1"></a>az.psense_summary(dt_bf_01, var_names<span class="op">=</span>[<span class="st">"r2"</span>, <span class="st">"log_score"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We see no signs of data-conflict or likelihood noninformativity, we can visually check this as we did before, but given these values we should expect the distributions of the derived quantities to very similar across the different priors.</p>
@@ -764,7 +783,7 @@ Figure&nbsp;5.6
 <h2 data-number="5.4" class="anchored" data-anchor-id="bacteria-treatment"><span class="header-section-number">5.4</span> Bacteria treatment</h2>
 <p>Now we discuss and example of power-scaling sensitivity analysis for hierarchical models. The main motivation for this example is to show that for certain models we should selectively power-scaled the priors. To illustrate this, consider two forms of prior, a non-hierarchical prior with two independent parameters <span class="math inline">\(p(\theta)\)</span> and <span class="math inline">\(p(\phi)\)</span> and a hierarchical prior of the form <span class="math inline">\(p(\theta \mid \psi) p(\psi)\)</span>. In the first case, the appropriate power-scaling for the prior is <span class="math inline">\(p(\theta)^{\alpha} p(\phi)^{\alpha}\)</span>. This is what we did in the previous example. In the second case, for the hierarchical model, we only want to power-scale the top level prior, that is, <span class="math inline">\(p(\theta) p(\phi)^{\alpha}\)</span>.</p>
 <p>For this example we are going to use the bacteria data set <span class="citation" data-cites="venables_2002">(<a href="References.html#ref-venables_2002" role="doc-biblioref"><strong>venables_2002?</strong></a>)</span>.</p>
-<div id="299b5c45" class="cell" data-execution_count="18">
+<div id="299b5c45" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-label="1"></a>bacteria <span class="op">=</span> pd.read_csv(<span class="st">"../data/bacteria.csv"</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-label="2"></a>bacteria[<span class="st">"y"</span>] <span class="op">=</span> bacteria[<span class="st">"y"</span>].astype(<span class="st">"category"</span>).cat.codes</span>
 <span id="cb15-3"><a href="#cb15-3" aria-label="3"></a>bacteria[<span class="st">"ID"</span>] <span class="op">=</span> bacteria[<span class="st">"ID"</span>].astype(<span class="st">"category"</span>).cat.codes</span>
@@ -777,7 +796,7 @@ Figure&nbsp;5.6
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">Stan</a></li></ul>
 <div class="tab-content" data-group="ppl">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div id="e7ad98be" class="cell" data-execution_count="19">
+<div id="e7ad98be" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-label="1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_bt:</span>
 <span id="cb16-2"><a href="#cb16-2" aria-label="2"></a>    μ <span class="op">=</span> pm.Normal(<span class="st">'μ'</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-label="3"></a>    β_week <span class="op">=</span> pm.Normal(<span class="st">'β_week'</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -856,7 +875,7 @@ Figure&nbsp;5.6
 </div>
 <p>From the power-scaling sensitivity analysis perspective the key element in the previous code-block is that we are specifying the variables we want to use for the prior-powerscaling <code>var_names=["μ", "β_week", "β_trtDrug", "β_trtDrugP", "σ"]</code> i.e.&nbsp;we are omitting the <code>b_Intercept</code> variable. This is because we are only interested in power-scaling the top level prior. There are two way to specify the variables for power-scaling, the first is to use the <code>var_names</code> argument when computing the log_prior and/or log_likelihood, as we just did. The second is to use the <code>prior_varnames</code> and <code>likelihood_varnames</code> arguments in the <code>psense</code>-related functions.</p>
 <p>Let’s compute sensitivity diagnostics for all variables except <code>~b_Intercept</code>, if we want to check the sensitivity of all of them we can do it. The key point with hierarchical models is to not power-scale the lower level priors.</p>
-<div id="dc474c5e" class="cell" data-execution_count="21">
+<div id="dc474c5e" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-label="1"></a>az.psense_summary(dt_bt, var_names<span class="op">=</span>[<span class="st">"~b_Intercept"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We see that everything looks fine. If you like to get potentials issues you could try running the model again with a prior like <code>σ = pm.HalfNormal('σ', sigma=1)</code>.</p>
@@ -889,6 +908,17 @@ Figure&nbsp;5.6
 <p>Sensitivity analysis should be conducted with care, avoiding the repeated adjustment of priors solely to resolve discrepancies or diagnostic warnings. If a prior is modified to address a warning, the change must be justified based on domain expertise, data properties, or model assumptions. Conversely, choosing not to alter the model despite warnings can also be valid if there are compelling reasons to believe the model is sound. In such cases, it is essential to be transparent: report the diagnostic results and provide a clear rationale for disregarding the sensitivity diagnostics.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-johnson_1996" class="csl-entry" role="listitem">
+Johnson, Roger W. 1996. <span>“Fitting <span>Percentage</span> of <span>Body Fat</span> to <span>Simple Body Measurements</span>.”</span> <em>Journal of Statistics Education</em> 4 (1): 6. <a href="https://doi.org/10.1080/10691898.1996.11910505">https://doi.org/10.1080/10691898.1996.11910505</a>.
+</div>
+<div id="ref-kallioinen_2023" class="csl-entry" role="listitem">
+Kallioinen, Noa, Topi Paananen, Paul-Christian Bürkner, and Aki Vehtari. 2024. <span>“Detecting and Diagnosing Prior and Likelihood Sensitivity with Power-Scaling.”</span> <em>Statistics and Computing</em> 34 (1): 57. <a href="https://doi.org/10.1007/s11222-023-10366-5">https://doi.org/10.1007/s11222-023-10366-5</a>.
+</div>
+<div id="ref-nguyen_2015" class="csl-entry" role="listitem">
+Nguyen, Hoang-Vu, and Jilles Vreeken. 2015. <span>“Non-Parametric <span>Jensen-Shannon Divergence</span>.”</span> In <em>Machine <span>Learning</span> and <span>Knowledge Discovery</span> in <span>Databases</span></em>, edited by Annalisa Appice, Pedro Pereira Rodrigues, Vítor Santos Costa, João Gama, Alípio Jorge, and Carlos Soares, vol. 9285. Springer International Publishing. <a href="https://doi.org/10.1007/978-3-319-23525-7_11">https://doi.org/10.1007/978-3-319-23525-7_11</a>.
+</div>
+</div>
 </section>
 </section>
 
