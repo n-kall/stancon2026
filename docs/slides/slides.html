@@ -355,7 +355,10 @@ Teemu Säilynoja
 <ul>
 <li class="fragment">Convergence diagnostic</li>
 <li class="fragment">Measure of ratio between within-chain and between-chain variance</li>
-<li class="fragment">R-hat &gt; 1.01 indicates lack of convergence</li>
+<li class="fragment">R-hat &gt; 1.01 indicates lack of convergence
+<div class="paper-link">
+<p><a href="https://projecteuclid.org/journals/bayesian-analysis/volume-16/issue-2/Rank-Normalization-Folding-and-Localization--An-Improved-R%CB%86-for/10.1214/20-BA1221.full">Rank-Normalization, Folding, and Localization: An Improved R-hat for Assessing Convergence of MCMC</a></p>
+</div></li>
 </ul>
 </section>
 <section id="r-hat-1" class="slide level2">
@@ -427,7 +430,10 @@ Teemu Säilynoja
 <ul>
 <li class="fragment">Convergence diagnostic when using many short chains</li>
 <li class="fragment">Chains are grouped into superchains (sharing initialization)</li>
-<li class="fragment">Classic R-hat may wrongly indicate lack of convergence, but nested R-hat does not</li>
+<li class="fragment">Classic R-hat may wrongly indicate lack of convergence, but nested R-hat does not
+<div class="paper-link">
+<p><a href="https://projecteuclid.org/journals/bayesian-analysis/advance-publication/Nested-R%CB%86--Assessing-the-Convergence-of-Markov-Chain-Monte/10.1214/24-BA1453.full">Nested R-hat: Assessing the Convergence of Markov Chain Monte Carlo When Running Many Short Chains</a></p>
+</div></li>
 </ul>
 </section>
 <section id="nested-r-hat-1" class="slide level2">
@@ -491,11 +497,13 @@ Teemu Säilynoja
 <section id="effective-sample-size" class="slide level2">
 <h2>Effective Sample Size</h2>
 <ul>
-<li class="fragment">Measures how much <em>independent</em> information the draws contain</li>
-<li class="fragment">Accounts for autocorrelation between samples</li>
+<li class="fragment">Measures how much <em>independent</em> information the draws contain, accounting for autocorrelation</li>
 <li class="fragment"><code>ess_bulk</code>: precision for mean/median (central distribution)</li>
 <li class="fragment"><code>ess_tail</code>: precision for interval estimates (5%/95% quantiles)</li>
-<li class="fragment">Rule of thumb: at least 400 total (100 per chain x 4 chains) for both</li>
+<li class="fragment">Rule of thumb: at least 400 total (100 per chain x 4 chains) for both
+<div class="paper-link">
+<p><a href="https://projecteuclid.org/journals/bayesian-analysis/volume-16/issue-2/Rank-Normalization-Folding-and-Localization--An-Improved-R%CB%86-for/10.1214/20-BA1221.full">Rank-Normalization, Folding, and Localization: An Improved R-hat for Assessing Convergence of MCMC</a></p>
+</div></li>
 </ul>
 </section>
 <section id="effective-sample-size-1" class="slide level2">
@@ -577,7 +585,10 @@ Teemu Säilynoja
 <ul>
 <li class="fragment">Standard error of a posterior estimate (e.g.&nbsp;the mean), accounting for autocorrelation</li>
 <li class="fragment">Related to ESS: <span class="math inline">\(\text{MCSE} = \frac{\hat\sigma}{\sqrt{\text{ESS}}}\)</span></li>
-<li class="fragment">Tells us <a href="https://avehtari.github.io/Bayesian-Workflow/digits/digits.html">how many digits</a> of a reported estimate we can trust</li>
+<li class="fragment">Tells us <a href="https://avehtari.github.io/Bayesian-Workflow/digits/digits.html">how many digits</a> of a reported estimate we can trust
+<div class="paper-link">
+<p><a href="https://projecteuclid.org/journals/bayesian-analysis/volume-16/issue-2/Rank-Normalization-Folding-and-Localization--An-Improved-R%CB%86-for/10.1214/20-BA1221.full">Rank-Normalization, Folding, and Localization: An Improved R-hat for Assessing Convergence of MCMC</a></p>
+</div></li>
 </ul>
 </section>
 <section id="monte-carlo-standard-error-1" class="slide level2">
@@ -848,7 +859,10 @@ Teemu Säilynoja
 <ul>
 <li class="fragment">Marginal p-value: <span class="math inline">\(p(\tilde y_i \leq y_i \mid y)\)</span>, computed per observation</li>
 <li class="fragment">By the Probability Integral Transform, this should be <strong>standard Uniform</strong> if model and data agree</li>
-<li class="fragment">Compare the empirical CDF of these values to the diagonal line</li>
+<li class="fragment">Compare the empirical CDF of these values to the diagonal line, or to a flat line at zero for the Δ-ECDF.
+<div class="paper-link">
+<p><a href="https://link.springer.com/article/10.1007/s11222-022-10090-6">Graphical test for discrete uniformity and its applications in goodness-of-fit evaluation and multiple sample comparison</a> <a href="https://arxiv.org/abs/2603.02928">LOO-PIT predictive model checking</a></p>
+</div></li>
 </ul>
 </section>
 <section id="section-4" class="slide level2">
@@ -899,7 +913,10 @@ Teemu Säilynoja
 <ul>
 <li class="fragment">KDEs don’t work well for discrete data (unless enough distinct values to treat as continuous)</li>
 <li class="fragment">Histograms (one bin per value) and ECDFs still apply</li>
-<li class="fragment">Some tools are purpose-built per data type: <strong>count</strong>, <strong>binary</strong>, <strong>categorical</strong>, <strong>ordinal</strong>, <strong>censored</strong></li>
+<li class="fragment">Some tools are purpose-built per data type: <strong>count</strong>, <strong>binary</strong>, <strong>categorical</strong>, <strong>ordinal</strong>, <strong>censored</strong>
+<div class="paper-link">
+<p><a href="https://teemusailynoja.github.io/visual-predictive-checks/">Recommendations for visual predictive checks in Bayesian workflow</a></p>
+</div></li>
 </ul>
 </section>
 <section id="count-data-rootograms" class="slide level2">
@@ -952,7 +969,10 @@ Teemu Säilynoja
 <ul>
 <li class="fragment">Survival/time-to-event models: some events not yet observed at data-collection time</li>
 <li class="fragment">Naively discarding censored cases biases the estimate</li>
-<li class="fragment">Replace raw observations with <strong>Kaplan–Meier</strong> estimates for posterior predictive checks</li>
+<li class="fragment">Replace raw observations with <strong>Kaplan–Meier</strong> estimates for posterior predictive checks
+<div class="paper-link">
+<p><a href="https://arxiv.org/abs/2601.01662">Predictive Assessment and Comparison of Bayesian Survival Models for Cancer Recurrence</a></p>
+</div></li>
 </ul>
 </section>
 <section id="section-10" class="slide level2">
@@ -970,7 +990,10 @@ Teemu Säilynoja
 <li class="fragment"><p>What would happen if the prior was weaker or stronger?</p></li>
 <li class="fragment"><p><span class="math inline">\(p(\theta \mid y) \propto p(\theta)^{\alpha} p(y \mid \theta)\)</span></p></li>
 <li class="fragment"><p>What about the likelihood?</p></li>
-<li class="fragment"><p><span class="math inline">\(p(\theta \mid y) \propto p(\theta) p(y \mid \theta)^{\alpha}\)</span></p></li>
+<li class="fragment"><p><span class="math inline">\(p(\theta \mid y) \propto p(\theta) p(y \mid \theta)^{\alpha}\)</span></p>
+<div class="paper-link">
+<p><a href="https://link.springer.com/article/10.1007/s11222-023-10366-5">Detecting and diagnosing prior and likelihood sensitivity with power-scaling</a></p>
+</div></li>
 </ul>
 </section>
 <section id="visual-checks" class="slide level2">
@@ -1065,14 +1088,13 @@ Teemu Säilynoja
 <section id="more-resources" class="slide level2">
 <h2>More resources</h2>
 <ul>
-<li><p>Bayesian Workflow book</p>
+<li>Bayesian Workflow book
 <ul>
 <li>PDF: <a href="https://users.aalto.fi/~ave/Bayesian-Workflow.pdf">https://users.aalto.fi/~ave/Bayesian-Workflow.pdf</a></li>
 <li>With R <a href="https://avehtari.github.io/Bayesian-Workflow/">https://avehtari.github.io/Bayesian-Workflow/</a></li>
 <li>With Python <a href="https://arviz-devs.github.io/bayesian-workflow/">https://arviz-devs.github.io/bayesian-workflow/</a></li>
 </ul></li>
-<li><p>Exploratory Analysis of Bayesian Models <a href="https://arviz-devs.github.io/EABM/">https://arviz-devs.github.io/EABM/</a></p></li>
-<li><p>???</p></li>
+<li>Exploratory Analysis of Bayesian Models <a href="https://arviz-devs.github.io/EABM/">https://arviz-devs.github.io/EABM/</a></li>
 </ul>
 
 </section></section>

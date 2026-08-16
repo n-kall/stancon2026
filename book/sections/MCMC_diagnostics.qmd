@@ -113,7 +113,7 @@ It's important to keep in mind that $\hat R$ close to 1 is a *necessary but not 
 
 ## Nested Rhat
 
-It is becoming more common to run many short chains rather than just a few longer chains. This allows for potentially large speed ups if running parallel. @Margossian2024 has developed an updated R-hat diagnostic for use in this paradigm, called nested R-hat. The key difference is that chains are grouped into superchains. All chains within a superchain are initialized at the same point. Nested R-hat then quantifies the ratio between within super-chain and between superchain variances.
+It is becoming more common to run many short chains rather than just a few longer chains. This allows for potentially large speed ups if running parallel. @margossian2024 has developed an updated R-hat diagnostic for use in this paradigm, called nested R-hat. The key difference is that chains are grouped into superchains. All chains within a superchain are initialized at the same point. Nested R-hat then quantifies the ratio between the standard deviation across all super chains and the average within-superchain sample standard deviation.
 
 ::: {.panel-tabset group="language"}
 ## Python
@@ -278,7 +278,7 @@ For a discussion of how many digits to report, check [this guide using R](https:
 
 $\hat R$, Bulk-ESS, and Tail-ESS are designed to be valid even for distributions with infinite variance [@vehtari_2021], but MCSE and Basic-ESS assume finite variance. Thus if we sample from a distribution with infinite variance the MCSE will be overoptimistic. Even when variance is finite, the MCSE estimate can be unreliable if the tails are thick enough that higher moments are infinite, since in that case the empirical variance estimate itself is noisy and convergence is slow.
 
-The Pareto-$\hat k$ diagnostic was originally introduced in the context of Pareto smoothed importance sampling (PSIS) [@vehtari_2022], where it was used to assess the reliability of importance sampling estimates. The key insight is that when estimating a mean from a finite sample, the reliability of the estimate depends on the tail behavior of the distribution: if the tails are too heavy, the variance, or even the mean itself, may not exist, and no amount of additional sampling will produce a reliable estimate. The Pareto-$\hat k$ statistic quantifies this by fitting a generalized Pareto distribution to the upper tail of the draws and using the estimated shape parameter $\hat k$ as a diagnostic. Although it was developed for importance sampling, it turns out to be useful more broadly, including for diagnosing MCMC samples [@vehtari_2024]. The Pareto-$\hat k$ estimate can be turned into a minimum sample size required to trust the MCSE:
+The Pareto-$\hat k$ diagnostic was originally introduced in the context of Pareto smoothed importance sampling (PSIS) [@vehtari_2024], where it was used to assess the reliability of importance sampling estimates. The key insight is that when estimating a mean from a finite sample, the reliability of the estimate depends on the tail behavior of the distribution: if the tails are too heavy, the variance, or even the mean itself, may not exist, and no amount of additional sampling will produce a reliable estimate. The Pareto-$\hat k$ statistic quantifies this by fitting a generalized Pareto distribution to the upper tail of the draws and using the estimated shape parameter $\hat k$ as a diagnostic. Although it was developed for importance sampling, it turns out to be useful more broadly, including for diagnosing MCMC samples [@vehtari_2024]. The Pareto-$\hat k$ estimate can be turned into a minimum sample size required to trust the MCSE:
 
 $$
 \text{min\_ss} = 10^{1 / (1 - \max(0, \hat k))}
@@ -341,5 +341,4 @@ The practical takeaway is that if you are not estimating means of thick-tailed q
 
 **Read the warnings.** Modern PPLs provide targeted warning messages and diagnostics when they detect sampling problems. These messages often point directly at the issue and are worth reading carefully before trying anything else.
 
-<!-- Not sure if still make sense to say this, we may want to keep for those coming from old PPLs/custom MH samplers -->
 **Don't do burn-in manually.** Modern PPLs like Stan, PyMC, NumPyro, and Turing automatically discard warmup samples used to tune the sampler's hyperparameters. Manual burn-in is generally unnecessary and a sign you may be using an older workflow.
