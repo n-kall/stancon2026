@@ -782,7 +782,7 @@ Figure&nbsp;5.6
 <section id="bacteria-treatment" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="bacteria-treatment"><span class="header-section-number">5.4</span> Bacteria treatment</h2>
 <p>Now we discuss and example of power-scaling sensitivity analysis for hierarchical models. The main motivation for this example is to show that for certain models we should selectively power-scaled the priors. To illustrate this, consider two forms of prior, a non-hierarchical prior with two independent parameters <span class="math inline">\(p(\theta)\)</span> and <span class="math inline">\(p(\phi)\)</span> and a hierarchical prior of the form <span class="math inline">\(p(\theta \mid \psi) p(\psi)\)</span>. In the first case, the appropriate power-scaling for the prior is <span class="math inline">\(p(\theta)^{\alpha} p(\phi)^{\alpha}\)</span>. This is what we did in the previous example. In the second case, for the hierarchical model, we only want to power-scale the top level prior, that is, <span class="math inline">\(p(\theta) p(\phi)^{\alpha}\)</span>.</p>
-<p>For this example we are going to use the bacteria data set <span class="citation" data-cites="venables_2002">(<a href="References.html#ref-venables_2002" role="doc-biblioref"><strong>venables_2002?</strong></a>)</span>.</p>
+<p>For this example we are going to use the bacteria data set <span class="citation" data-cites="venables_2002">(<a href="References.html#ref-venables_2002" role="doc-biblioref">Venables and Ripley 2002</a>)</span>.</p>
 <div id="299b5c45" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-label="1"></a>bacteria <span class="op">=</span> pd.read_csv(<span class="st">"../data/bacteria.csv"</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-label="2"></a>bacteria[<span class="st">"y"</span>] <span class="op">=</span> bacteria[<span class="st">"y"</span>].astype(<span class="st">"category"</span>).cat.codes</span>
@@ -917,6 +917,9 @@ Kallioinen, Noa, Topi Paananen, Paul-Christian Bürkner, and Aki Vehtari. 2024. 
 </div>
 <div id="ref-nguyen_2015" class="csl-entry" role="listitem">
 Nguyen, Hoang-Vu, and Jilles Vreeken. 2015. <span>“Non-Parametric <span>Jensen-Shannon Divergence</span>.”</span> In <em>Machine <span>Learning</span> and <span>Knowledge Discovery</span> in <span>Databases</span></em>, edited by Annalisa Appice, Pedro Pereira Rodrigues, Vítor Santos Costa, João Gama, Alípio Jorge, and Carlos Soares, vol. 9285. Springer International Publishing. <a href="https://doi.org/10.1007/978-3-319-23525-7_11">https://doi.org/10.1007/978-3-319-23525-7_11</a>.
+</div>
+<div id="ref-venables_2002" class="csl-entry" role="listitem">
+Venables, W. N., and Brian D. Ripley. 2002. <em>Modern Applied Statistics with s</em>. 4th ed. Springer.
 </div>
 </div>
 </section>

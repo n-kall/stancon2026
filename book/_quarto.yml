@@ -15,15 +15,11 @@ book:
           city: Helsinki
           country: Finland
     - name: Teemu Säilynoja
-      url: XXXX
+      url: https://teemusailynoja.github.io/
       orcid: 0000-0002-5249-348X
       affiliations:
         - name: PyMC Labs
-          affiliation-url: pymc-labs.com
-          address: XXXX
-          city: XXXX
-          country: Finland
-          postal-code: XXXX
+          affiliation-url: https://pymc-labs.com
     - name: Osvaldo A. Martin 
       url: https://aloctavodia.github.io/
       orcid: 0000-0001-7419-8978

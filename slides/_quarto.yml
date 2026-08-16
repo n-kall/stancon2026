@@ -6,7 +6,7 @@ author:
   - name: "Osvaldo Martin"
     affiliation: Aalto University
   - name: "Teemu Säilynoja"
-    affiliation: PyMC-Labs
+    affiliation: PyMC Labs
 format:
   revealjs:
     theme: [default, modern-glass.scss]
