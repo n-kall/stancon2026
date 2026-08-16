@@ -138,7 +138,7 @@ for group in dt.groups:
 ## R-hat
 ::: {.incremental}
 - Convergence diagnostic
-- Measure of ratio between within-chain and between-chain variance
+- Comparison between within-chain and between-chain variance
 - R-hat > 1.01 indicates lack of convergence
 - rank normalization, folding, splitting <div class="paper-link">
 [see Vehtari et al. 2021](https://projecteuclid.org/journals/bayesian-analysis/volume-16/issue-2/Rank-Normalization-Folding-and-Localization--An-Improved-R%CB%86-for/10.1214/20-BA1221.full)
